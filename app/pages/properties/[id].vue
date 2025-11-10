@@ -53,28 +53,28 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-5 sm:mb-6 pb-5 sm:pb-6 border-b border-gray-200">
               <div>
                 <div class="text-gray-500 text-xs sm:text-sm mb-1">Property Type</div>
-                <div class="font-semibold text-base sm:text-lg capitalize text-[#333333]">{{ property.type }}</div>
+                <div class="font-semibold text-base sm:text-lg capitalize text-[#3B3029]">{{ property.type }}</div>
               </div>
               <div>
                 <div class="text-gray-500 text-xs sm:text-sm mb-1">Bedrooms</div>
-                <div class="font-semibold text-base sm:text-lg text-[#333333]">{{ property.bedrooms }}</div>
+                <div class="font-semibold text-base sm:text-lg text-[#3B3029]">{{ property.bedrooms }}</div>
               </div>
               <div>
                 <div class="text-gray-500 text-xs sm:text-sm mb-1">Bathrooms</div>
-                <div class="font-semibold text-base sm:text-lg text-[#333333]">{{ property.bathrooms }}</div>
+                <div class="font-semibold text-base sm:text-lg text-[#3B3029]">{{ property.bathrooms }}</div>
               </div>
               <div>
                 <div class="text-gray-500 text-xs sm:text-sm mb-1">Sleeps</div>
-                <div class="font-semibold text-base sm:text-lg text-[#333333]">{{ property.guests }}</div>
+                <div class="font-semibold text-base sm:text-lg text-[#3B3029]">{{ property.guests }}</div>
               </div>
             </div>
-            <h2 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-[#333333]">About this vacation rental</h2>
-            <p class="text-[#333333] leading-relaxed text-sm sm:text-base">{{ property.description }}</p>
+            <h2 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-[#3B3029]">About this vacation rental</h2>
+            <p class="text-[#3B3029] leading-relaxed text-sm sm:text-base">{{ property.description }}</p>
           </div>
 
           <!-- Image Gallery -->
           <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-5 sm:p-6">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#333333]">Photos</h2>
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#3B3029]">Photos</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               <img
                 v-for="(image, index) in property.images"
@@ -89,14 +89,14 @@
 
           <!-- Amenities -->
           <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-5 sm:p-6">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#333333]">Amenities</h2>
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#3B3029]">Amenities</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               <div
                 v-for="amenity in property.amenities"
                 :key="amenity"
-                class="flex items-center text-sm sm:text-base text-[#333333]"
+                class="flex items-center text-sm sm:text-base text-[#3B3029]"
               >
-                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-[#6EC1B6] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-[#7A8B74] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span>{{ amenity }}</span>
@@ -114,8 +114,8 @@
   </div>
 
   <div v-else class="container mx-auto px-4 py-16 text-center">
-    <h1 class="text-2xl sm:text-3xl font-bold mb-4 text-[#333333]">Vacation Rental Not Found</h1>
-    <NuxtLink to="/" class="text-[#6EC1B6] hover:text-[#5BA89F] font-semibold transition-colors">
+    <h1 class="text-2xl sm:text-3xl font-bold mb-4 text-[#3B3029]">Vacation Rental Not Found</h1>
+    <NuxtLink to="/" class="text-[#7A8B74] hover:text-[#6A7B64] font-semibold transition-colors">
       Return to search
     </NuxtLink>
   </div>

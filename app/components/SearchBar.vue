@@ -2,40 +2,40 @@
   <div class="w-full">
     <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
       <div class="md:col-span-2">
-        <label class="block text-xs font-medium text-[#333333] mb-1">Where</label>
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Where</label>
         <input
           v-model="searchQuery"
           type="text"
           placeholder="Destination or property name"
-          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#6EC1B6] focus:border-[#6EC1B6] text-[#333333]"
+          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029]"
           @input="$emit('search', searchQuery)"
         />
       </div>
       
       <div>
-        <label class="block text-xs font-medium text-[#333333] mb-1">Check-in</label>
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Check-in</label>
         <input
           v-model="checkIn"
           type="date"
-          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#6EC1B6] focus:border-[#6EC1B6] text-[#333333]"
+          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029]"
         />
       </div>
       
       <div>
-        <label class="block text-xs font-medium text-[#333333] mb-1">Check-out</label>
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Check-out</label>
         <input
           v-model="checkOut"
           type="date"
-          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#6EC1B6] focus:border-[#6EC1B6] text-[#333333]"
+          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029]"
         />
       </div>
       
       <div>
-        <label class="block text-xs font-medium text-[#333333] mb-1">Travelers</label>
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Travelers</label>
         <div class="flex">
           <select
             v-model.number="guests"
-            class="w-full px-4 py-3 border border-gray-300 rounded-l-md focus:ring-2 focus:ring-[#6EC1B6] focus:border-[#6EC1B6] text-[#333333]"
+            class="w-full px-4 py-3 border border-gray-300 rounded-l-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029]"
             @change="$emit('filter', { type: selectedType, maxPrice, bedrooms, guests })"
           >
             <option :value="0">Guests</option>
@@ -47,7 +47,7 @@
           </select>
           <button
             type="button"
-            class="bg-[#6EC1B6] text-white px-6 py-3 rounded-r-md hover:bg-[#5BA89F] transition-colors duration-200 font-semibold"
+            class="bg-[#7A8B74] text-white px-6 py-3 rounded-r-md hover:bg-[#6A7B64] transition-colors duration-200 font-semibold"
             @click="$emit('filter', { type: selectedType, maxPrice, bedrooms, guests })"
           >
             Search
@@ -58,10 +58,10 @@
     
     <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mt-3">
       <div>
-        <label class="block text-xs font-medium text-[#333333] mb-1">Property Type</label>
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Property Type</label>
         <select
           v-model="selectedType"
-          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#6EC1B6] focus:border-[#6EC1B6] text-sm text-[#333333]"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-sm text-[#3B3029]"
           @change="$emit('filter', { type: selectedType, maxPrice, bedrooms, guests })"
         >
           <option value="">All Types</option>
@@ -73,21 +73,21 @@
       </div>
       
       <div>
-        <label class="block text-xs font-medium text-[#333333] mb-1">Max Price/night</label>
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Max Price/night</label>
         <input
           v-model.number="maxPrice"
           type="number"
           placeholder="Any price"
-          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#6EC1B6] focus:border-[#6EC1B6] text-sm text-[#333333]"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-sm text-[#3B3029]"
           @input="$emit('filter', { type: selectedType, maxPrice, bedrooms, guests })"
         />
       </div>
       
       <div>
-        <label class="block text-xs font-medium text-[#333333] mb-1">Bedrooms</label>
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Bedrooms</label>
         <select
           v-model.number="bedrooms"
-          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#6EC1B6] focus:border-[#6EC1B6] text-sm text-[#333333]"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-sm text-[#3B3029]"
           @change="$emit('filter', { type: selectedType, maxPrice, bedrooms, guests })"
         >
           <option :value="0">Any</option>
@@ -99,8 +99,8 @@
       </div>
       
       <div>
-        <label class="block text-xs font-medium text-[#333333] mb-1">Bathrooms</label>
-        <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#6EC1B6] focus:border-[#6EC1B6] text-sm text-[#333333]">
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Bathrooms</label>
+        <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-sm text-[#3B3029]">
           <option value="">Any</option>
           <option value="1">1+</option>
           <option value="2">2+</option>
