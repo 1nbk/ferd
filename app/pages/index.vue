@@ -12,7 +12,7 @@
           </p>
         </div>
         
-        <!-- VRBO Style Search Bar -->
+        <!-- Ferd Style Search Bar -->
         <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-2xl p-4 sm:p-6">
           <SearchBar @search="handleSearch" @filter="handleFilter" />
         </div>
@@ -85,7 +85,7 @@
     <section class="bg-gray-50 py-12 sm:py-16">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gray-900">
-          Why Choose Vrbo?
+          Why Choose Ferd?
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           <div class="bg-white rounded-lg p-6 shadow-sm">

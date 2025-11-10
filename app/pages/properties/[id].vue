@@ -133,7 +133,7 @@ const openImageGallery = (index: number) => {
 }
 
 useHead({
-  title: property ? `${property.title} - Vrbo` : 'Vacation Rental Not Found',
+  title: property ? `${property.title} - Ferd` : 'Vacation Rental Not Found',
   meta: [
     {
       name: 'description',
