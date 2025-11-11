@@ -70,6 +70,9 @@ onMounted(async () => {
     // Exchange the authorization code for tokens
     const response = await $fetch('/api/auth/google', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: {
         code,
         state
