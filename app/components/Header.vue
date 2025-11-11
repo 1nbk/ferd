@@ -18,9 +18,31 @@
           <NuxtLink to="#properties" class="text-[#3B3029] hover:text-[#7A8B74] transition-colors duration-200 font-medium text-sm">
             Browse
           </NuxtLink>
-          <button class="text-[#3B3029] hover:text-[#7A8B74] transition-colors duration-200 font-medium text-sm">
-            Sign In
-          </button>
+          <template v-if="isAuthenticated">
+            <div class="flex items-center space-x-3">
+              <img 
+                v-if="user?.picture" 
+                :src="user.picture" 
+                :alt="user.name"
+                class="w-8 h-8 rounded-full"
+              />
+              <span class="text-[#3B3029] font-medium text-sm">{{ user?.name }}</span>
+              <button 
+                @click="signOut"
+                class="text-[#3B3029] hover:text-[#7A8B74] transition-colors duration-200 font-medium text-sm"
+              >
+                Sign Out
+              </button>
+            </div>
+          </template>
+          <template v-else>
+            <button 
+              @click="signInWithGoogle"
+              class="text-[#3B3029] hover:text-[#7A8B74] transition-colors duration-200 font-medium text-sm"
+            >
+              Sign In
+            </button>
+          </template>
           <button class="bg-[#7A8B74] text-white px-4 py-2 rounded-md hover:bg-[#6A7B64] transition-colors duration-200 font-medium text-sm">
             List Your Property
           </button>
@@ -37,4 +59,5 @@
 </template>
 
 <script setup>
+const { user, isAuthenticated, signInWithGoogle, signOut } = useAuth()
 </script>
