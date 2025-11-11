@@ -122,8 +122,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { properties, searchProperties } from '~/utils/properties'
+import { ref, computed, onMounted } from 'vue'
+import { fetchProperties } from '~/utils/api'
+import type { Property } from '~/utils/properties'
 
 const searchQuery = ref('')
 const filters = ref({
@@ -133,21 +134,42 @@ const filters = ref({
   guests: 0
 })
 
+const properties = ref<Property[]>([])
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+const loadProperties = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    const response = await fetchProperties({
+      search: searchQuery.value || undefined,
+      type: filters.value.type || undefined,
+      maxPrice: filters.value.maxPrice || undefined,
+      bedrooms: filters.value.bedrooms || undefined,
+      guests: filters.value.guests || undefined
+    })
+    properties.value = response.properties || []
+  } catch (err: any) {
+    error.value = err.message || 'Failed to load properties'
+    console.error('Error loading properties:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
 const filteredProperties = computed(() => {
-  return searchProperties(searchQuery.value, {
-    type: filters.value.type || undefined,
-    maxPrice: filters.value.maxPrice || undefined,
-    bedrooms: filters.value.bedrooms || undefined,
-    guests: filters.value.guests || undefined
-  })
+  return properties.value
 })
 
 const handleSearch = (query: string) => {
   searchQuery.value = query
+  loadProperties()
 }
 
 const handleFilter = (newFilters: typeof filters.value) => {
   filters.value = { ...newFilters }
+  loadProperties()
 }
 
 const resetFilters = () => {
@@ -158,5 +180,10 @@ const resetFilters = () => {
     bedrooms: 0,
     guests: 0
   }
+  loadProperties()
 }
+
+onMounted(() => {
+  loadProperties()
+})
 </script>

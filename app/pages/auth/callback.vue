@@ -57,12 +57,14 @@ onMounted(async () => {
     // Verify state (CSRF protection)
     if (process.client) {
       const storedState = sessionStorage.getItem('oauth_state')
-      if (state !== storedState) {
+      if (state && storedState && state !== storedState) {
         error.value = 'Invalid state parameter. Please try again.'
         loading.value = false
         return
       }
-      sessionStorage.removeItem('oauth_state')
+      if (storedState) {
+        sessionStorage.removeItem('oauth_state')
+      }
     }
 
     // Exchange the authorization code for tokens
@@ -79,9 +81,9 @@ onMounted(async () => {
       setUser(response.user)
       
       if (process.client) {
-        localStorage.setItem('access_token', response.access_token)
-        if (response.id_token) {
-          localStorage.setItem('id_token', response.id_token)
+        // Store JWT token
+        if (response.token) {
+          localStorage.setItem('auth_token', response.token)
         }
       }
       

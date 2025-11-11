@@ -1,21 +1,22 @@
+import { findOrCreateUser, createAuthResponse } from '~/server/utils/auth'
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const body = await readBody(event)
   const { code, state } = body
 
   if (!code) {
-    return {
-      success: false,
-      error: 'No authorization code provided'
-    }
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'No authorization code provided'
+    })
   }
 
   if (!config.googleClientId || !config.googleClientSecret) {
-    console.error('Google OAuth credentials are not configured')
-    return {
-      success: false,
-      error: 'OAuth configuration error'
-    }
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'OAuth configuration error'
+    })
   }
 
   try {
@@ -34,15 +35,15 @@ export default defineEventHandler(async (event) => {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: tokenParams.toString()
-    })
+    }) as any
 
-    const { access_token, id_token } = tokenResponse as any
+    const { access_token, id_token } = tokenResponse
 
     if (!access_token) {
-      return {
-        success: false,
-        error: 'Failed to obtain access token'
-      }
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Failed to obtain access token'
+      })
     }
 
     // Get user info from Google
@@ -52,24 +53,22 @@ export default defineEventHandler(async (event) => {
       }
     }) as any
 
-    // Return user data and token
-    return {
-      success: true,
-      user: {
-        id: userInfo.id,
-        name: userInfo.name,
-        email: userInfo.email,
-        picture: userInfo.picture
-      },
-      access_token,
-      id_token
-    }
+    // Find or create user in database
+    const user = await findOrCreateUser({
+      email: userInfo.email,
+      name: userInfo.name,
+      picture: userInfo.picture,
+      googleId: userInfo.id
+    })
+
+    // Create JWT token and return response
+    return createAuthResponse(user)
   } catch (error: any) {
     console.error('Google OAuth error:', error)
-    return {
-      success: false,
-      error: error.data?.error_description || error.message || 'Authentication failed'
-    }
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.data?.error_description || error.message || 'Authentication failed'
+    })
   }
 })
 
