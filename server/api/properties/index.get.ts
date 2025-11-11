@@ -1,4 +1,4 @@
-import prisma from '~/server/utils/db'
+import prisma from '../../utils/db'
 import { z } from 'zod'
 
 const querySchema = z.object({

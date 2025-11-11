@@ -1,7 +1,5 @@
 import type { Property } from './properties'
 
-const { getAuthHeaders } = useAuth()
-
 export interface ApiResponse<T> {
   data?: T
   error?: string
@@ -47,8 +45,16 @@ export async function fetchProperty(id: string): Promise<Property & {
   isFavorited?: boolean
   host?: any
 }> {
-  const { getAuthHeaders } = useAuth()
-  const headers = getAuthHeaders()
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json'
+  }
+  
+  if (process.client) {
+    const token = localStorage.getItem('auth_token')
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+  }
   
   const response = await $fetch<Property & { 
     reviews?: any[]
@@ -61,8 +67,22 @@ export async function fetchProperty(id: string): Promise<Property & {
   return response
 }
 
+function getAuthHeaders(): HeadersInit {
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json'
+  }
+  
+  if (process.client) {
+    const token = localStorage.getItem('auth_token')
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+  }
+  
+  return headers
+}
+
 export async function createProperty(property: Partial<Property>): Promise<Property> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   const response = await $fetch<Property>('/api/properties', {
@@ -74,7 +94,6 @@ export async function createProperty(property: Partial<Property>): Promise<Prope
 }
 
 export async function updateProperty(id: string, property: Partial<Property>): Promise<Property> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   const response = await $fetch<Property>(`/api/properties/${id}`, {
@@ -86,7 +105,6 @@ export async function updateProperty(id: string, property: Partial<Property>): P
 }
 
 export async function deleteProperty(id: string): Promise<void> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   await $fetch(`/api/properties/${id}`, {
@@ -102,7 +120,6 @@ export async function createBooking(booking: {
   checkOut: string
   guests: number
 }): Promise<any> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   const response = await $fetch('/api/bookings', {
@@ -114,7 +131,6 @@ export async function createBooking(booking: {
 }
 
 export async function fetchBookings(): Promise<any[]> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   const response = await $fetch<any[]>('/api/bookings', {
@@ -125,7 +141,6 @@ export async function fetchBookings(): Promise<any[]> {
 
 // Favorites API
 export async function addFavorite(propertyId: string): Promise<any> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   const response = await $fetch('/api/favorites', {
@@ -137,7 +152,6 @@ export async function addFavorite(propertyId: string): Promise<any> {
 }
 
 export async function removeFavorite(propertyId: string): Promise<void> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   await $fetch(`/api/favorites/property/${propertyId}`, {
@@ -147,7 +161,6 @@ export async function removeFavorite(propertyId: string): Promise<void> {
 }
 
 export async function fetchFavorites(): Promise<any[]> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   const response = await $fetch<any[]>('/api/favorites', {
@@ -161,7 +174,6 @@ export async function createReview(propertyId: string, review: {
   rating: number
   comment?: string
 }): Promise<any> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   const response = await $fetch(`/api/properties/${propertyId}/reviews`, {
@@ -179,7 +191,6 @@ export async function fetchReviews(propertyId: string): Promise<any[]> {
 
 // User API
 export async function fetchUser(): Promise<any> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   const response = await $fetch<any>('/api/users/me', {
@@ -192,7 +203,6 @@ export async function updateUser(user: {
   name?: string
   picture?: string
 }): Promise<any> {
-  const { getAuthHeaders } = useAuth()
   const headers = getAuthHeaders()
   
   const response = await $fetch<any>('/api/users/me', {

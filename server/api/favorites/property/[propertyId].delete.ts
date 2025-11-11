@@ -1,5 +1,5 @@
-import prisma from '~/server/utils/db'
-import { requireAuth } from '~/server/utils/auth'
+import prisma from '../../../utils/db'
+import { requireAuth } from '../../../utils/auth'
 
 export default defineEventHandler(async (event) => {
   const propertyId = getRouterParam(event, 'propertyId')

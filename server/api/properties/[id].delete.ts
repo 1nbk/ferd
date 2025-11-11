@@ -1,5 +1,5 @@
-import prisma from '~/server/utils/db'
-import { requireAuth, requireRole } from '~/server/utils/auth'
+import prisma from '../../utils/db'
+import { requireAuth, requireRole } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')

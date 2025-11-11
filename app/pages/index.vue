@@ -52,12 +52,30 @@
         <h2 class="text-2xl sm:text-3xl font-bold text-[#3B3029]">
           Vacation Rentals
         </h2>
-        <p class="text-sm sm:text-base text-[#3B3029]">
+        <p v-if="!loading && !error" class="text-sm sm:text-base text-[#3B3029]">
           {{ filteredProperties.length }} {{ filteredProperties.length === 1 ? 'rental' : 'rentals' }} found
         </p>
       </div>
 
-      <div v-if="filteredProperties.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Loading State -->
+      <div v-if="loading" class="text-center py-16">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#7A8B74] mx-auto"></div>
+        <p class="text-[#3B3029] mt-4">Loading properties...</p>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="text-center py-16">
+        <p class="text-red-600 mb-4">{{ error }}</p>
+        <button 
+          @click="loadProperties"
+          class="inline-block px-6 py-2 bg-[#7A8B74] text-white rounded-md hover:bg-[#6A7B64] font-semibold transition-colors duration-200"
+        >
+          Try Again
+        </button>
+      </div>
+
+      <!-- Properties Grid -->
+      <div v-else-if="filteredProperties.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <PropertyCard
           v-for="property in filteredProperties"
           :key="property.id"
@@ -65,6 +83,7 @@
         />
       </div>
 
+      <!-- Empty State -->
       <div v-else class="text-center py-16">
         <div class="max-w-md mx-auto">
           <svg class="w-24 h-24 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

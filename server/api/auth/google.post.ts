@@ -1,4 +1,4 @@
-import { findOrCreateUser, createAuthResponse } from '~/server/utils/auth'
+import { findOrCreateUser, createAuthResponse } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

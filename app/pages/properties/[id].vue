@@ -1,5 +1,20 @@
 <template>
-  <div v-if="property" class="pb-16">
+  <div v-if="loading" class="min-h-screen flex items-center justify-center bg-[#E7E4DC]">
+    <div class="text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#7A8B74] mx-auto"></div>
+      <p class="text-[#3B3029] mt-4">Loading property...</p>
+    </div>
+  </div>
+
+  <div v-else-if="error" class="container mx-auto px-4 py-16 text-center">
+    <h1 class="text-2xl sm:text-3xl font-bold mb-4 text-[#3B3029]">Error Loading Property</h1>
+    <p class="text-red-600 mb-4">{{ error }}</p>
+    <NuxtLink to="/" class="text-[#7A8B74] hover:text-[#6A7B64] font-semibold transition-colors">
+      Return to search
+    </NuxtLink>
+  </div>
+
+  <div v-else-if="property" class="pb-16">
     <!-- Property Header -->
     <div class="relative h-[400px] sm:h-[500px] overflow-hidden">
       <img
@@ -27,10 +42,10 @@
               <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 text-yellow-400 fill-current" viewBox="0 0 20 20">
                 <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
               </svg>
-              <span class="font-semibold">{{ property.rating }}</span>
+              <span class="font-semibold">{{ property.rating || 0 }}</span>
             </div>
             <span class="mx-1 sm:mx-2">·</span>
-            <span>{{ property.reviews }} reviews</span>
+            <span>{{ property.reviewsCount || 0 }} reviews</span>
             <span class="mx-1 sm:mx-2">·</span>
             <div class="flex items-center">
               <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,22 +137,47 @@
 </template>
 
 <script setup lang="ts">
-import { getPropertyById } from '~/utils/properties'
+import { ref, onMounted } from 'vue'
+import { fetchProperty } from '~/utils/api'
+import type { Property } from '~/utils/properties'
 
 const route = useRoute()
-const property = getPropertyById(route.params.id as string)
+const property = ref<(Property & { 
+  reviews?: any[]
+  reviewsCount?: number
+  isFavorited?: boolean
+  host?: any
+}) | null>(null)
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+onMounted(async () => {
+  try {
+    loading.value = true
+    error.value = null
+    const data = await fetchProperty(route.params.id as string)
+    property.value = data
+  } catch (err: any) {
+    error.value = err.message || 'Failed to load property'
+    console.error('Error loading property:', err)
+  } finally {
+    loading.value = false
+  }
+})
 
 const openImageGallery = (index: number) => {
   // Simple image gallery - in a real app, you'd use a modal
-  alert(`Viewing image ${index + 1} of ${property?.images.length}`)
+  if (property.value) {
+    alert(`Viewing image ${index + 1} of ${property.value.images.length}`)
+  }
 }
 
 useHead({
-  title: property ? `${property.title} - Ferd` : 'Vacation Rental Not Found',
+  title: property.value ? `${property.value.title} - Ferd` : 'Vacation Rental Not Found',
   meta: [
     {
       name: 'description',
-      content: property ? property.description : 'Vacation rental not found'
+      content: property.value ? property.value.description : 'Vacation rental not found'
     }
   ]
 })

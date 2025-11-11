@@ -5,6 +5,7 @@ interface User {
   name: string
   email: string
   picture?: string
+  role?: string
 }
 
 const user = ref<User | null>(null)
@@ -62,34 +63,16 @@ export const useAuth = () => {
     }
   }
 
-      const signOut = () => {
-        if (process.client) {
-          user.value = null
-          localStorage.removeItem('user')
-          localStorage.removeItem('auth_token')
-          sessionStorage.removeItem('oauth_state')
-          // Redirect to home page
-          navigateTo('/')
-        }
-      }
-
-      const getAuthToken = (): string | null => {
-        if (process.client) {
-          return localStorage.getItem('auth_token')
-        }
-        return null
-      }
-
-      const getAuthHeaders = (): HeadersInit => {
-        const token = getAuthToken()
-        const headers: HeadersInit = {
-          'Content-Type': 'application/json'
-        }
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`
-        }
-        return headers
-      }
+  const signOut = () => {
+    if (process.client) {
+      user.value = null
+      localStorage.removeItem('user')
+      localStorage.removeItem('auth_token')
+      sessionStorage.removeItem('oauth_state')
+      // Redirect to home page
+      navigateTo('/')
+    }
+  }
 
   const setUser = (userData: User | null) => {
     user.value = userData
@@ -102,14 +85,31 @@ export const useAuth = () => {
     }
   }
 
-      return {
-        user: readonly(user),
-        isAuthenticated,
-        signInWithGoogle,
-        signOut,
-        setUser,
-        getAuthToken,
-        getAuthHeaders
-      }
-}
+  const getAuthToken = (): string | null => {
+    if (process.client) {
+      return localStorage.getItem('auth_token')
+    }
+    return null
+  }
 
+  const getAuthHeaders = (): HeadersInit => {
+    const token = getAuthToken()
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json'
+    }
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`
+    }
+    return headers
+  }
+
+  return {
+    user: readonly(user),
+    isAuthenticated,
+    signInWithGoogle,
+    signOut,
+    setUser,
+    getAuthToken,
+    getAuthHeaders
+  }
+}

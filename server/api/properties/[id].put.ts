@@ -1,5 +1,5 @@
-import prisma from '~/server/utils/db'
-import { requireAuth, requireRole } from '~/server/utils/auth'
+import prisma from '../../utils/db'
+import { requireAuth, requireRole } from '../../utils/auth'
 import { z } from 'zod'
 
 const propertySchema = z.object({
