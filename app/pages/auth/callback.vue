@@ -57,17 +57,22 @@ onMounted(async () => {
     // Verify state (CSRF protection)
     if (process.client) {
       const storedState = sessionStorage.getItem('oauth_state')
-      if (state !== storedState) {
+      if (state && storedState && state !== storedState) {
         error.value = 'Invalid state parameter. Please try again.'
         loading.value = false
         return
       }
-      sessionStorage.removeItem('oauth_state')
+      if (storedState) {
+        sessionStorage.removeItem('oauth_state')
+      }
     }
 
     // Exchange the authorization code for tokens
     const response = await $fetch('/api/auth/google', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: {
         code,
         state
