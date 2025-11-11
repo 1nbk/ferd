@@ -15,13 +15,13 @@
         </NuxtLink>
       </div>
       <div v-else class="space-y-4">
-        <div class="text-green-600 text-xl mb-4">Successfully signed in!</div>
-        <NuxtLink
-          to="/"
-          class="inline-block px-6 py-2 bg-[#7A8B74] text-white rounded-md hover:bg-[#6A7B64] transition-colors duration-200"
-        >
-          Go to Home
-        </NuxtLink>
+        <div class="flex items-center justify-center mb-4">
+          <svg class="w-16 h-16 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div class="text-green-600 text-xl mb-4 font-semibold">Successfully signed in!</div>
+        <p class="text-[#3B3029] mb-4">Redirecting you to the home page...</p>
       </div>
     </div>
   </div>
