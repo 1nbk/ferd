@@ -39,7 +39,7 @@ export async function fetchProperties(params?: {
   return response
 }
 
-export async function fetchProperty(id: string): Promise<Property & { 
+export async function fetchProperty(id: string): Promise<Property & {
   reviews?: any[]
   reviewsCount?: number
   isFavorited?: boolean
@@ -48,15 +48,15 @@ export async function fetchProperty(id: string): Promise<Property & {
   const headers: HeadersInit = {
     'Content-Type': 'application/json'
   }
-  
+
   if (process.client) {
     const token = localStorage.getItem('auth_token')
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
     }
   }
-  
-  const response = await $fetch<Property & { 
+
+  const response = await $fetch<Property & {
     reviews?: any[]
     reviewsCount?: number
     isFavorited?: boolean
@@ -71,20 +71,20 @@ function getAuthHeaders(): HeadersInit {
   const headers: HeadersInit = {
     'Content-Type': 'application/json'
   }
-  
+
   if (process.client) {
     const token = localStorage.getItem('auth_token')
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
     }
   }
-  
+
   return headers
 }
 
 export async function createProperty(property: Partial<Property>): Promise<Property> {
   const headers = getAuthHeaders()
-  
+
   const response = await $fetch<Property>('/api/properties', {
     method: 'POST',
     headers,
@@ -95,7 +95,7 @@ export async function createProperty(property: Partial<Property>): Promise<Prope
 
 export async function updateProperty(id: string, property: Partial<Property>): Promise<Property> {
   const headers = getAuthHeaders()
-  
+
   const response = await $fetch<Property>(`/api/properties/${id}`, {
     method: 'PUT',
     headers,
@@ -106,7 +106,7 @@ export async function updateProperty(id: string, property: Partial<Property>): P
 
 export async function deleteProperty(id: string): Promise<void> {
   const headers = getAuthHeaders()
-  
+
   await $fetch(`/api/properties/${id}`, {
     method: 'DELETE',
     headers
@@ -121,7 +121,7 @@ export async function createBooking(booking: {
   guests: number
 }): Promise<any> {
   const headers = getAuthHeaders()
-  
+
   const response = await $fetch('/api/bookings', {
     method: 'POST',
     headers,
@@ -132,7 +132,7 @@ export async function createBooking(booking: {
 
 export async function fetchBookings(): Promise<any[]> {
   const headers = getAuthHeaders()
-  
+
   const response = await $fetch<any[]>('/api/bookings', {
     headers
   })
@@ -142,7 +142,7 @@ export async function fetchBookings(): Promise<any[]> {
 // Favorites API
 export async function addFavorite(propertyId: string): Promise<any> {
   const headers = getAuthHeaders()
-  
+
   const response = await $fetch('/api/favorites', {
     method: 'POST',
     headers,
@@ -153,7 +153,7 @@ export async function addFavorite(propertyId: string): Promise<any> {
 
 export async function removeFavorite(propertyId: string): Promise<void> {
   const headers = getAuthHeaders()
-  
+
   await $fetch(`/api/favorites/property/${propertyId}`, {
     method: 'DELETE',
     headers
@@ -162,7 +162,7 @@ export async function removeFavorite(propertyId: string): Promise<void> {
 
 export async function fetchFavorites(): Promise<any[]> {
   const headers = getAuthHeaders()
-  
+
   const response = await $fetch<any[]>('/api/favorites', {
     headers
   })
@@ -175,7 +175,7 @@ export async function createReview(propertyId: string, review: {
   comment?: string
 }): Promise<any> {
   const headers = getAuthHeaders()
-  
+
   const response = await $fetch(`/api/properties/${propertyId}/reviews`, {
     method: 'POST',
     headers,
@@ -192,7 +192,7 @@ export async function fetchReviews(propertyId: string): Promise<any[]> {
 // User API
 export async function fetchUser(): Promise<any> {
   const headers = getAuthHeaders()
-  
+
   const response = await $fetch<any>('/api/users/me', {
     headers
   })
@@ -204,7 +204,7 @@ export async function updateUser(user: {
   picture?: string
 }): Promise<any> {
   const headers = getAuthHeaders()
-  
+
   const response = await $fetch<any>('/api/users/me', {
     method: 'PUT',
     headers,
@@ -213,3 +213,32 @@ export async function updateUser(user: {
   return response
 }
 
+// Cars API
+export async function fetchCars(params?: {
+  search?: string
+  type?: string
+  maxPrice?: number
+  minPrice?: number
+  seats?: number
+  transmission?: string
+  page?: number
+  limit?: number
+}): Promise<any> {
+  const queryParams = new URLSearchParams()
+  if (params?.search) queryParams.append('search', params.search)
+  if (params?.type) queryParams.append('type', params.type)
+  if (params?.maxPrice) queryParams.append('maxPrice', params.maxPrice.toString())
+  if (params?.minPrice) queryParams.append('minPrice', params.minPrice.toString())
+  if (params?.seats) queryParams.append('seats', params.seats.toString())
+  if (params?.transmission) queryParams.append('transmission', params.transmission)
+  if (params?.page) queryParams.append('page', params.page.toString())
+  if (params?.limit) queryParams.append('limit', params.limit.toString())
+
+  const response = await $fetch(`/api/cars?${queryParams.toString()}`)
+  return response
+}
+
+export async function fetchCar(id: string): Promise<any> {
+  const response = await $fetch(`/api/cars/${id}`)
+  return response
+}

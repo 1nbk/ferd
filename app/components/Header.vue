@@ -1,54 +1,61 @@
+<script setup>
+import Button from './ui/Button.vue'
+const { user, isAuthenticated, signInWithGoogle, signOut } = useAuth()
+</script>
+
 <template>
-  <header class="bg-white border-b border-[#F9F6F1] sticky top-0 z-50">
+  <header class="bg-bg-primary border-b border-bg-secondary sticky top-0 z-50 transition-colors duration-300">
     <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <NuxtLink to="/" class="flex items-center space-x-2">
+      <div class="flex items-center justify-between h-20">
+        <NuxtLink to="/" class="flex items-center space-x-2 group">
           <div class="flex items-center">
-            <svg class="w-10 h-10 text-[#7A8B74]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
-            </svg>
-            <span class="text-2xl font-bold text-[#7A8B74] ml-2">Ferd</span>
+            <span class="text-3xl font-serif font-bold text-text-primary group-hover:text-accent transition-colors duration-300">Ferd</span>
           </div>
         </NuxtLink>
         
-        <div class="hidden md:flex items-center space-x-6">
-          <NuxtLink to="/" class="text-[#3B3029] hover:text-[#7A8B74] transition-colors duration-200 font-medium text-sm">
+        <div class="hidden md:flex items-center space-x-8">
+          <NuxtLink to="/" class="text-text-secondary hover:text-accent transition-colors duration-200 font-medium text-sm uppercase tracking-wide">
             Vacation Rentals
           </NuxtLink>
-          <NuxtLink to="#properties" class="text-[#3B3029] hover:text-[#7A8B74] transition-colors duration-200 font-medium text-sm">
+          <NuxtLink to="#properties" class="text-text-secondary hover:text-accent transition-colors duration-200 font-medium text-sm uppercase tracking-wide">
             Browse
           </NuxtLink>
+          <NuxtLink to="/cars" class="text-text-secondary hover:text-accent transition-colors duration-200 font-medium text-sm uppercase tracking-wide">
+            Car Rentals
+          </NuxtLink>
           <template v-if="isAuthenticated">
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-4">
               <img 
                 v-if="user?.picture" 
                 :src="user.picture" 
                 :alt="user.name"
-                class="w-8 h-8 rounded-full"
+                class="w-8 h-8 rounded-full border border-bg-secondary"
               />
-              <span class="text-[#3B3029] font-medium text-sm">{{ user?.name }}</span>
-              <button 
+              <span class="text-text-primary font-medium text-sm">{{ user?.name }}</span>
+              <Button 
+                variant="ghost"
+                size="sm"
                 @click="signOut"
-                class="text-[#3B3029] hover:text-[#7A8B74] transition-colors duration-200 font-medium text-sm"
               >
                 Sign Out
-              </button>
+              </Button>
             </div>
           </template>
           <template v-else>
-            <button 
+            <Button 
+              variant="ghost"
+              size="sm"
               @click="signInWithGoogle"
-              class="text-[#3B3029] hover:text-[#7A8B74] transition-colors duration-200 font-medium text-sm"
             >
               Sign In
-            </button>
+            </Button>
           </template>
-          <button class="bg-[#7A8B74] text-white px-4 py-2 rounded-md hover:bg-[#6A7B64] transition-colors duration-200 font-medium text-sm">
+          <Button variant="primary" size="sm">
             List Your Property
-          </button>
+          </Button>
         </div>
 
-        <button class="md:hidden text-[#3B3029] p-2 hover:bg-[#F9F6F1] rounded-lg transition">
+        <button class="md:hidden text-text-primary p-2 hover:bg-bg-secondary rounded-lg transition">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -57,7 +64,3 @@
     </nav>
   </header>
 </template>
-
-<script setup>
-const { user, isAuthenticated, signInWithGoogle, signOut } = useAuth()
-</script>

@@ -24,6 +24,7 @@ model User {
   bookings   Booking[]
   reviews    Review[]
   favorites  Favorite[]
+  cars       Car[]
 
   @@index([email])
 }
@@ -68,6 +69,39 @@ enum PropertyType {
   house
   condo
   villa
+}
+
+model Car {
+  id           String   @id @default(cuid())
+  make         String
+  model        String
+  year         Int
+  price        Float
+  seats        Int
+  transmission String
+  type         CarType
+  images       Json     // JSON array of image URLs
+  features     Json     // JSON array of features
+  available    Boolean  @default(true)
+  hostId       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  host User @relation(fields: [hostId], references: [id], onDelete: Cascade)
+
+  @@index([hostId])
+  @@index([type])
+  @@index([available])
+  @@index([make])
+}
+
+enum CarType {
+  sedan
+  suv
+  luxury
+  sports
+  convertible
+  van
 }
 
 model Booking {

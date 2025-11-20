@@ -1,32 +1,32 @@
 <template>
-  <div v-if="loading" class="min-h-screen flex items-center justify-center bg-[#E7E4DC]">
+  <div v-if="loading" class="min-h-screen flex items-center justify-center bg-bg-primary">
     <div class="text-center">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#7A8B74] mx-auto"></div>
-      <p class="text-[#3B3029] mt-4">Loading property...</p>
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto"></div>
+      <p class="text-text-secondary mt-4">Loading property...</p>
     </div>
   </div>
 
   <div v-else-if="error" class="container mx-auto px-4 py-16 text-center">
-    <h1 class="text-2xl sm:text-3xl font-bold mb-4 text-[#3B3029]">Error Loading Property</h1>
+    <h1 class="text-2xl sm:text-3xl font-serif font-bold mb-4 text-text-primary">Error Loading Property</h1>
     <p class="text-red-600 mb-4">{{ error }}</p>
-    <NuxtLink to="/" class="text-[#7A8B74] hover:text-[#6A7B64] font-semibold transition-colors">
+    <NuxtLink to="/" class="text-accent hover:text-text-primary font-semibold transition-colors">
       Return to search
     </NuxtLink>
   </div>
 
-  <div v-else-if="property" class="pb-16">
+  <div v-else-if="property" class="pb-16 bg-bg-primary">
     <!-- Property Header -->
-    <div class="relative h-[400px] sm:h-[500px] overflow-hidden">
+    <div class="relative h-[500px] sm:h-[600px] overflow-hidden">
       <img
         :src="property.images[0]"
         :alt="property.title"
         class="w-full h-full object-cover"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-      <div class="absolute top-4 left-4 z-10">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+      <div class="absolute top-6 left-6 z-10">
         <NuxtLink
           to="/"
-          class="inline-flex items-center bg-white/90 backdrop-blur-sm px-4 py-2 rounded-md hover:bg-white transition-colors duration-200 group text-gray-900 font-medium text-sm"
+          class="inline-flex items-center bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white transition-all duration-300 group text-text-primary font-medium text-sm shadow-lg"
         >
           <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -34,20 +34,19 @@
           Back to search
         </NuxtLink>
       </div>
-      <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">
+      <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-12 text-white">
         <div class="container mx-auto">
-          <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">{{ property.title }}</h1>
-          <div class="flex flex-wrap items-center gap-3 sm:gap-4 text-sm sm:text-base">
-            <div class="flex items-center">
-              <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-serif font-bold mb-4 leading-tight">{{ property.title }}</h1>
+          <div class="flex flex-wrap items-center gap-4 text-sm sm:text-base">
+            <div class="flex items-center bg-white/20 backdrop-blur-md px-3 py-1 rounded-full">
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 text-accent fill-current" viewBox="0 0 20 20">
                 <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
               </svg>
-              <span class="font-semibold">{{ property.rating || 0 }}</span>
+              <span class="font-bold">{{ property.rating || 0 }}</span>
             </div>
-            <span class="mx-1 sm:mx-2">·</span>
-            <span>{{ property.reviewsCount || 0 }} reviews</span>
-            <span class="mx-1 sm:mx-2">·</span>
-            <div class="flex items-center">
+            <span class="text-white/80">{{ property.reviewsCount || 0 }} reviews</span>
+            <span class="text-white/40">|</span>
+            <div class="flex items-center text-white/90">
               <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -59,61 +58,63 @@
       </div>
     </div>
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-6 sm:space-y-8">
+        <div class="lg:col-span-2 space-y-12">
           <!-- Property Info -->
-          <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-5 sm:p-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-5 sm:mb-6 pb-5 sm:pb-6 border-b border-gray-200">
+          <div class="bg-white rounded-2xl shadow-sm p-8 border border-bg-secondary">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 pb-8 border-b border-bg-secondary">
               <div>
-                <div class="text-gray-500 text-xs sm:text-sm mb-1">Property Type</div>
-                <div class="font-semibold text-base sm:text-lg capitalize text-[#3B3029]">{{ property.type }}</div>
+                <div class="text-text-secondary text-xs uppercase tracking-wider mb-2">Type</div>
+                <div class="font-serif font-semibold text-lg capitalize text-text-primary">{{ property.type }}</div>
               </div>
               <div>
-                <div class="text-gray-500 text-xs sm:text-sm mb-1">Bedrooms</div>
-                <div class="font-semibold text-base sm:text-lg text-[#3B3029]">{{ property.bedrooms }}</div>
+                <div class="text-text-secondary text-xs uppercase tracking-wider mb-2">Bedrooms</div>
+                <div class="font-serif font-semibold text-lg text-text-primary">{{ property.bedrooms }}</div>
               </div>
               <div>
-                <div class="text-gray-500 text-xs sm:text-sm mb-1">Bathrooms</div>
-                <div class="font-semibold text-base sm:text-lg text-[#3B3029]">{{ property.bathrooms }}</div>
+                <div class="text-text-secondary text-xs uppercase tracking-wider mb-2">Bathrooms</div>
+                <div class="font-serif font-semibold text-lg text-text-primary">{{ property.bathrooms }}</div>
               </div>
               <div>
-                <div class="text-gray-500 text-xs sm:text-sm mb-1">Sleeps</div>
-                <div class="font-semibold text-base sm:text-lg text-[#3B3029]">{{ property.guests }}</div>
+                <div class="text-text-secondary text-xs uppercase tracking-wider mb-2">Sleeps</div>
+                <div class="font-serif font-semibold text-lg text-text-primary">{{ property.guests }}</div>
               </div>
             </div>
-            <h2 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-[#3B3029]">About this vacation rental</h2>
-            <p class="text-[#3B3029] leading-relaxed text-sm sm:text-base">{{ property.description }}</p>
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold mb-6 text-text-primary">About this stay</h2>
+            <p class="text-text-secondary leading-relaxed text-lg">{{ property.description }}</p>
           </div>
 
           <!-- Image Gallery -->
-          <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-5 sm:p-6">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#3B3029]">Photos</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+          <div class="bg-white rounded-2xl shadow-sm p-8 border border-bg-secondary">
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold mb-6 text-text-primary">Photos</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
               <img
                 v-for="(image, index) in property.images"
                 :key="index"
                 :src="image"
                 :alt="`${property.title} - Image ${index + 1}`"
-                class="w-full h-40 sm:h-48 object-cover rounded-md cursor-pointer hover:opacity-90 transition border border-gray-200"
+                class="w-full h-48 sm:h-56 object-cover rounded-xl cursor-pointer hover:opacity-90 transition duration-300"
                 @click="openImageGallery(index)"
               />
             </div>
           </div>
 
           <!-- Amenities -->
-          <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-5 sm:p-6">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#3B3029]">Amenities</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+          <div class="bg-white rounded-2xl shadow-sm p-8 border border-bg-secondary">
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold mb-6 text-text-primary">Amenities</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               <div
                 v-for="amenity in property.amenities"
                 :key="amenity"
-                class="flex items-center text-sm sm:text-base text-[#3B3029]"
+                class="flex items-center text-text-secondary"
               >
-                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-[#7A8B74] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
+                <div class="w-8 h-8 rounded-full bg-bg-primary flex items-center justify-center mr-3 flex-shrink-0">
+                  <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
                 <span>{{ amenity }}</span>
               </div>
             </div>
@@ -129,8 +130,8 @@
   </div>
 
   <div v-else class="container mx-auto px-4 py-16 text-center">
-    <h1 class="text-2xl sm:text-3xl font-bold mb-4 text-[#3B3029]">Vacation Rental Not Found</h1>
-    <NuxtLink to="/" class="text-[#7A8B74] hover:text-[#6A7B64] font-semibold transition-colors">
+    <h1 class="text-2xl sm:text-3xl font-serif font-bold mb-4 text-text-primary">Vacation Rental Not Found</h1>
+    <NuxtLink to="/" class="text-accent hover:text-text-primary font-semibold transition-colors">
       Return to search
     </NuxtLink>
   </div>

@@ -1,18 +1,18 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-[#E7E4DC]">
+  <div class="min-h-screen flex items-center justify-center bg-bg-primary">
     <div class="text-center">
       <div v-if="loading" class="space-y-4">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#7A8B74] mx-auto"></div>
-        <p class="text-[#3B3029]">Signing you in...</p>
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto"></div>
+        <p class="text-text-secondary">Signing you in...</p>
       </div>
       <div v-else-if="error" class="space-y-4">
-        <div class="text-red-600 text-xl mb-4">{{ error }}</div>
-        <NuxtLink
+        <div class="text-red-600 text-xl mb-4 font-serif">{{ error }}</div>
+        <Button
           to="/"
-          class="inline-block px-6 py-2 bg-[#7A8B74] text-white rounded-md hover:bg-[#6A7B64] transition-colors duration-200"
+          variant="primary"
         >
           Return to Home
-        </NuxtLink>
+        </Button>
       </div>
       <div v-else class="space-y-4">
         <div class="flex items-center justify-center mb-4">
@@ -20,14 +20,15 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
-        <div class="text-green-600 text-xl mb-4 font-semibold">Successfully signed in!</div>
-        <p class="text-[#3B3029] mb-4">Redirecting you to the home page...</p>
+        <div class="text-green-600 text-xl mb-4 font-serif font-semibold">Successfully signed in!</div>
+        <p class="text-text-secondary mb-4">Redirecting you to the home page...</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import Button from '~/components/ui/Button.vue'
 const route = useRoute()
 const router = useRouter()
 const { setUser } = useAuth()
