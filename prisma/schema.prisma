@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -45,8 +45,8 @@ model Property {
   guests      Int
   area        Int
   type        PropertyType
-  images      String   // JSON array of image URLs
-  amenities   String   // JSON array of amenities
+  images      Json     // JSON array of image URLs
+  amenities   Json     // JSON array of amenities
   available   Boolean  @default(true)
   hostId      String
   createdAt   DateTime @default(now())

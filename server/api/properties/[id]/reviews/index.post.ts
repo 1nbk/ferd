@@ -1,5 +1,5 @@
-import prisma from '../../../utils/db'
-import { requireAuth } from '../../../utils/auth'
+import prisma from '../../../../utils/db'
+import { requireAuth } from '../../../../utils/auth'
 import { z } from 'zod'
 
 const reviewSchema = z.object({
