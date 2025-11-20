@@ -22,7 +22,7 @@
           <div class="relative lg:h-[600px] hidden lg:block">
             <div class="absolute inset-0 bg-accent/10 rounded-[3rem] transform rotate-3"></div>
             <img 
-              src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=80" 
+              src="/images/modern-studio-apartment-design-with-bedroom-living-space.jpg" 
               alt="Modern Home" 
               class="relative w-full h-full object-cover rounded-[3rem] shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-700"
             />

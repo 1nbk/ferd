@@ -29,9 +29,9 @@ export const properties: Property[] = [
     area: 1200,
     type: 'apartment',
     images: [
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
-      'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800'
+      '/images/modern-studio-apartment-design-with-bedroom-living-space.jpg',
+      '/images/luxury-bedroom-suite-resort-high-rise-hotel-with-working-table.jpg',
+      '/images/freepik__ultrarealistic-architectural-photography-of-a-mode__318.png'
     ],
     amenities: ['WiFi', 'Air Conditioning', 'Kitchen', 'Parking', 'Gym', 'Pool'],
     rating: 4.8,
@@ -50,9 +50,9 @@ export const properties: Property[] = [
     area: 3500,
     type: 'villa',
     images: [
-      'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800',
-      'https://images.unsplash.com/photo-1582268611958-0a2b5e7eb1e1?w=800',
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800'
+      '/images/freepik__ultrarealistic-architectural-photography-of-a-mode__318.png',
+      '/images/luxury-bedroom-suite-resort-high-rise-hotel-with-working-table.jpg',
+      '/images/airbnb-host-welcoming-guests.jpg'
     ],
     amenities: ['WiFi', 'Private Pool', 'Beach Access', 'Full Kitchen', 'Parking', 'Air Conditioning'],
     rating: 4.9,
@@ -71,9 +71,9 @@ export const properties: Property[] = [
     area: 900,
     type: 'house',
     images: [
-      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-      'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800',
-      'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?w=800'
+      '/images/luxury-bedroom-suite-resort-high-rise-hotel-with-working-table.jpg',
+      '/images/airbnb-host-welcoming-guests.jpg',
+      '/images/freepik__ultrarealistic-architectural-photography-of-a-mode__318.png'
     ],
     amenities: ['WiFi', 'Fireplace', 'Kitchen', 'Hot Tub', 'Mountain View', 'Parking'],
     rating: 4.7,
@@ -92,9 +92,9 @@ export const properties: Property[] = [
     area: 800,
     type: 'apartment',
     images: [
-      'https://images.unsplash.com/photo-1556912173-671d7777c89a?w=800',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
-      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=800'
+      '/images/modern-studio-apartment-design-with-bedroom-living-space.jpg',
+      '/images/freepik__ultrarealistic-architectural-photography-of-a-mode__318.png',
+      '/images/luxury-bedroom-suite-resort-high-rise-hotel-with-working-table.jpg'
     ],
     amenities: ['WiFi', 'Air Conditioning', 'Kitchen', 'Washer/Dryer', 'City View'],
     rating: 4.6,
@@ -113,9 +113,9 @@ export const properties: Property[] = [
     area: 1500,
     type: 'condo',
     images: [
-      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
-      'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800'
+      '/images/freepik__ultrarealistic-architectural-photography-of-a-mode__318.png',
+      '/images/modern-studio-apartment-design-with-bedroom-living-space.jpg',
+      '/images/airbnb-host-welcoming-guests.jpg'
     ],
     amenities: ['WiFi', 'Pool', 'Gym', 'Beach Access', 'Kitchen', 'Parking', 'Air Conditioning'],
     rating: 4.8,
