@@ -126,14 +126,21 @@ import { fetchCars } from '~/utils/api'
 import Button from '~/components/ui/Button.vue'
 import CarCard from '~/components/CarCard.vue'
 
+interface CarFilters {
+  search: string
+  type: string
+  maxPrice?: number
+  seats: number
+}
+
 const cars = ref<any[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
 
-const filters = ref({
+const filters = ref<CarFilters>({
   search: '',
   type: '',
-  maxPrice: undefined as number | undefined,
+  maxPrice: undefined,
   seats: 0
 })
 
