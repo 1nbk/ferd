@@ -10,6 +10,8 @@ interface User {
 
 const user = ref<User | null>(null)
 const isAuthenticated = computed(() => !!user.value)
+const isLoading = ref(false)
+const error = ref<string>('')
 
 // Load user from localStorage on client side
 if (process.client) {
@@ -29,21 +31,21 @@ export const useAuth = () => {
       try {
         const config = useRuntimeConfig()
         const clientId = config.public.googleClientId
-        
+
         if (!clientId) {
           console.error('Google Client ID is not configured. Please check your .env file.')
           alert('Google Sign-In is not configured. Please contact the administrator.')
           return
         }
-        
+
         const redirectUri = `${window.location.origin}/auth/callback`
         const scope = 'openid email profile'
         const responseType = 'code'
         const state = Math.random().toString(36).substring(7) + Date.now().toString(36) // Enhanced state for CSRF protection
-        
+
         // Store state for verification
         sessionStorage.setItem('oauth_state', state)
-        
+
         // Build Google OAuth URL
         const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
           `client_id=${encodeURIComponent(clientId)}&` +
@@ -53,13 +55,90 @@ export const useAuth = () => {
           `state=${encodeURIComponent(state)}&` +
           `access_type=offline&` +
           `prompt=consent`
-        
+
         // Redirect to Google OAuth
         window.location.href = authUrl
       } catch (error) {
         console.error('Error initiating Google Sign-In:', error)
         alert('An error occurred while signing in. Please try again.')
       }
+    }
+  }
+
+  const signInWithEmail = async (email: string, password: string) => {
+    if (!process.client) return
+
+    isLoading.value = true
+    error.value = ''
+
+    try {
+      const response = await $fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          email,
+          password
+        }
+      }) as any
+
+      if (response.success) {
+        setUser(response.user as User)
+
+        if (response.token) {
+          localStorage.setItem('auth_token', response.token)
+        }
+
+        // Redirect to home page
+        navigateTo('/')
+      } else {
+        error.value = response.error || 'Sign in failed'
+      }
+    } catch (err: any) {
+      console.error('Email sign in error:', err)
+      error.value = err.data?.statusMessage || err.message || 'An error occurred during sign in'
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const signUpWithEmail = async (name: string, email: string, password: string) => {
+    if (!process.client) return
+
+    isLoading.value = true
+    error.value = ''
+
+    try {
+      const response = await $fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          name,
+          email,
+          password
+        }
+      }) as any
+
+      if (response.success) {
+        setUser(response.user as User)
+
+        if (response.token) {
+          localStorage.setItem('auth_token', response.token)
+        }
+
+        // Redirect to home page
+        navigateTo('/')
+      } else {
+        error.value = response.error || 'Sign up failed'
+      }
+    } catch (err: any) {
+      console.error('Email sign up error:', err)
+      error.value = err.data?.statusMessage || err.message || 'An error occurred during sign up'
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -103,13 +182,22 @@ export const useAuth = () => {
     return headers
   }
 
+  const clearError = () => {
+    error.value = ''
+  }
+
   return {
     user: readonly(user),
     isAuthenticated,
+    isLoading: readonly(isLoading),
+    error: readonly(error),
     signInWithGoogle,
+    signInWithEmail,
+    signUpWithEmail,
     signOut,
     setUser,
     getAuthToken,
-    getAuthHeaders
+    getAuthHeaders,
+    clearError
   }
 }
