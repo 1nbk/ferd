@@ -39,6 +39,20 @@
 
 <script setup lang="ts">
 import Button from '~/components/ui/Button.vue'
+
+interface AuthResponse {
+  success: boolean
+  user?: {
+    id: string
+    name: string
+    email: string
+    picture?: string
+    role?: string
+  }
+  token?: string
+  error?: string
+}
+
 const route = useRoute()
 const router = useRouter()
 const { setUser } = useAuth()
@@ -79,7 +93,7 @@ onMounted(async () => {
     }
 
     // Exchange the authorization code for tokens
-    const response = await $fetch('/api/auth/google', {
+    const response = await $fetch<AuthResponse>('/api/auth/google', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -90,7 +104,7 @@ onMounted(async () => {
       }
     })
 
-    if (response.success) {
+    if (response.success && response.user) {
       // Store user data using the auth composable
       setUser(response.user)
       

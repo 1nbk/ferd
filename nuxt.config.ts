@@ -27,5 +27,12 @@ export default defineNuxtConfig({
   routeRules: {
     // API routes are handled by the server, not Vue Router
     '/api/**': { ssr: false }
+  },
+  nitro: {
+    // Exclude Prisma from bundling - it needs to be external
+    moduleSideEffects: ['@prisma/client'],
   }
 })
+
+
+

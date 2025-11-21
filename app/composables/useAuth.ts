@@ -8,6 +8,13 @@ interface User {
   role?: string
 }
 
+interface AuthResponse {
+  success: boolean
+  user?: User
+  token?: string
+  error?: string
+}
+
 const user = ref<User | null>(null)
 const isAuthenticated = computed(() => !!user.value)
 const isLoading = ref(false)
@@ -72,7 +79,7 @@ export const useAuth = () => {
     error.value = ''
 
     try {
-      const response = await $fetch('/api/auth/signin', {
+      const response = await $fetch<AuthResponse>('/api/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -81,10 +88,10 @@ export const useAuth = () => {
           email,
           password
         }
-      }) as any
+      })
 
-      if (response.success) {
-        setUser(response.user as User)
+      if (response.success && response.user) {
+        setUser(response.user)
 
         if (response.token) {
           localStorage.setItem('auth_token', response.token)
@@ -110,7 +117,7 @@ export const useAuth = () => {
     error.value = ''
 
     try {
-      const response = await $fetch('/api/auth/signup', {
+      const response = await $fetch<AuthResponse>('/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -120,10 +127,10 @@ export const useAuth = () => {
           email,
           password
         }
-      }) as any
+      })
 
-      if (response.success) {
-        setUser(response.user as User)
+      if (response.success && response.user) {
+        setUser(response.user)
 
         if (response.token) {
           localStorage.setItem('auth_token', response.token)
@@ -201,3 +208,4 @@ export const useAuth = () => {
     clearError
   }
 }
+
