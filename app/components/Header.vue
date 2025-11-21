@@ -26,7 +26,7 @@ const closeMobileMenu = () => {
           <NuxtLink to="/" class="text-text-secondary hover:text-accent transition-colors duration-200 font-medium text-sm uppercase tracking-wide">
             Vacation Rentals
           </NuxtLink>
-          <NuxtLink to="#properties" class="text-text-secondary hover:text-accent transition-colors duration-200 font-medium text-sm uppercase tracking-wide">
+          <NuxtLink to="/#properties" class="text-text-secondary hover:text-accent transition-colors duration-200 font-medium text-sm uppercase tracking-wide">
             Browse
           </NuxtLink>
           <NuxtLink to="/cars" class="text-text-secondary hover:text-accent transition-colors duration-200 font-medium text-sm uppercase tracking-wide">
@@ -103,7 +103,7 @@ const closeMobileMenu = () => {
             Vacation Rentals
           </NuxtLink>
           <NuxtLink 
-            to="#properties" 
+            to="/#properties" 
             @click="closeMobileMenu"
             class="block text-text-secondary hover:text-accent transition-colors duration-200 font-medium text-sm uppercase tracking-wide py-2"
           >

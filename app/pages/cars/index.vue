@@ -19,6 +19,7 @@
             <img 
               src="/images/automobile-details-close-up-new-car.jpg" 
               alt="Luxury Car" 
+              loading="lazy"
               class="relative w-full h-full object-cover rounded-[3rem] shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-700"
             />
           </div>

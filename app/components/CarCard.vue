@@ -5,6 +5,7 @@
       <img 
         :src="car.images[0]" 
         :alt="`${car.make} ${car.model}`"
+        loading="lazy"
         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
       <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300"></div>

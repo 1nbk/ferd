@@ -24,6 +24,7 @@
             <img 
               src="/images/modern-studio-apartment-design-with-bedroom-living-space.jpg" 
               alt="Modern Home" 
+              loading="lazy"
               class="relative w-full h-full object-cover rounded-[3rem] shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-700"
             />
             
