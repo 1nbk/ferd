@@ -1,58 +1,67 @@
 <template>
   <div class="w-full">
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
-      <div class="md:col-span-2">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+      <div class="lg:col-span-4">
         <label class="block text-xs font-medium text-[#3B3029] mb-1">Where</label>
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Destination or property name"
-          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029]"
-          @input="$emit('search', searchQuery)"
-        />
-      </div>
-      
-      <div>
-        <label class="block text-xs font-medium text-[#3B3029] mb-1">Check-in</label>
-        <input
-          v-model="checkIn"
-          type="date"
-          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029]"
-        />
-      </div>
-      
-      <div>
-        <label class="block text-xs font-medium text-[#3B3029] mb-1">Check-out</label>
-        <input
-          v-model="checkOut"
-          type="date"
-          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029]"
-        />
-      </div>
-      
-      <div>
-        <label class="block text-xs font-medium text-[#3B3029] mb-1">Travelers</label>
-        <div class="flex">
-          <select
-            v-model.number="guests"
-            class="w-full px-4 py-3 border border-gray-300 rounded-l-md focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029]"
-            @change="$emit('filter', { type: selectedType, maxPrice, bedrooms, guests })"
-          >
-            <option :value="0">Guests</option>
-            <option :value="1">1 guest</option>
-            <option :value="2">2 guests</option>
-            <option :value="4">4 guests</option>
-            <option :value="6">6 guests</option>
-            <option :value="8">8+ guests</option>
-          </select>
-          <button
-            type="button"
-            class="bg-[#7A8B74] text-white px-6 py-3 rounded-r-md hover:bg-[#6A7B64] transition-colors duration-200 font-semibold"
-            @click="$emit('filter', { type: selectedType, maxPrice, bedrooms, guests })"
-          >
-            Search
-          </button>
+        <div class="relative">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Destination or property name"
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029] bg-gray-50"
+            @input="$emit('search', searchQuery)"
+          />
+          <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
         </div>
+      </div>
+      
+      <div class="lg:col-span-3">
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Check-in</label>
+        <div class="relative">
+          <input
+            v-model="checkIn"
+            type="text"
+            placeholder="Add dates"
+            onfocus="(this.type='date')"
+            onblur="(this.type='text')"
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029] bg-gray-50 cursor-pointer"
+          />
+          <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-3">
+        <label class="block text-xs font-medium text-[#3B3029] mb-1">Check-out</label>
+        <div class="relative">
+          <input
+            v-model="checkOut"
+            type="text"
+            placeholder="Add dates"
+            onfocus="(this.type='date')"
+            onblur="(this.type='text')"
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#7A8B74] focus:border-[#7A8B74] text-[#3B3029] bg-gray-50 cursor-pointer"
+          />
+          <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-2 flex items-end">
+        <button
+          type="button"
+          class="w-full bg-[#7A8B74] text-white px-6 py-3 rounded-xl hover:bg-[#6A7B64] transition-all duration-200 font-semibold shadow-md hover:shadow-lg flex items-center justify-center space-x-2"
+          @click="$emit('filter', { type: selectedType, maxPrice, bedrooms, guests })"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <span>Search</span>
+        </button>
       </div>
     </div>
     

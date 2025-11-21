@@ -3,7 +3,7 @@ import { findOrCreateUser, createAuthResponse } from '../../utils/auth'
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const body = await readBody(event)
-  const { code, state } = body
+  const { code, state, redirect_uri } = body
 
   if (!code) {
     throw createError({
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
       code,
       client_id: config.googleClientId,
       client_secret: config.googleClientSecret,
-      redirect_uri: `${config.public.siteUrl}/auth/callback`,
+      redirect_uri: redirect_uri || `${config.public.siteUrl}/auth/callback`,
       grant_type: 'authorization_code'
     })
 
