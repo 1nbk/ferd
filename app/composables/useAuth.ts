@@ -45,6 +45,13 @@ export const useAuth = () => {
           return
         }
 
+        // Validate Client ID format (basic check)
+        if (!clientId.includes('.apps.googleusercontent.com')) {
+          console.error('Invalid Google Client ID format. It should end with .apps.googleusercontent.com')
+          alert('Invalid Google Client ID configuration. Please check your .env file.')
+          return
+        }
+
         const redirectUri = `${window.location.origin}/auth/callback`
         const scope = 'openid email profile'
         const responseType = 'code'

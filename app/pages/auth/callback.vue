@@ -100,7 +100,8 @@ onMounted(async () => {
       },
       body: {
         code,
-        state
+        state,
+        redirect_uri: window.location.origin + '/auth/callback'
       }
     })
 
