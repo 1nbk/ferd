@@ -14,7 +14,7 @@
             </p>
             
             <!-- Search Bar Wrapper -->
-            <div class="bg-white p-2 rounded-2xl shadow-xl border border-bg-secondary max-w-xl">
+            <div class="bg-white p-2 rounded-2xl shadow-xl border border-bg-secondary max-w-4xl">
               <SearchBar @search="handleSearch" @filter="handleFilter" />
             </div>
           </div>
