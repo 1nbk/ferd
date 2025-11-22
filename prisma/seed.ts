@@ -67,7 +67,7 @@ async function main() {
       area: 900,
       type: 'house' as const,
       images: JSON.stringify([
-        'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+        '/images/cabin.png',
         'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800',
         'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?w=800'
       ]),
@@ -86,7 +86,7 @@ async function main() {
       area: 800,
       type: 'apartment' as const,
       images: JSON.stringify([
-        'https://images.unsplash.com/photo-1556912173-671d7777c89a?w=800',
+        '/images/loft.png',
         'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
         'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=800'
       ]),
