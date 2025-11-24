@@ -59,7 +59,7 @@ const closeMobileMenu = () => {
               Sign In
             </Button>
           </template>
-          <Button variant="primary" size="sm">
+          <Button to="/host/create" variant="primary" size="sm">
             List Your Property
           </Button>
         </div>
@@ -149,8 +149,10 @@ const closeMobileMenu = () => {
               </Button>
             </template>
             <Button 
+              to="/host/create"
               variant="primary" 
               size="md"
+              @click="closeMobileMenu"
               block
             >
               List Your Property

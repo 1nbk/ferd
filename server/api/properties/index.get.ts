@@ -19,7 +19,8 @@ export default defineEventHandler(async (event) => {
     const validated = querySchema.parse(query)
 
     const where: any = {
-      available: validated.available !== false
+      available: validated.available !== false,
+      status: 'APPROVED'
     }
 
     if (validated.search) {

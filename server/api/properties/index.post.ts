@@ -18,7 +18,7 @@ const propertySchema = z.object({
 })
 
 export default defineEventHandler(async (event) => {
-  const user = await requireRole(event, ['HOST', 'ADMIN'])
+  const user = await requireAuth(event)
 
   try {
     const body = await readBody(event)
@@ -29,7 +29,8 @@ export default defineEventHandler(async (event) => {
         ...validated,
         images: JSON.stringify(validated.images),
         amenities: JSON.stringify(validated.amenities),
-        hostId: user.id
+        hostId: user.id,
+        status: 'PENDING'
       },
       include: {
         host: {
