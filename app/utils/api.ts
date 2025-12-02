@@ -1,4 +1,4 @@
-import type { Property } from './properties'
+import type { Property } from '~/types'
 
 export interface ApiResponse<T> {
   data?: T
@@ -82,7 +82,22 @@ function getAuthHeaders(): HeadersInit {
   return headers
 }
 
-export async function createProperty(property: Partial<Property>): Promise<Property> {
+export interface CreatePropertyInput {
+  title: string
+  description: string
+  location: string
+  price: number
+  bedrooms: number
+  bathrooms: number
+  guests: number
+  area: number
+  type: 'apartment' | 'house' | 'condo' | 'villa'
+  images: string[]
+  amenities: string[]
+  available?: boolean
+}
+
+export async function createProperty(property: CreatePropertyInput): Promise<Property> {
   const headers = getAuthHeaders()
 
   const response = await $fetch<Property>('/api/properties', {

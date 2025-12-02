@@ -186,9 +186,14 @@ import { fetchProperties } from '~/utils/api'
 import type { Property } from '~/types'
 
 const searchQuery = ref('')
-const filters = ref({
+const filters = ref<{
+  type: string
+  maxPrice: number | undefined
+  bedrooms: number
+  guests: number
+}>({
   type: '',
-  maxPrice: 0,
+  maxPrice: undefined,
   bedrooms: 0,
   guests: 0
 })

@@ -127,6 +127,48 @@
         </div>
       </div>
     </div>
+
+    <!-- Lightbox Modal -->
+    <Transition name="fade">
+      <div v-if="lightboxOpen" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4" @click="closeLightbox">
+        <button class="absolute top-4 right-4 text-white hover:text-accent transition-colors p-2" @click="closeLightbox">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+        
+        <button 
+          class="absolute left-4 text-white hover:text-accent transition-colors p-2 hidden sm:block" 
+          @click.stop="prevImage"
+          v-if="property.images.length > 1"
+        >
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <img 
+          :src="property.images[currentImageIndex]" 
+          :alt="property.title"
+          class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+          @click.stop
+        />
+
+        <button 
+          class="absolute right-4 text-white hover:text-accent transition-colors p-2 hidden sm:block" 
+          @click.stop="nextImage"
+          v-if="property.images.length > 1"
+        >
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/80 font-medium">
+          {{ currentImageIndex + 1 }} / {{ property.images.length }}
+        </div>
+      </div>
+    </Transition>
   </div>
 
   <div v-else class="container mx-auto px-4 py-16 text-center">
@@ -138,7 +180,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { fetchProperty } from '~/utils/api'
 import type { Property } from '~/types'
 
@@ -152,6 +194,10 @@ const property = ref<(Property & {
 const loading = ref(true)
 const error = ref<string | null>(null)
 
+// Lightbox state
+const lightboxOpen = ref(false)
+const currentImageIndex = ref(0)
+
 onMounted(async () => {
   try {
     loading.value = true
@@ -164,13 +210,41 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
+  
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
 })
 
 const openImageGallery = (index: number) => {
-  // Simple image gallery - in a real app, you'd use a modal
-  if (property.value) {
-    alert(`Viewing image ${index + 1} of ${property.value.images.length}`)
-  }
+  currentImageIndex.value = index
+  lightboxOpen.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const closeLightbox = () => {
+  lightboxOpen.value = false
+  document.body.style.overflow = ''
+}
+
+const nextImage = () => {
+  if (!property.value) return
+  currentImageIndex.value = (currentImageIndex.value + 1) % property.value.images.length
+}
+
+const prevImage = () => {
+  if (!property.value) return
+  currentImageIndex.value = (currentImageIndex.value - 1 + property.value.images.length) % property.value.images.length
+}
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (!lightboxOpen.value) return
+  
+  if (e.key === 'Escape') closeLightbox()
+  if (e.key === 'ArrowRight') nextImage()
+  if (e.key === 'ArrowLeft') prevImage()
 }
 
 useHead({
@@ -183,3 +257,15 @@ useHead({
   ]
 })
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
