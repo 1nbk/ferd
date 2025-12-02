@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Property } from '~/utils/properties'
+import type { Property } from '~/types'
 
 defineProps<{
   property: Property

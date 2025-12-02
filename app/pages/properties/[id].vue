@@ -140,7 +140,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { fetchProperty } from '~/utils/api'
-import type { Property } from '~/utils/properties'
+import type { Property } from '~/types'
 
 const route = useRoute()
 const property = ref<(Property & { 

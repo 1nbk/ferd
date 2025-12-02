@@ -91,7 +91,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { Property } from '~/utils/properties'
+import type { Property } from '~/types'
 import Button from './ui/Button.vue'
 
 const props = defineProps<{

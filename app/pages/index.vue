@@ -183,7 +183,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { fetchProperties } from '~/utils/api'
-import type { Property } from '~/utils/properties'
+import type { Property } from '~/types'
 
 const searchQuery = ref('')
 const filters = ref({

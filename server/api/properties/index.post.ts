@@ -27,8 +27,8 @@ export default defineEventHandler(async (event) => {
     const property = await prisma.property.create({
       data: {
         ...validated,
-        images: JSON.stringify(validated.images),
-        amenities: JSON.stringify(validated.amenities),
+        images: validated.images,
+        amenities: validated.amenities,
         hostId: user.id,
         status: 'PENDING'
       },
@@ -54,8 +54,8 @@ export default defineEventHandler(async (event) => {
       guests: property.guests,
       area: property.area,
       type: property.type,
-      images: JSON.parse(property.images),
-      amenities: JSON.parse(property.amenities),
+      images: property.images as string[],
+      amenities: property.amenities as string[],
       available: property.available,
       host: property.host,
       createdAt: property.createdAt,
