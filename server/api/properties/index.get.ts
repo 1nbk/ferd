@@ -19,7 +19,8 @@ export default defineEventHandler(async (event) => {
     const validated = querySchema.parse(query)
 
     const where: any = {
-      available: validated.available !== false
+      available: validated.available !== false,
+      status: 'APPROVED'
     }
 
     if (validated.search) {
@@ -102,8 +103,8 @@ export default defineEventHandler(async (event) => {
         guests: property.guests,
         area: property.area,
         type: property.type,
-        images: JSON.parse(property.images),
-        amenities: JSON.parse(property.amenities),
+        images: property.images as string[],
+        amenities: property.amenities as string[],
         available: property.available,
         rating: Math.round(rating * 10) / 10,
         reviews: property._count.reviews,

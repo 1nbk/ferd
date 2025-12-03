@@ -36,6 +36,12 @@ enum UserRole {
   ADMIN
 }
 
+enum PropertyStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model Property {
   id          String       @id @default(cuid())
   title       String
@@ -50,6 +56,7 @@ model Property {
   images      Json // JSON array of image URLs
   amenities   Json // JSON array of amenities
   available   Boolean      @default(true)
+  status      PropertyStatus @default(PENDING)
   hostId      String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -63,6 +70,7 @@ model Property {
   @@index([type])
   @@index([available])
   @@index([location])
+  @@index([status])
 }
 
 enum PropertyType {

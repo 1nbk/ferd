@@ -34,30 +34,30 @@
         <div>
           <h4 class="font-serif font-semibold mb-6 text-lg text-white">About</h4>
           <ul class="space-y-3 text-sm text-white/60">
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">About Ferd</NuxtLink></li>
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">How it works</NuxtLink></li>
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">Careers</NuxtLink></li>
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">Press</NuxtLink></li>
+            <li><NuxtLink to="/about" class="hover:text-accent transition-colors duration-200">About Ferd</NuxtLink></li>
+            <li><NuxtLink to="/about#how-it-works" class="hover:text-accent transition-colors duration-200">How it works</NuxtLink></li>
+            <li><NuxtLink to="/about#careers" class="hover:text-accent transition-colors duration-200">Careers</NuxtLink></li>
+            <li><NuxtLink to="/about#press" class="hover:text-accent transition-colors duration-200">Press</NuxtLink></li>
           </ul>
         </div>
         
         <div>
           <h4 class="font-serif font-semibold mb-6 text-lg text-white">Support</h4>
           <ul class="space-y-3 text-sm text-white/60">
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">Help Center</NuxtLink></li>
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">Contact Us</NuxtLink></li>
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">Safety</NuxtLink></li>
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">Cancellation</NuxtLink></li>
+            <li><NuxtLink to="/help" class="hover:text-accent transition-colors duration-200">Help Center</NuxtLink></li>
+            <li><NuxtLink to="/help#contact" class="hover:text-accent transition-colors duration-200">Contact Us</NuxtLink></li>
+            <li><NuxtLink to="/help#safety" class="hover:text-accent transition-colors duration-200">Safety</NuxtLink></li>
+            <li><NuxtLink to="/help#cancellation" class="hover:text-accent transition-colors duration-200">Cancellation</NuxtLink></li>
           </ul>
         </div>
         
         <div>
           <h4 class="font-serif font-semibold mb-6 text-lg text-white">Owners</h4>
           <ul class="space-y-3 text-sm text-white/60">
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">List Your Property</NuxtLink></li>
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">Owner Login</NuxtLink></li>
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">Owner Resources</NuxtLink></li>
-            <li><NuxtLink to="#" class="hover:text-accent transition-colors duration-200">Blog</NuxtLink></li>
+            <li><NuxtLink to="/host/create" class="hover:text-accent transition-colors duration-200">List Your Property</NuxtLink></li>
+            <li><NuxtLink to="/owners" class="hover:text-accent transition-colors duration-200">Owner Login</NuxtLink></li>
+            <li><NuxtLink to="/owners#resources" class="hover:text-accent transition-colors duration-200">Owner Resources</NuxtLink></li>
+            <li><NuxtLink to="/owners#blog" class="hover:text-accent transition-colors duration-200">Blog</NuxtLink></li>
           </ul>
         </div>
       </div>

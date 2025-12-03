@@ -18,7 +18,7 @@ const propertySchema = z.object({
 })
 
 export default defineEventHandler(async (event) => {
-  const user = await requireRole(event, ['HOST', 'ADMIN'])
+  const user = await requireAuth(event)
 
   try {
     const body = await readBody(event)
@@ -27,9 +27,10 @@ export default defineEventHandler(async (event) => {
     const property = await prisma.property.create({
       data: {
         ...validated,
-        images: JSON.stringify(validated.images),
-        amenities: JSON.stringify(validated.amenities),
-        hostId: user.id
+        images: validated.images,
+        amenities: validated.amenities,
+        hostId: user.id,
+        status: 'PENDING'
       },
       include: {
         host: {
@@ -53,8 +54,8 @@ export default defineEventHandler(async (event) => {
       guests: property.guests,
       area: property.area,
       type: property.type,
-      images: JSON.parse(property.images),
-      amenities: JSON.parse(property.amenities),
+      images: property.images as string[],
+      amenities: property.amenities as string[],
       available: property.available,
       host: property.host,
       createdAt: property.createdAt,
