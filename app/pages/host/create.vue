@@ -217,7 +217,18 @@ const availableAmenities = [
   'Mountain View', 'City View', 'Garden', 'Pet Friendly', 'Workspace'
 ]
 
-const form = ref({
+const form = ref<{
+  title: string
+  description: string
+  location: string
+  price: number
+  type: 'apartment' | 'house' | 'condo' | 'villa' | ''
+  bedrooms: number
+  bathrooms: number
+  guests: number
+  area: number
+  amenities: string[]
+}>({
   title: '',
   description: '',
   location: '',
@@ -227,7 +238,7 @@ const form = ref({
   bathrooms: 0,
   guests: 1,
   area: 0,
-  amenities: [] as string[]
+  amenities: []
 })
 
 const handleSubmit = async () => {
@@ -247,6 +258,7 @@ const handleSubmit = async () => {
 
     await createProperty({
       ...form.value,
+      type: form.value.type as 'apartment' | 'house' | 'condo' | 'villa',
       images
     })
 
