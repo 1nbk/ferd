@@ -1,0 +1,96 @@
+import Image from "next/image";
+import Link from "next/link";
+
+// Mock data (to be replaced by Prisma later)
+const MOCK_CARS = [
+  {
+    id: "car_1",
+    name: "Range Rover Velar",
+    model: "2023 Luxury SUV",
+    pricePerDay: 800,
+    features: ["AWD", "Leather Interior", "GPS Navigation", "Bluetooth Audio"],
+    images: ["https://res.cloudinary.com/demo/image/upload/v1684351332/car-rental.jpg"]
+  },
+  {
+    id: "car_2",
+    name: "Mercedes-Benz G-Wagon",
+    model: "AMG G 63",
+    pricePerDay: 1500,
+    features: ["V8 Engine", "Premium Sound System", "Heated Seats", "Sunroof"],
+    images: ["https://res.cloudinary.com/demo/image/upload/v1684351332/car-rental.jpg"]
+  }
+];
+
+export default function CarsPage() {
+  return (
+    <main>
+      {/* Navigation Header */}
+      <nav className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Link href="/" style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", color: "var(--color-obsidian)" }}>Ferd's</Link>
+        <div style={{ display: "flex", gap: "var(--spacing-md)" }}>
+          <Link href="/apartment" className="label-caps" style={{ color: "var(--color-obsidian)" }}>Apartment</Link>
+          <Link href="/cars" className="label-caps" style={{ color: "var(--color-obsidian)", borderBottom: "1px solid var(--color-gold)" }}>Cars</Link>
+        </div>
+      </nav>
+
+      {/* Page Header */}
+      <section className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)", textAlign: "center", borderBottom: "0.5px solid var(--color-champagne)", marginBottom: "var(--spacing-lg)" }}>
+        <h1 style={{ fontSize: "3.5rem", marginBottom: "var(--spacing-sm)" }}>The Fleet</h1>
+        <p style={{ fontSize: "1.1rem", maxWidth: "600px", margin: "0 auto" }}>
+          Explore our exclusive collection of premium vehicles to enhance your stay in the Volta Region.
+        </p>
+      </section>
+
+      {/* Vehicles Grid */}
+      <section className="container" style={{ padding: "0 var(--spacing-sm)", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(400px, 1fr))", gap: "var(--spacing-xl)", marginBottom: "var(--spacing-xl)" }}>
+        {MOCK_CARS.map(car => (
+          <article key={car.id} style={{ display: "flex", flexDirection: "column" }}>
+            
+            {/* Image Box */}
+            <div style={{ position: "relative", width: "100%", height: "250px", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)" }}>
+              <Image 
+                 src={car.images[0]} 
+                 alt={car.name} 
+                 fill 
+                 style={{ objectFit: 'cover' }} 
+              />
+            </div>
+
+            {/* Details */}
+            <div style={{ flex: 1 }}>
+              <h2 style={{ fontSize: "2rem", marginBottom: "var(--spacing-xs)" }}>{car.name}</h2>
+              <p className="label-caps" style={{ color: "var(--color-obsidian)", opacity: 0.7, marginBottom: "var(--spacing-sm)" }}>{car.model}</p>
+              
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "var(--spacing-md)" }}>
+                 {car.features.map(feature => (
+                   <span key={feature} className="thin-border" style={{ padding: "2px 8px", fontSize: "0.8rem" }}>
+                     {feature}
+                   </span>
+                 ))}
+              </div>
+            </div>
+
+            {/* Action Area */}
+            <div style={{ borderTop: "0.5px solid var(--color-champagne)", paddingTop: "var(--spacing-md)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+               <div>
+                 <span style={{ fontSize: "1.5rem", fontFamily: "var(--font-serif)" }}>GHS {car.pricePerDay}</span>
+                 <span style={{ opacity: 0.6 }}>/ day</span>
+               </div>
+               
+               {/* We will route this to the centralized booking later */}
+               <Link href={`/book?carId=${car.id}`} className="btn btn-outline">
+                 Reserve
+               </Link>
+            </div>
+
+          </article>
+        ))}
+      </section>
+
+      {/* Footer */}
+      <footer className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)", textAlign: "center", borderTop: "0.5px solid var(--color-champagne)", marginTop: "var(--spacing-xl)" }}>
+         <p style={{ opacity: 0.7 }}>&copy; {new Date().getFullYear()} Ferd's Luxury Rentals.</p>
+      </footer>
+    </main>
+  );
+}
