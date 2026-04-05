@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="https://skillicons.dev/icons?i=ts,react,nextjs,postgres,prisma,css,git,github,vscode" alt="Tech Stack Icons" />
+</div>
 
-## Getting Started
+<br/>
 
-First, run the development server:
+<h1 align="center">Ferd's — Luxury Apartment & Car Rentals</h1>
+
+<p align="center">
+  A premium, full-stack booking platform for an exclusive apartment and car rental business in Ho, Volta Region. <br/>
+  Featuring a robust Next.js setup with a database-driven availability engine and a highly responsive <strong>Dark Luxury</strong> aesthetic.
+</p>
+
+## ✨ Features
+
+- **Store-front Interface**: Browse luxury apartment details, visual amenity galleries, and premium vehicle models.
+- **Availability Booking Engine**: Real-time calendar checking preventing double-booking overlaps for both rooms and vehicles.
+- **Integrated Payments**: Frictionless payment integration via Paystack (for local Mobile Money and Card payments).
+- **Automated Communication**: Cloud-based email notification system triggered upon successful booking confirmations.
+- **Admin Management Dashboard**: Fully protected route to manage dates, monitor upcoming stays, block availability, and process requests.
+- **Premium Design System**: Ground-up custom Dark Luxury palette using vanilla CSS variables with Cormorant Garamond and DM Sans typography for peak visual hierarchy.
+
+## 🛠️ Technology Stack
+
+### Full Stack Next.js
+- **Core:** TypeScript, React.js, Next.js 14 (App Router)
+- **Database:** PostgreSQL synchronized entirely through Prisma ORM
+- **Authentication:** NextAuth.js
+- **Styling:** Custom Vanilla CSS Modules (Variables & Utility Classes)
+- **Payments:** Paystack Inline API
+- **Emails & Media:** Resend (Mailing), Cloudinary (Image Hosting) 
+
+## 🚀 Getting Started
+
+To run this platform, you will need Node.js 18+ and a local or remote PostgreSQL server instance.
+
+### Installation & Execution
 
 ```bash
+# Install dependencies
+npm install
+
+# Initialize Prisma Database Client
+npx prisma generate
+npx prisma db push
+
+# Start the Next.js development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The localized booking portal will launch dynamically at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🎨 Theme & Design
+Ferd's employs a highly intentional **Dark Luxury** design language, centered entirely on high exclusivity and elegance. By rejecting aggressive bright colors for deep Obsidian and strategic Gold accents, the UI immediately instils a perception of premium value to high-end visitors and clients. 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<p align="center">Built with ❤️ by <a href="https://github.com/1nbk">1nbk</a></p>
