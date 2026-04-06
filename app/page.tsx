@@ -54,29 +54,22 @@ export default function Home() {
   return (
     <main>
       {/* Hero Section */}
-      <section style={{ position: "relative", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: -1 }}>
-          <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(26, 22, 16, 0.5)", zIndex: 1 }} />
-          <div style={{ width: "100%", height: "100%", backgroundColor: "var(--color-obsidian)" }}>
-             <Image 
-                src="/images/living.png" 
-                alt="Ferd's Apartment Hero" 
-                fill
-                style={{ objectFit: 'cover' }}
-                priority
-             />
-          </div>
-        </div>
-        
+      <section style={{ position: "relative", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", backgroundColor: "var(--color-obsidian)" }}>
         <div className="container" style={{ textAlign: "center", color: "var(--color-ivory)", zIndex: 2, position: "relative" }}>
-          <motion.h1 
-            initial={{ opacity: 0, filter: "blur(20px)", letterSpacing: "0.5em" }}
-            animate={{ opacity: 1, filter: "blur(0px)", letterSpacing: "0.1em" }}
+          <motion.div
+            initial={{ opacity: 0, filter: "blur(20px)" }}
+            animate={{ opacity: 1, filter: "blur(0px)" }}
             transition={{ duration: 1.5, ease: [0.33, 1, 0.68, 1] }}
-            style={{ fontSize: "6rem", color: "var(--color-ivory)", marginBottom: "var(--spacing-xs)" }}
+            style={{ marginBottom: "var(--spacing-md)", display: "flex", justifyContent: "center" }}
           >
-            Ferd's
-          </motion.h1>
+            <Image 
+              src="/images/logo.png" 
+              alt="Ferd's Luxury Branding" 
+              width={300} 
+              height={100} 
+              style={{ filter: "brightness(0) invert(1)" }} // Inverse for dark hero background
+            />
+          </motion.div>
           
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
@@ -181,8 +174,10 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)", textAlign: "center", borderTop: "0.5px solid var(--color-champagne)" }}>
-        <h4 style={{ fontSize: "2.5rem", marginBottom: "var(--spacing-sm)" }}>Ferd's</h4>
+      <footer className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)", textAlign: "center", borderTop: "0.5px solid var(--color-champagne)", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ marginBottom: "var(--spacing-sm)" }}>
+          <Image src="/images/logo.png" alt="Ferd's" width={150} height={50} />
+        </div>
         <p className="label-caps">Ho, Volta Region, Ghana</p>
         <div style={{ marginTop: "var(--spacing-md)" }}>
           <p style={{ fontSize: "0.9rem", color: "var(--color-obsidian)", opacity: 0.6 }}>&copy; {new Date().getFullYear()} Ferd's Luxury Rentals. All rights reserved.</p>

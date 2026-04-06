@@ -9,7 +9,9 @@ export default async function CarsPage() {
     <main>
       {/* Navigation Header */}
       <nav className="container" style={{ padding: "var(--spacing-sm) var(--spacing-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Link href="/" style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", color: "var(--color-obsidian)" }}>Ferd's</Link>
+        <Link href="/">
+          <Image src="/images/logo.png" alt="Ferd's" width={120} height={40} priority />
+        </Link>
         <div style={{ display: "flex", gap: "var(--spacing-md)" }}>
           <Link href="/apartment" className="label-caps" style={{ color: "var(--color-obsidian)" }}>Apartment</Link>
           <Link href="/cars" className="label-caps" style={{ color: "var(--color-obsidian)", borderBottom: "1px solid var(--color-gold)" }}>Cars</Link>
@@ -37,7 +39,7 @@ export default async function CarsPage() {
               {/* Image Box */}
               <div style={{ position: "relative", width: "100%", height: "250px", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)" }}>
                 <Image 
-                   src={car.images[0] || "https://res.cloudinary.com/demo/image/upload/v1684351332/car-rental.jpg"} 
+                   src={car.images[0] || "/images/suv.png"} 
                    alt={car.name} 
                    fill 
                    style={{ objectFit: 'cover' }} 

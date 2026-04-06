@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle } from "lucide-react";
+import Image from "next/image";
 
 export default function ConfirmationPage({ params }: { params: { bookingId: string } }) {
   // In reality, we would fetch the booking from Prisma using params.bookingId
@@ -10,14 +10,19 @@ export default function ConfirmationPage({ params }: { params: { bookingId: stri
       
       {/* Header */}
       <nav className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)", width: "100%", borderBottom: "0.5px solid var(--color-champagne)", marginBottom: "var(--spacing-xl)" }}>
-        <Link href="/" style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", color: "var(--color-obsidian)" }}>Ferd's</Link>
+        <Link href="/">
+          <Image src="/images/logo.png" alt="Ferd's" width={120} height={40} priority />
+        </Link>
       </nav>
 
       {/* Main Confirmation Content */}
       <div className="container" style={{ flex: 1, padding: "0 var(--spacing-sm)", textAlign: "center", maxWidth: "600px" }}>
         
         <div style={{ display: "flex", justifyContent: "center", marginBottom: "var(--spacing-md)" }}>
-          <CheckCircle size={64} color="var(--color-gold)" />
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
         </div>
 
         <h1 style={{ fontSize: "3rem", marginBottom: "var(--spacing-sm)" }}>Booking Confirmed</h1>

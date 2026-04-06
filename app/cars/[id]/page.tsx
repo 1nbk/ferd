@@ -20,26 +20,28 @@ export default async function CarDetailsPage({ params }: { params: { id: string 
   return (
     <main>
       {/* Navigation Header */}
-      <nav className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Link href="/" style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", color: "var(--color-obsidian)" }}>Ferd's</Link>
+      <nav className="container" style={{ padding: "var(--spacing-sm) var(--spacing-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Link href="/">
+          <Image src="/images/logo.png" alt="Ferd's" width={120} height={40} priority />
+        </Link>
         <div style={{ display: "flex", gap: "var(--spacing-md)" }}>
           <Link href="/apartment" className="label-caps" style={{ color: "var(--color-obsidian)" }}>Apartment</Link>
           <Link href="/cars" className="label-caps" style={{ color: "var(--color-obsidian)", borderBottom: "1px solid var(--color-gold)" }}>Cars</Link>
         </div>
       </nav>
 
-      <div className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)" }}>
+      <div className="container" style={{ padding: "0 var(--spacing-sm) var(--spacing-md)" }}>
         
         {/* Header */}
-        <div style={{ marginBottom: "var(--spacing-md)" }}>
-          <h1 style={{ fontSize: "3.5rem" }}>{car.name}</h1>
+        <div style={{ marginBottom: "var(--spacing-md)", marginTop: "var(--spacing-sm)" }}>
+          <h1 style={{ fontSize: "3.5rem", marginBottom: "var(--spacing-xs)" }}>{car.name}</h1>
           <p className="label-caps" style={{ color: "var(--color-obsidian)", opacity: 0.8 }}>{car.model}</p>
         </div>
 
         {/* Gallery/Main Image */}
         <div style={{ position: "relative", width: "100%", height: "500px", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-lg)" }}>
           <Image 
-            src={car.images[0]} 
+            src={car.images[0] || "/images/suv.png"} 
             alt={car.name} 
             fill 
             style={{ objectFit: 'cover' }} 

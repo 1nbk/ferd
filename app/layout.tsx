@@ -17,6 +17,9 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: "Ferd's | Luxury Apartment & Car Rental",
   description: "Stay Different. Experience Ho, Volta Region Ghana. Premium apartment and car rentals.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

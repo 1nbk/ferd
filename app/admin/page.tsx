@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import Image from "next/image";
 
 import StatusBadge from "./StatusBadge";
 
@@ -18,10 +19,10 @@ export default async function AdminDashboard() {
   return (
     <main className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)" }}>
       {/* Admin Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--spacing-xl)", borderBottom: "0.5px solid var(--color-champagne)", paddingBottom: "var(--spacing-md)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "var(--spacing-xl)", borderBottom: "0.5px solid var(--color-champagne)", paddingBottom: "var(--spacing-md)" }}>
         <div>
-          <h1 style={{ fontSize: "2.5rem" }}>Admin Command Center</h1>
-          <p style={{ opacity: 0.6 }}>Manage your luxury estate and fleet reservations.</p>
+          <Image src="/images/logo.png" alt="Ferd's" width={150} height={50} style={{ marginBottom: "0.5rem" }} />
+          <p style={{ opacity: 0.6, fontSize: "0.9rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>Global Command Center</p>
         </div>
         <Link href="/" className="btn btn-outline">Exit Admin</Link>
       </div>
