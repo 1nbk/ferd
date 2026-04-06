@@ -1,0 +1,96 @@
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+
+export default async function AdminDashboard() {
+  const bookings = await prisma.booking.findMany({
+    include: {
+      guest: true,
+      room: true,
+      car: true,
+    },
+    orderBy: {
+      createdAt: "desc"
+    }
+  });
+
+  return (
+    <main className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)" }}>
+      {/* Admin Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--spacing-xl)", borderBottom: "0.5px solid var(--color-champagne)", paddingBottom: "var(--spacing-md)" }}>
+        <div>
+          <h1 style={{ fontSize: "2.5rem" }}>Admin Command Center</h1>
+          <p style={{ opacity: 0.6 }}>Manage your luxury estate and fleet reservations.</p>
+        </div>
+        <Link href="/" className="btn btn-outline">Exit Admin</Link>
+      </div>
+
+      {/* Stats Summary */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--spacing-md)", marginBottom: "var(--spacing-xl)" }}>
+        <div className="thin-border" style={{ padding: "var(--spacing-md)", backgroundColor: "var(--color-linen)" }}>
+          <p className="label-caps" style={{ fontSize: "0.7rem" }}>Total Bookings</p>
+          <p style={{ fontSize: "2rem", fontWeight: "bold" }}>{bookings.length}</p>
+        </div>
+        <div className="thin-border" style={{ padding: "var(--spacing-md)", backgroundColor: "var(--color-linen)" }}>
+          <p className="label-caps" style={{ fontSize: "0.7rem" }}>Total Revenue</p>
+          <p style={{ fontSize: "2rem", fontWeight: "bold" }}>GHS {bookings.reduce((acc, curr) => acc + curr.totalPrice, 0)}</p>
+        </div>
+      </div>
+
+      {/* Reservations Table */}
+      <section>
+        <h2 style={{ fontSize: "1.5rem", marginBottom: "var(--spacing-md)" }}>Recent Reservations</h2>
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid var(--color-gold)", backgroundColor: "var(--color-linen)" }}>
+                <th style={{ padding: "12px" }}>Guest</th>
+                <th style={{ padding: "12px" }}>Resource</th>
+                <th style={{ padding: "12px" }}>Dates</th>
+                <th style={{ padding: "12px" }}>Total</th>
+                <th style={{ padding: "12px" }}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.length === 0 ? (
+                <tr>
+                  <td colSpan={5} style={{ padding: "var(--spacing-xl)", textAlign: "center", opacity: 0.5 }}>No bookings recorded yet.</td>
+                </tr>
+              ) : (
+                bookings.map((booking) => (
+                  <tr key={booking.id} style={{ borderBottom: "0.5px solid var(--color-champagne)" }}>
+                    <td style={{ padding: "12px" }}>
+                      <p style={{ fontWeight: "bold" }}>{booking.guest.name}</p>
+                      <p style={{ fontSize: "0.8rem", opacity: 0.6 }}>{booking.guest.email}</p>
+                    </td>
+                    <td style={{ padding: "12px" }}>
+                      {booking.room ? (
+                        <span style={{ color: "var(--color-gold)" }}>Apartment: {booking.room.name}</span>
+                      ) : booking.car ? (
+                        <span style={{ color: "#3b82f6" }}>Car: {booking.car.name}</span>
+                      ) : "Unknown"}
+                    </td>
+                    <td style={{ padding: "12px", fontSize: "0.9rem" }}>
+                      {new Date(booking.checkIn).toLocaleDateString()} - {new Date(booking.checkOut).toLocaleDateString()}
+                    </td>
+                    <td style={{ padding: "12px", fontWeight: "bold" }}>GHS {booking.totalPrice}</td>
+                    <td style={{ padding: "12px" }}>
+                      <span className="label-caps" style={{ 
+                        fontSize: "0.6rem", 
+                        padding: "2px 6px", 
+                        borderRadius: "4px", 
+                        backgroundColor: booking.status === "PENDING" ? "#fef3c7" : "#d1fae5",
+                        color: booking.status === "PENDING" ? "#92400e" : "#065f46"
+                      }}>
+                        {booking.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  );
+}

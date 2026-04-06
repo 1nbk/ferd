@@ -65,7 +65,7 @@ export default async function CarsPage() {
                    <span style={{ opacity: 0.6 }}>/ day</span>
                  </div>
                  
-                 <Link href={`/book?carId=${car.id}`} className="btn btn-outline">
+                 <Link href={`/cars/${car.id}`} className="btn btn-outline">
                    Reserve
                  </Link>
               </div>

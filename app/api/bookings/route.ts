@@ -3,9 +3,9 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const { roomId, checkIn, checkOut, totalPrice, guest } = await req.json();
+    const { roomId, carId, checkIn, checkOut, totalPrice, guest } = await req.json();
 
-    if (!roomId || !checkIn || !checkOut || !guest.email) {
+    if ((!roomId && !carId) || !checkIn || !checkOut || !guest.email) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -23,7 +23,8 @@ export async function POST(req: Request) {
     // 2. Create Booking
     const booking = await prisma.booking.create({
       data: {
-        roomId,
+        roomId: roomId || null,
+        carId: carId || null,
         guestId: guestRecord.id,
         checkIn: new Date(checkIn),
         checkOut: new Date(checkOut),
