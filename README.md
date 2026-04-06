@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=ts,react,nextjs,postgres,prisma,css,git,github,vscode" alt="Tech Stack Icons" />
+  <img src="https://skillicons.dev/icons?i=ts,react,nextjs,postgres,prisma,css,git,github,vscode,cloudinary,resend,paystack" alt="Tech Stack Icons" />
 </div>
 
 <br/>
 
-<h1 align="center">Ferd's — Luxury Apartment & Car Rentals</h1>
+<h1 align="center">Ferd's  Luxury Apartment & Car Rentals</h1>
 
 <p align="center">
   A premium, full-stack booking platform for an exclusive apartment and car rental business in Ho, Volta Region. <br/>
