@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import BrandLogo from "@/components/BrandLogo";
 import { useSearchParams } from "next/navigation";
 
 export default function BookingPage() {
@@ -33,9 +34,7 @@ export default function BookingPage() {
       
       {/* Header */}
       <nav className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)", borderBottom: "0.5px solid var(--color-champagne)", marginBottom: "var(--spacing-lg)" }}>
-        <Link href="/">
-          <Image src="/images/logo.png" alt="Ferd's" width={120} height={40} priority />
-        </Link>
+        <BrandLogo variant="light" size="sm" />
       </nav>
 
       <div className="container" style={{ padding: "0 var(--spacing-sm)", display: "grid", gridTemplateColumns: "1fr 400px", gap: "var(--spacing-xl)" }}>

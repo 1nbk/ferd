@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import Image from "next/image";
+import BrandLogo from "@/components/BrandLogo";
 
 import StatusBadge from "./StatusBadge";
 
@@ -21,8 +22,8 @@ export default async function AdminDashboard() {
       {/* Admin Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "var(--spacing-xl)", borderBottom: "0.5px solid var(--color-champagne)", paddingBottom: "var(--spacing-md)" }}>
         <div>
-          <Image src="/images/logo.png" alt="Ferd's" width={150} height={50} style={{ marginBottom: "0.5rem" }} />
-          <p style={{ opacity: 0.6, fontSize: "0.9rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>Global Command Center</p>
+          <BrandLogo variant="light" size="sm" />
+          <p style={{ opacity: 0.6, fontSize: "0.9rem", textTransform: "uppercase", letterSpacing: "0.1em", marginTop: "0.5rem" }}>Global Command Center</p>
         </div>
         <Link href="/" className="btn btn-outline">Exit Admin</Link>
       </div>

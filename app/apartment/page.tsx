@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import BookingWidget from "./BookingWidget";
+import BrandLogo from "@/components/BrandLogo";
 
 export default async function ApartmentPage() {
   const room = await prisma.room.findFirst({
@@ -21,9 +22,7 @@ export default async function ApartmentPage() {
     <main>
       {/* Navigation Header */}
       <nav className="container" style={{ padding: "var(--spacing-sm) var(--spacing-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Link href="/">
-          <Image src="/images/logo.png" alt="Ferd's" width={120} height={40} priority />
-        </Link>
+        <BrandLogo variant="light" size="sm" />
         <div style={{ display: "flex", gap: "var(--spacing-md)" }}>
           <Link href="/apartment" className="label-caps" style={{ color: "var(--color-obsidian)", borderBottom: "1px solid var(--color-gold)" }}>Apartment</Link>
           <Link href="/cars" className="label-caps" style={{ color: "var(--color-obsidian)" }}>Cars</Link>

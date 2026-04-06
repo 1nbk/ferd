@@ -1,8 +1,7 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import BrandLogo from "@/components/BrandLogo";
 
 const wordFocus = {
   initial: { opacity: 0, filter: "blur(10px)", y: 10 },
@@ -62,13 +61,7 @@ export default function Home() {
             transition={{ duration: 1.5, ease: [0.33, 1, 0.68, 1] }}
             style={{ marginBottom: "var(--spacing-md)", display: "flex", justifyContent: "center" }}
           >
-            <Image 
-              src="/images/logo.png" 
-              alt="Ferd's Luxury Branding" 
-              width={300} 
-              height={100} 
-              style={{ filter: "brightness(0) invert(1)" }} // Inverse for dark hero background
-            />
+            <BrandLogo variant="dark" size="lg" />
           </motion.div>
           
           <motion.p 
@@ -175,8 +168,8 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)", textAlign: "center", borderTop: "0.5px solid var(--color-champagne)", display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div style={{ marginBottom: "var(--spacing-sm)" }}>
-          <Image src="/images/logo.png" alt="Ferd's" width={150} height={50} />
+        <div style={{ marginBottom: "var(--spacing-md)" }}>
+          <BrandLogo variant="light" size="md" />
         </div>
         <p className="label-caps">Ho, Volta Region, Ghana</p>
         <div style={{ marginTop: "var(--spacing-md)" }}>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function ConfirmationPage({ params }: { params: { bookingId: string } }) {
   // In reality, we would fetch the booking from Prisma using params.bookingId
@@ -10,9 +11,7 @@ export default function ConfirmationPage({ params }: { params: { bookingId: stri
       
       {/* Header */}
       <nav className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)", width: "100%", borderBottom: "0.5px solid var(--color-champagne)", marginBottom: "var(--spacing-xl)" }}>
-        <Link href="/">
-          <Image src="/images/logo.png" alt="Ferd's" width={120} height={40} priority />
-        </Link>
+        <BrandLogo variant="light" size="sm" />
       </nav>
 
       {/* Main Confirmation Content */}
