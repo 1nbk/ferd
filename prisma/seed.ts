@@ -22,8 +22,8 @@ async function main() {
       pricePerNight: 2500,
       maxGuests: 4,
       images: [
-        "https://res.cloudinary.com/demo/image/upload/v1684333604/interior-living-room.jpg",
-        "https://res.cloudinary.com/demo/image/upload/v1684333604/bedroom.jpg"
+        "/images/living.png",
+        "/images/bedroom.png"
       ],
       amenities: ["Private Balcony", "High-Speed WiFi", "24/7 Concierge", "Gourmet Kitchen", "Volta Hill View"],
     },
@@ -36,7 +36,7 @@ async function main() {
       name: "Land Rover Defender 110",
       model: "2024 V8 Edition",
       pricePerDay: 1800,
-      images: ["https://res.cloudinary.com/demo/image/upload/v1684351332/car-rental.jpg"],
+      images: ["/images/suv.png"],
       features: ["All-Wheel Drive", "Panoramic Roof", "Premium Leather Interior", "Off-road Excellence"],
     },
     {

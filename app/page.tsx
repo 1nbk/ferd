@@ -11,7 +11,7 @@ export default function Home() {
           {/* Placeholder for hero image */}
           <div style={{ width: "100%", height: "100%", backgroundColor: "var(--color-obsidian)" }}>
              <Image 
-                src="https://res.cloudinary.com/demo/image/upload/v1684333604/interior-living-room.jpg" 
+                src="/images/living.png" 
                 alt="Ferd's Apartment Hero" 
                 fill
                 style={{ objectFit: 'cover' }}
@@ -54,7 +54,7 @@ export default function Home() {
           <div style={{ padding: "var(--spacing-md)" }}>
             <div style={{ height: "300px", width: "100%", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)", position: "relative" }}>
               <Image 
-                  src="https://res.cloudinary.com/demo/image/upload/v1684333604/bedroom.jpg" 
+                  src="/images/bedroom.png" 
                   alt="Apartment Bedroom" 
                   fill
                   style={{ objectFit: 'cover' }}
@@ -68,7 +68,7 @@ export default function Home() {
           <div style={{ padding: "var(--spacing-md)" }}>
              <div style={{ height: "300px", width: "100%", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)", position: "relative" }}>
               <Image 
-                  src="https://res.cloudinary.com/demo/image/upload/v1684351332/car-rental.jpg" 
+                  src="/images/suv.png" 
                   alt="Car Rental" 
                   fill
                   style={{ objectFit: 'cover' }}
