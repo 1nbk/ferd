@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendEmail, bookingPendingTemplate } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -31,9 +32,20 @@ export async function POST(req: Request) {
         totalPrice,
         status: "PENDING",
       },
+      include: {
+        room: true,
+        car: true,
+      }
     });
 
-    // 3. Initialize Paystack Transaction
+    // 3. Send Pending Email (Fire and forget)
+    sendEmail({
+      to: guest.email,
+      subject: "Reservation Pending - Ferd's Luxury Rentals",
+      html: bookingPendingTemplate(booking, guest.name || guestRecord.name)
+    }).catch(err => console.error("Async email error:", err));
+
+    // 4. Initialize Paystack Transaction
     const paystackRes = await fetch("https://api.paystack.co/transaction/initialize", {
       method: "POST",
       headers: {

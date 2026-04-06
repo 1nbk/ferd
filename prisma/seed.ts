@@ -12,21 +12,23 @@ async function main() {
   console.log("Seeding database...");
 
   // Seed Room
-  const room = await prisma.room.upsert({
+  const roomData = {
+    id: "luxury-penthouse-1",
+    name: "The Platinum Penthouse",
+    description: "Experience the pinnacle of luxury in our exquisitely furnished penthouse. Featuring breathtaking views of the Volta hills, high-end amenities, and bespoke interior design.",
+    pricePerNight: 2500,
+    maxGuests: 4,
+    images: [
+      "/images/living.png",
+      "/images/bedroom.png"
+    ],
+    amenities: ["Private Balcony", "High-Speed WiFi", "24/7 Concierge", "Gourmet Kitchen", "Volta Hill View"],
+  };
+
+  await prisma.room.upsert({
     where: { id: "luxury-penthouse-1" },
-    update: {},
-    create: {
-      id: "luxury-penthouse-1",
-      name: "The Platinum Penthouse",
-      description: "Experience the pinnacle of luxury in our exquisitely furnished penthouse. Featuring breathtaking views of the Volta hills, high-end amenities, and bespoke interior design.",
-      pricePerNight: 2500,
-      maxGuests: 4,
-      images: [
-        "/images/living.png",
-        "/images/bedroom.png"
-      ],
-      amenities: ["Private Balcony", "High-Speed WiFi", "24/7 Concierge", "Gourmet Kitchen", "Volta Hill View"],
-    },
+    update: roomData,
+    create: roomData,
   });
 
   // Seed Cars
@@ -52,7 +54,7 @@ async function main() {
   for (const car of cars) {
     await prisma.car.upsert({
       where: { id: car.id },
-      update: {},
+      update: car,
       create: car,
     });
   }

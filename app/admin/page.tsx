@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
+import StatusBadge from "./StatusBadge";
+
 export default async function AdminDashboard() {
   const bookings = await prisma.booking.findMany({
     include: {
@@ -32,7 +34,7 @@ export default async function AdminDashboard() {
         </div>
         <div className="thin-border" style={{ padding: "var(--spacing-md)", backgroundColor: "var(--color-linen)" }}>
           <p className="label-caps" style={{ fontSize: "0.7rem" }}>Total Revenue</p>
-          <p style={{ fontSize: "2rem", fontWeight: "bold" }}>GHS {bookings.reduce((acc, curr) => acc + curr.totalPrice, 0)}</p>
+          <p style={{ fontSize: "2rem", fontWeight: "bold" }}>GHS {bookings.reduce((acc: number, curr: any) => acc + curr.totalPrice, 0)}</p>
         </div>
       </div>
 
@@ -56,7 +58,7 @@ export default async function AdminDashboard() {
                   <td colSpan={5} style={{ padding: "var(--spacing-xl)", textAlign: "center", opacity: 0.5 }}>No bookings recorded yet.</td>
                 </tr>
               ) : (
-                bookings.map((booking) => (
+                bookings.map((booking: any) => (
                   <tr key={booking.id} style={{ borderBottom: "0.5px solid var(--color-champagne)" }}>
                     <td style={{ padding: "12px" }}>
                       <p style={{ fontWeight: "bold" }}>{booking.guest.name}</p>
@@ -74,15 +76,7 @@ export default async function AdminDashboard() {
                     </td>
                     <td style={{ padding: "12px", fontWeight: "bold" }}>GHS {booking.totalPrice}</td>
                     <td style={{ padding: "12px" }}>
-                      <span className="label-caps" style={{ 
-                        fontSize: "0.6rem", 
-                        padding: "2px 6px", 
-                        borderRadius: "4px", 
-                        backgroundColor: booking.status === "PENDING" ? "#fef3c7" : "#d1fae5",
-                        color: booking.status === "PENDING" ? "#92400e" : "#065f46"
-                      }}>
-                        {booking.status}
-                      </span>
+                      <StatusBadge bookingId={booking.id} initialStatus={booking.status} />
                     </td>
                   </tr>
                 ))
