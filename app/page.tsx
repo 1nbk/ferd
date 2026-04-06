@@ -4,17 +4,49 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-export default function Home() {
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
+const wordFocus = {
+  initial: { opacity: 0, filter: "blur(10px)", y: 10 },
+  animate: { 
+    opacity: 1, 
+    filter: "blur(0px)", 
+    y: 0,
     transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] }
-  };
+  }
+};
 
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.2
+const WordReveal = ({ text, style }: { text: string; style?: React.CSSProperties }) => {
+  const words = text.split(" ");
+  return (
+    <motion.h2 
+      style={{ ...style, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "0.4rem" }}
+      variants={{
+        animate: { transition: { staggerChildren: 0.08 } }
+      }}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, margin: "-100px" }}
+    >
+      {words.map((word, i) => (
+        <motion.span key={i} variants={wordFocus}>
+          {word}
+        </motion.span>
+      ))}
+    </motion.h2>
+  );
+};
+
+export default function Home() {
+  const springReveal = {
+    initial: { opacity: 0, scale: 0.95, filter: "blur(10px)" },
+    animate: { 
+      opacity: 1, 
+      scale: 1, 
+      filter: "blur(0px)",
+      transition: { 
+        type: "spring", 
+        mass: 0.5, 
+        stiffness: 100, 
+        damping: 10 
       }
     }
   };
@@ -24,7 +56,7 @@ export default function Home() {
       {/* Hero Section */}
       <section style={{ position: "relative", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: -1 }}>
-          <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(26, 22, 16, 0.4)", zIndex: 1 }} />
+          <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(26, 22, 16, 0.5)", zIndex: 1 }} />
           <div style={{ width: "100%", height: "100%", backgroundColor: "var(--color-obsidian)" }}>
              <Image 
                 src="/images/living.png" 
@@ -36,27 +68,29 @@ export default function Home() {
           </div>
         </div>
         
-        <motion.div 
-          className="container" 
-          style={{ textAlign: "center", color: "var(--color-ivory)", zIndex: 2, position: "relative" }}
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-        >
+        <div className="container" style={{ textAlign: "center", color: "var(--color-ivory)", zIndex: 2, position: "relative" }}>
           <motion.h1 
-            variants={fadeInUp}
-            style={{ fontSize: "5rem", color: "var(--color-ivory)", marginBottom: "var(--spacing-sm)" }}
+            initial={{ opacity: 0, filter: "blur(20px)", letterSpacing: "0.5em" }}
+            animate={{ opacity: 1, filter: "blur(0px)", letterSpacing: "0.1em" }}
+            transition={{ duration: 1.5, ease: [0.33, 1, 0.68, 1] }}
+            style={{ fontSize: "6rem", color: "var(--color-ivory)", marginBottom: "var(--spacing-xs)" }}
           >
             Ferd's
           </motion.h1>
+          
           <motion.p 
-            variants={fadeInUp}
-            style={{ fontFamily: "var(--font-sans)", fontSize: "1.2rem", letterSpacing: "0.1em", marginBottom: "var(--spacing-md)", textTransform: "uppercase" }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 1 }}
+            style={{ fontFamily: "var(--font-sans)", fontSize: "1.1rem", letterSpacing: "0.2em", marginBottom: "var(--spacing-md)", textTransform: "uppercase", opacity: 0.8 }}
           >
             Stay Different. Experience Ho.
           </motion.p>
+
           <motion.div 
-            variants={fadeInUp}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 1 }}
             style={{ display: "flex", gap: "1rem", justifyContent: "center" }}
           >
             <Link href="/apartment" className="btn btn-primary" style={{ backgroundColor: "var(--color-gold)", color: "var(--color-obsidian)" }}>
@@ -66,40 +100,51 @@ export default function Home() {
               Rent A Car
             </Link>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Intro Section */}
       <section className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)", textAlign: "center" }}>
-        <motion.div
-           initial={{ opacity: 0, y: 30 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true, margin: "-100px" }}
-           transition={{ duration: 1, ease: [0.33, 1, 0.68, 1] }}
+        <motion.span 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="label-caps" 
+          style={{ display: "block", marginBottom: "var(--spacing-md)" }}
         >
-          <span className="label-caps" style={{ display: "block", marginBottom: "var(--spacing-md)" }}>Welcome to Exclusivity</span>
-          <h2 style={{ fontSize: "3rem", maxWidth: "800px", margin: "0 auto var(--spacing-md)" }}>
-            A luxury retreat in the heart of the Volta Region
-          </h2>
-          <p style={{ maxWidth: "600px", margin: "0 auto", fontSize: "1.1rem" }}>
-            Whether you are visiting Ho for business or leisure, Ferd's offers an unparalleled experience. 
-            Discover our premium apartment and effortlessly rent luxury vehicles for your stay.
-          </p>
-        </motion.div>
+          Welcome to Exclusivity
+        </motion.span>
+        
+        <WordReveal 
+          text="A luxury retreat in the heart of the Volta Region" 
+          style={{ fontSize: "3.5rem", maxWidth: "900px", margin: "0 auto var(--spacing-md)" }}
+        />
+
+        <motion.p 
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.5 }}
+          style={{ maxWidth: "600px", margin: "0 auto", fontSize: "1.2rem", opacity: 0.9, lineHeight: "1.8" }}
+        >
+          Whether you are visiting Ho for business or leisure, Ferd's offers an unparalleled experience. 
+          Discover our premium apartment and effortlessly rent luxury vehicles for your stay.
+        </motion.p>
       </section>
 
       {/* Features Grid */}
       <section style={{ backgroundColor: "var(--color-obsidian)", color: "var(--color-ivory)", padding: "var(--spacing-lg) 0" }}>
-        <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "var(--spacing-lg)" }}>
+        <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "var(--spacing-lg)" }}>
           
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial="initial"
+            whileInView="animate"
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            variants={springReveal}
             style={{ padding: "var(--spacing-md)" }}
           >
-            <div style={{ height: "300px", width: "100%", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)", position: "relative" }}>
+            <div style={{ height: "350px", width: "100%", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)", position: "relative", overflow: "hidden" }}>
               <Image 
                   src="/images/bedroom.png" 
                   alt="Apartment Bedroom" 
@@ -107,19 +152,19 @@ export default function Home() {
                   style={{ objectFit: 'cover' }}
                />
             </div>
-            <h3 style={{ color: "var(--color-ivory)" }}>The Apartment</h3>
-            <p style={{ marginBottom: "var(--spacing-sm)" }}>Exquisitely furnished spaces designed for ultimate comfort and relaxation.</p>
-            <Link href="/apartment" className="label-caps" style={{ borderBottom: "0.5px solid var(--color-gold)" }}>Discover your stay</Link>
+            <h3 style={{ color: "var(--color-ivory)", fontSize: "2rem" }}>The Apartment</h3>
+            <p style={{ marginBottom: "var(--spacing-sm)", fontSize: "1.1rem", opacity: 0.8 }}>Exquisitely furnished spaces designed for ultimate comfort and relaxation.</p>
+            <Link href="/apartment" className="label-caps" style={{ borderBottom: "1px solid var(--color-gold)", paddingBottom: "2px" }}>Discover your stay</Link>
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial="initial"
+            whileInView="animate"
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            variants={springReveal}
             style={{ padding: "var(--spacing-md)" }}
           >
-             <div style={{ height: "300px", width: "100%", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)", position: "relative" }}>
+             <div style={{ height: "350px", width: "100%", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)", position: "relative", overflow: "hidden" }}>
               <Image 
                   src="/images/suv.png" 
                   alt="Car Rental" 
@@ -127,9 +172,9 @@ export default function Home() {
                   style={{ objectFit: 'cover' }}
                />
             </div>
-            <h3 style={{ color: "var(--color-ivory)" }}>The Fleet</h3>
-            <p style={{ marginBottom: "var(--spacing-sm)" }}>Premium vehicles available exclusively for our guests and local clients.</p>
-            <Link href="/cars" className="label-caps" style={{ borderBottom: "0.5px solid var(--color-gold)" }}>View vehicles</Link>
+            <h3 style={{ color: "var(--color-ivory)", fontSize: "2rem" }}>The Fleet</h3>
+            <p style={{ marginBottom: "var(--spacing-sm)", fontSize: "1.1rem", opacity: 0.8 }}>Premium vehicles available exclusively for our guests and local clients.</p>
+            <Link href="/cars" className="label-caps" style={{ borderBottom: "1px solid var(--color-gold)", paddingBottom: "2px" }}>View vehicles</Link>
           </motion.div>
 
         </div>
@@ -137,13 +182,14 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)", textAlign: "center", borderTop: "0.5px solid var(--color-champagne)" }}>
-        <h4 style={{ fontSize: "2rem", marginBottom: "var(--spacing-sm)" }}>Ferd's</h4>
+        <h4 style={{ fontSize: "2.5rem", marginBottom: "var(--spacing-sm)" }}>Ferd's</h4>
         <p className="label-caps">Ho, Volta Region, Ghana</p>
         <div style={{ marginTop: "var(--spacing-md)" }}>
-          <p style={{ fontSize: "0.9rem", color: "var(--color-obsidian)", opacity: 0.7 }}>&copy; {new Date().getFullYear()} Ferd's Luxury Rentals. All rights reserved.</p>
+          <p style={{ fontSize: "0.9rem", color: "var(--color-obsidian)", opacity: 0.6 }}>&copy; {new Date().getFullYear()} Ferd's Luxury Rentals. All rights reserved.</p>
         </div>
       </footer>
     </main>
   );
 }
+
 
