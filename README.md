@@ -55,4 +55,4 @@ Ferd's employs a highly intentional **Dark Luxury** design language, centered en
 
 ---
 
-<p align="center">Built with nbk☆ by <a href="https://github.com/1nbk">1nbk</a></p>
+<p align="center">Built by <a href="https://github.com/1nbk"> nbk☆ </a></p>
