@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { DayPicker } from "react-day-picker";
+import { useState, useMemo } from "react";
+import { DayPicker, DateRange } from "react-day-picker";
+import { format, differenceInDays } from "date-fns";
 import "react-day-picker/dist/style.css";
+import { usePaystackPayment } from "react-paystack";
 
 interface BookingWidgetProps {
   pricePerNight: number;
@@ -23,32 +25,161 @@ const cssOverrides = `
 `;
 
 export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetProps) {
-  const [selectedDates, setSelectedDates] = useState<Date[]>();
+  const [range, setRange] = useState<DateRange | undefined>();
+  const [loading, setLoading] = useState(false);
+  const [guestInfo, setGuestInfo] = useState({
+    name: "",
+    email: "",
+    phone: ""
+  });
+
+  const numberOfNights = useMemo(() => {
+    if (range?.from && range?.to) {
+      return differenceInDays(range.to, range.from);
+    }
+    return 0;
+  }, [range]);
+
+  const totalPrice = numberOfNights * pricePerNight;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGuestInfo({ ...guestInfo, [e.target.name]: e.target.value });
+  };
+
+  const config = {
+    reference: `FERD_${Math.floor(Math.random() * 1000000000 + 1)}`, // Temporary, will be overridden
+    email: guestInfo.email,
+    amount: totalPrice * 100,
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
+  };
+
+  const initializePayment = usePaystackPayment(config);
+
+  const handleBooking = async () => {
+    if (!range?.from || !range?.to || !guestInfo.email) return;
+    setLoading(true);
+    
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          roomId,
+          checkIn: range.from,
+          checkOut: range.to,
+          totalPrice,
+          guest: guestInfo
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.error) {
+        alert(data.error);
+        setLoading(false);
+        return;
+      }
+
+      // Step 2: Initialize Paystack Pop-up
+      const paystackConfig = {
+        ...config,
+        reference: `FERD_${data.bookingId}`,
+        onSuccess: (reference: any) => {
+          window.location.href = `/apartment/success?reference=${reference.reference}&bookingId=${data.bookingId}`;
+        },
+        onClose: () => {
+          setLoading(false);
+          alert("Payment canceled.");
+        },
+      };
+
+      // @ts-ignore
+      const handler = window.PaystackPop.setup(paystackConfig);
+      handler.openIframe();
+
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong. Please try again.");
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="thin-border" style={{ padding: "var(--spacing-md)", position: "sticky", top: "2rem", backgroundColor: "var(--color-ivory)" }}>
       <style>{cssOverrides}</style>
+      
       <div style={{ marginBottom: "var(--spacing-md)", display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
         <span style={{ fontSize: "2rem", fontFamily: "var(--font-serif)" }}>GHS {pricePerNight}</span>
         <span style={{ opacity: 0.6 }}>/ night</span>
       </div>
 
+      {/* Date Selection */}
       <div style={{ marginBottom: "var(--spacing-md)" }}>
         <p className="label-caps" style={{ marginBottom: "var(--spacing-xs)" }}>Select Dates</p>
         <div className="thin-border" style={{ padding: "var(--spacing-xs)", backgroundColor: "var(--color-linen)", width: "fit-content" }}>
           <DayPicker 
-            mode="multiple" 
-            selected={selectedDates} 
-            onSelect={setSelectedDates} 
+            mode="range" 
+            selected={range} 
+            onSelect={setRange} 
             disabled={[{ before: new Date() }]} 
           />
         </div>
       </div>
 
-      <button className="btn btn-primary" style={{ width: "100%", fontSize: "1rem" }} disabled={!selectedDates || selectedDates.length === 0}>
-        {selectedDates && selectedDates.length > 0 ? `Book ${selectedDates.length} Nights` : "Select Dates"}
+      {/* Guest Info */}
+      <div style={{ marginBottom: "var(--spacing-md)", display: "flex", flexDirection: "column", gap: "var(--spacing-sm)" }}>
+        <p className="label-caps">Guest Information</p>
+        <input 
+          name="name" 
+          placeholder="Full Name" 
+          value={guestInfo.name} 
+          onChange={handleInputChange} 
+          required 
+        />
+        <input 
+          name="email" 
+          type="email" 
+          placeholder="Email Address" 
+          value={guestInfo.email} 
+          onChange={handleInputChange} 
+          required 
+        />
+        <input 
+          name="phone" 
+          placeholder="Phone Number" 
+          value={guestInfo.phone} 
+          onChange={handleInputChange} 
+          required 
+        />
+      </div>
+
+      {/* Price Summary */}
+      {numberOfNights > 0 && (
+        <div style={{ marginBottom: "var(--spacing-md)", padding: "var(--spacing-sm)", backgroundColor: "var(--color-linen)", borderRadius: "2px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                <span>GHS {pricePerNight} x {numberOfNights} nights</span>
+                <span>GHS {totalPrice}</span>
+            </div>
+            <div style={{ borderTop: "0.5px solid var(--color-gold)", marginTop: "8px", paddingTop: "8px", display: "flex", justifyContent: "space-between", fontWeight: "bold" }}>
+                <span>Total</span>
+                <span>GHS {totalPrice}</span>
+            </div>
+        </div>
+      )}
+
+      <button 
+        className="btn btn-primary" 
+        style={{ width: "100%", fontSize: "1rem" }} 
+        disabled={!range?.from || !range?.to || !guestInfo.email || loading}
+        onClick={handleBooking}
+      >
+        {loading ? "Initializing..." : numberOfNights > 0 ? `Reserve for ${numberOfNights} Nights` : "Select Dates"}
       </button>
-      <p style={{ textAlign: "center", fontSize: "0.8rem", opacity: 0.6, marginTop: "var(--spacing-sm)" }}>You won't be charged yet.</p>
+      
+      <p style={{ textAlign: "center", fontSize: "0.8rem", opacity: 0.6, marginTop: "var(--spacing-sm)" }}>
+        Secure payment via Paystack.
+      </p>
     </div>
   );
 }
+

@@ -32,7 +32,7 @@ model Car {
 model Guest {
   id        String    @id @default(cuid())
   name      String
-  email     String
+  email     String    @unique
   phone     String
   createdAt DateTime  @default(now())
   bookings  Booking[]
