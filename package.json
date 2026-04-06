@@ -12,13 +12,16 @@
     "@prisma/client": "^7.6.0",
     "next": "14.2.35",
     "next-cloudinary": "^6.17.5",
+    "pg": "^8.20.0",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@prisma/config": "^7.6.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
     "prisma": "^7.6.0",
