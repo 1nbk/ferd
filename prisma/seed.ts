@@ -44,7 +44,7 @@ async function main() {
       name: "Mercedes-Benz G63 AMG",
       model: "Grand Edition",
       pricePerDay: 3500,
-      images: ["https://res.cloudinary.com/demo/image/upload/v1684351332/car-rental.jpg"],
+      images: ["/images/suv.png"],
       features: ["V8 Bi-Turbo Engine", "Massive Performance", "Hyper-Luxury Cabin", "Iconic Design"],
     }
   ];

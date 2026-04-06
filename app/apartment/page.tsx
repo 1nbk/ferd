@@ -20,7 +20,7 @@ export default async function ApartmentPage() {
   return (
     <main>
       {/* Navigation Header */}
-      <nav className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <nav className="container" style={{ padding: "var(--spacing-sm) var(--spacing-sm)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Link href="/" style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", color: "var(--color-obsidian)" }}>Ferd's</Link>
         <div style={{ display: "flex", gap: "var(--spacing-md)" }}>
           <Link href="/apartment" className="label-caps" style={{ color: "var(--color-obsidian)", borderBottom: "1px solid var(--color-gold)" }}>Apartment</Link>
@@ -28,25 +28,25 @@ export default async function ApartmentPage() {
         </div>
       </nav>
 
-      <div className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)" }}>
+      <div className="container" style={{ padding: "0 var(--spacing-sm) var(--spacing-md)" }}>
         
         {/* Header */}
-        <div style={{ marginBottom: "var(--spacing-md)" }}>
-          <h1 style={{ fontSize: "3.5rem" }}>{room.name}</h1>
+        <div style={{ marginBottom: "var(--spacing-md)", marginTop: "var(--spacing-sm)" }}>
+          <h1 style={{ fontSize: "3.5rem", marginBottom: "var(--spacing-xs)" }}>{room.name}</h1>
           <p className="label-caps" style={{ color: "var(--color-obsidian)", opacity: 0.8 }}>Ho, Volta Region</p>
         </div>
 
         {/* Gallery */}
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "var(--spacing-sm)", height: "500px", marginBottom: "var(--spacing-lg)" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "var(--spacing-xs)", height: "500px", marginBottom: "var(--spacing-lg)" }}>
           <div style={{ position: "relative", backgroundColor: "var(--color-linen)" }}>
-             <Image src={room.images[0]} alt="Suite Main View" fill style={{ objectFit: 'cover' }} />
+             <Image src={room.images[0] || "/images/living.png"} alt="Penthouse Living Room" fill style={{ objectFit: 'cover' }} priority />
           </div>
-          <div style={{ display: "grid", gridTemplateRows: "1fr 1fr", gap: "var(--spacing-sm)" }}>
+          <div style={{ display: "grid", gridTemplateRows: "1fr 1fr", gap: "var(--spacing-xs)" }}>
             <div style={{ position: "relative", backgroundColor: "var(--color-linen)" }}>
-              <Image src={room.images[1] || room.images[0]} alt="Suite Detail 1" fill style={{ objectFit: 'cover' }} />
+              <Image src={room.images[1] || room.images[0] || "/images/bedroom.png"} alt="Penthouse Bedroom" fill style={{ objectFit: 'cover' }} />
             </div>
             <div style={{ position: "relative", backgroundColor: "var(--color-linen)" }}>
-               <Image src={room.images[2] || room.images[0]} alt="Suite Detail 2" fill style={{ objectFit: 'cover' }} />
+               <Image src={room.images[2] || room.images[0] || "/images/living.png"} alt="Penthouse Detail" fill style={{ objectFit: 'cover' }} />
             </div>
           </div>
         </div>
