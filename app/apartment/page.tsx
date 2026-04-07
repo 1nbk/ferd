@@ -36,14 +36,14 @@ export default async function ApartmentPage() {
         {/* Gallery */}
         <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "var(--spacing-sm)", height: "600px", marginBottom: "var(--spacing-xl)", borderRadius: "2px", overflow: "hidden" }}>
           <div style={{ position: "relative", backgroundColor: "var(--color-linen)" }}>
-             <Image src={room.images[0] || "/images/living.png"} alt="Penthouse Living Room" fill style={{ objectFit: 'cover' }} priority />
+             <Image src={room.images[0] || "/images/living.png"} alt="Penthouse Living Room" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover' }} priority />
           </div>
           <div style={{ display: "grid", gridTemplateRows: "1fr 1fr", gap: "var(--spacing-sm)" }}>
             <div style={{ position: "relative", backgroundColor: "var(--color-linen)" }}>
-              <Image src={room.images[1] || room.images[0] || "/images/bedroom.png"} alt="Penthouse Bedroom" fill style={{ objectFit: 'cover' }} />
+              <Image src={room.images[1] || room.images[0] || "/images/bedroom.png"} alt="Penthouse Bedroom" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
             </div>
             <div style={{ position: "relative", backgroundColor: "var(--color-linen)" }}>
-               <Image src={room.images[2] || room.images[0] || "/images/living.png"} alt="Penthouse Detail" fill style={{ objectFit: 'cover' }} />
+               <Image src={room.images[2] || room.images[0] || "/images/living.png"} alt="Penthouse Detail" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
             </div>
           </div>
         </div>

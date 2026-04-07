@@ -36,9 +36,7 @@ export default function Navigation({ theme = "solid" }: NavigationProps) {
 
   return (
     <nav className="container" style={navStyle}>
-      <Link href="/">
-        <BrandLogo variant={isTransparent ? "dark" : "light"} size="sm" />
-      </Link>
+      <BrandLogo variant={isTransparent ? "dark" : "light"} size="sm" />
       
       <div style={{ display: "flex", gap: "var(--spacing-md)" }}>
         <Link href="/apartment" className="label-caps" style={linkStyle("/apartment")}>

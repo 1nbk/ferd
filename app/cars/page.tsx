@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -44,6 +46,7 @@ export default async function CarsPage() {
                    src={car.images[0] || "/images/suv.png"} 
                    alt={car.name} 
                    fill 
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                    style={{ objectFit: 'cover' }} 
                    className="hover-zoom"
                 />
