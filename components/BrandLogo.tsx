@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface BrandLogoProps {
   variant?: "light" | "dark";
@@ -8,35 +9,37 @@ interface BrandLogoProps {
 }
 
 export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoProps) {
-  const isDark = variant === "dark";
+  // Using the requested logo.png
+  const logoSrc = "/images/logo.png";
   
-  // Responsive sizing mapping
+  // Sizing mapping based on size prop
   const sizeMap = {
-    sm: { fontSize: "1.1rem", padding: "6px 12px", borderWidth: "0.5px" },
-    md: { fontSize: "1.5rem", padding: "10px 24px", borderWidth: "0.8px" },
-    lg: { fontSize: "2.5rem", padding: "16px 40px", borderWidth: "1.2px" },
+    sm: { width: 80, height: 40 },
+    md: { width: 120, height: 60 },
+    lg: { width: 180, height: 90 },
   };
 
   const currentSize = sizeMap[size];
 
   return (
-    <Link href="/" style={{ textDecoration: "none" }}>
+    <Link href="/" style={{ textDecoration: "none", display: "inline-block" }}>
       <div
         style={{
-          display: "inline-block",
-          border: `${currentSize.borderWidth} solid ${isDark ? "var(--color-gold)" : "var(--color-gold)"}`,
-          padding: currentSize.padding,
-          fontFamily: "var(--font-serif)",
-          fontSize: currentSize.fontSize,
-          color: isDark ? "var(--color-ivory)" : "var(--color-obsidian)",
-          lineHeight: 1,
-          letterSpacing: "0.05em",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           transition: "all 0.3s ease",
-          backgroundColor: "transparent", // Truly transparent
         }}
         className="brand-logo-container"
       >
-        Ferd&apos;s
+        <Image 
+          src={logoSrc} 
+          alt="Ferd's Logo" 
+          width={currentSize.width} 
+          height={currentSize.height}
+          style={{ objectFit: 'contain' }}
+          priority
+        />
       </div>
     </Link>
   );

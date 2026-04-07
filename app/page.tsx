@@ -54,8 +54,18 @@ export default function Home() {
 
   return (
     <main>
-      {/* Hero Section */}
       <section style={{ position: "relative", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", backgroundColor: "var(--color-obsidian)" }}>
+        {/* Background Image */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 1 }}>
+          <Image 
+            src="/images/bedroom.jpg" 
+            alt="Ferd's Luxury Apartment" 
+            fill
+            style={{ objectFit: 'cover', opacity: 0.4 }}
+            priority
+          />
+        </div>
+
         <div className="container" style={{ textAlign: "center", color: "var(--color-ivory)", zIndex: 2, position: "relative" }}>
           <motion.div
             initial={{ opacity: 0, filter: "blur(20px)" }}
@@ -63,14 +73,14 @@ export default function Home() {
             transition={{ duration: 1.5, ease: [0.33, 1, 0.68, 1] }}
             style={{ marginBottom: "var(--spacing-md)", display: "flex", justifyContent: "center" }}
           >
-            <BrandLogo variant="dark" size="lg" />
+            <BrandLogo variant="light" size="lg" />
           </motion.div>
           
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 1 }}
-            style={{ fontFamily: "var(--font-sans)", fontSize: "1.1rem", letterSpacing: "0.2em", marginBottom: "var(--spacing-md)", textTransform: "uppercase", opacity: 0.8 }}
+            style={{ fontFamily: "var(--font-sans)", fontSize: "1.1rem", letterSpacing: "0.2em", marginBottom: "var(--spacing-md)", textTransform: "uppercase", opacity: 0.9 }}
           >
             Stay Different. Experience Ho.
           </motion.p>
