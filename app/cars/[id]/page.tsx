@@ -5,7 +5,7 @@ import CarBookingWidget from "../CarBookingWidget";
 import BrandLogo from "@/components/BrandLogo";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
+
 
 export default async function CarDetailsPage({ params }: { params: { id: string } }) {
   const car = await prisma.car.findUnique({

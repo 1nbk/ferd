@@ -5,7 +5,7 @@ import BookingWidget from "./BookingWidget";
 import BrandLogo from "@/components/BrandLogo";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
+
 
 export default async function ApartmentPage() {
   const room = await prisma.room.findFirst({
