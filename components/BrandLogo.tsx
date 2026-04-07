@@ -12,19 +12,19 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
   // Using the requested logo.png
   const logoSrc = "/images/logo.png";
   
-  // Sizing mapping based on size prop - heavily increased for Fitts's Law
+  // Sizing mapping based on size prop
   const sizeMap = {
-    sm: { width: 140, height: 70, padding: "12px" },
-    md: { width: 220, height: 110, padding: "20px" },
-    lg: { width: 350, height: 175, padding: "32px" },
+    sm: { width: 250, height: 125, padding: "16px" },
+    md: { width: 320, height: 160, padding: "24px" },
+    lg: { width: 450, height: 225, padding: "32px" },
   };
 
   const currentSize = sizeMap[size];
 
-  // If the component is placed on a dark background (variant="light" means we need a "light" colored logo),
-  // we invert the logo to make the white background black (to be screened out), and the gold text blue.
-  // Then we hue-rotate 180deg to make the blue text gold again!
-  const isLightMode = variant === "light";
+  // "variant" indicates the theme of the CONTAINER it rests on.
+  // "dark" variant -> Container is dark -> We need an inverted logo
+  // "light" variant -> Container is light -> We need a normal multiplied logo
+  const isDarkTheme = variant === "dark";
 
   return (
     <Link 
@@ -33,7 +33,7 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
         textDecoration: "none", 
         display: "inline-block",
         padding: currentSize.padding, // Fitts's Law: large clickable area
-        margin: `-${currentSize.padding}`, // Offset the padding visually if needed, though usually just an increased hit area is fine
+        margin: `-${currentSize.padding}`, // Offset the padding visually
         borderRadius: "8px",
       }}
       className="brand-logo-link"
@@ -44,8 +44,8 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
           alignItems: "center",
           justifyContent: "center",
           transition: "all 0.3s ease",
-          mixBlendMode: isLightMode ? "screen" : "multiply", 
-          filter: isLightMode ? "invert(1) hue-rotate(180deg) brightness(1.5)" : "contrast(1.1)", // Brighten the gold on dark backgrounds
+          mixBlendMode: isDarkTheme ? "screen" : "multiply", 
+          filter: isDarkTheme ? "invert(1) hue-rotate(180deg) brightness(1.5)" : "contrast(1.1)", // Brighten the gold
         }}
         className="brand-logo-container"
       >

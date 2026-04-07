@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
+import { MapPin, Mail, Phone } from "lucide-react";
+import { FaInstagram, FaFacebook, FaXTwitter } from "react-icons/fa6";
 import BrandLogo from "@/components/BrandLogo";
 
 const wordFocus: Variants = {
@@ -68,12 +70,12 @@ export default function Home() {
 
         <div className="container" style={{ textAlign: "center", color: "var(--color-ivory)", zIndex: 2, position: "relative" }}>
           <motion.div
-            initial={{ opacity: 0, filter: "blur(20px)" }}
-            animate={{ opacity: 1, filter: "blur(0px)" }}
-            transition={{ duration: 1.5, ease: [0.33, 1, 0.68, 1] }}
+            initial={{ opacity: 0, scale: 0.85, filter: "blur(30px)", y: 40 }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)", y: 0 }}
+            transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
             style={{ marginBottom: "var(--spacing-md)", display: "flex", justifyContent: "center" }}
           >
-            <BrandLogo variant="light" size="lg" />
+            <BrandLogo variant="dark" size="lg" />
           </motion.div>
           
           <motion.p 
@@ -179,12 +181,56 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)", textAlign: "center", borderTop: "0.5px solid var(--color-champagne)", display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div style={{ marginBottom: "var(--spacing-md)" }}>
-          <BrandLogo variant="light" size="md" />
+      <footer style={{ backgroundColor: "var(--color-linen)", paddingTop: "var(--spacing-xl)", paddingBottom: "var(--spacing-md)", borderTop: "1px solid var(--color-champagne)", marginTop: "auto" }}>
+        <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "var(--spacing-lg)", marginBottom: "var(--spacing-lg)" }}>
+          
+          {/* Brand Info */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+            <div style={{ marginBottom: "var(--spacing-md)", marginLeft: "-16px" }}>
+              <BrandLogo variant="light" size="sm" />
+            </div>
+            <p style={{ opacity: 0.8, lineHeight: "1.8", maxWidth: "300px" }}>Exclusivity and comfort fused. Experience the ultimate luxury stay and premium rides in the heart of Volta Region.</p>
+          </div>
+
+          {/* Contact Details */}
+          <div>
+            <h4 className="label-caps" style={{ marginBottom: "var(--spacing-md)" }}>Contact Us</h4>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", opacity: 0.8 }}>
+                <MapPin size={18} color="var(--color-gold)" />
+                <span>Ho, Volta Region, Ghana</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", opacity: 0.8 }}>
+                <Phone size={18} color="var(--color-gold)" />
+                <span>+233 (0) 24 123 4567</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", opacity: 0.8 }}>
+                <Mail size={18} color="var(--color-gold)" />
+                <span>reservations@ferdsluxury.com</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Socials */}
+          <div>
+            <h4 className="label-caps" style={{ marginBottom: "var(--spacing-md)" }}>Connect</h4>
+            <div style={{ display: "flex", gap: "1.5rem" }}>
+              <a href="#" style={{ color: "var(--color-obsidian)", opacity: 0.8, transition: "color 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>
+                <FaInstagram />
+              </a>
+              <a href="#" style={{ color: "var(--color-obsidian)", opacity: 0.8, transition: "color 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>
+                <FaFacebook />
+              </a>
+              <a href="#" style={{ color: "var(--color-obsidian)", opacity: 0.8, transition: "color 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>
+                <FaXTwitter />
+              </a>
+            </div>
+          </div>
+
         </div>
-        <p className="label-caps">Ho, Volta Region, Ghana</p>
-        <div style={{ marginTop: "var(--spacing-md)" }}>
+
+        {/* Copyright */}
+        <div className="container" style={{ textAlign: "center", borderTop: "0.5px solid var(--color-champagne)", paddingTop: "var(--spacing-md)" }}>
           <p style={{ fontSize: "0.9rem", color: "var(--color-obsidian)", opacity: 0.6 }}>&copy; {new Date().getFullYear()} Ferd&apos;s Luxury Rentals. All rights reserved.</p>
         </div>
       </footer>
