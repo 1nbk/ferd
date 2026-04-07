@@ -1,9 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import BrandLogo from "@/components/BrandLogo";
 
-const wordFocus = {
+const wordFocus: Variants = {
   initial: { opacity: 0, filter: "blur(10px)", y: 10 },
   animate: { 
     opacity: 1, 
@@ -35,7 +37,7 @@ const WordReveal = ({ text, style }: { text: string; style?: React.CSSProperties
 };
 
 export default function Home() {
-  const springReveal = {
+  const springReveal: Variants = {
     initial: { opacity: 0, scale: 0.95, filter: "blur(10px)" },
     animate: { 
       opacity: 1, 

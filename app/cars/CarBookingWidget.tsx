@@ -76,7 +76,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
         amount: totalPrice * 100,
         publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
         reference: `FERD_${data.bookingId}`,
-        onSuccess: (reference: any) => {
+        onSuccess: (reference: { reference: string }) => {
           window.location.href = `/apartment/success?reference=${reference.reference}&bookingId=${data.bookingId}`;
         },
         onClose: () => {
@@ -85,7 +85,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
         },
       };
 
-      // @ts-ignore
+      // @ts-expect-error - PaystackPop is added via global script
       const handler = window.PaystackPop.setup(paystackConfig);
       handler.openIframe();
 

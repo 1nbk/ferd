@@ -2,9 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { DayPicker, DateRange } from "react-day-picker";
-import { format, differenceInDays } from "date-fns";
+import { differenceInDays } from "date-fns";
 import "react-day-picker/dist/style.css";
-import { usePaystackPayment } from "react-paystack";
 
 interface BookingWidgetProps {
   pricePerNight: number;
@@ -53,7 +52,6 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
   };
 
-  const initializePayment = usePaystackPayment(config);
 
   const handleBooking = async () => {
     if (!range?.from || !range?.to || !guestInfo.email) return;
@@ -84,7 +82,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
       const paystackConfig = {
         ...config,
         reference: `FERD_${data.bookingId}`,
-        onSuccess: (reference: any) => {
+        onSuccess: (reference: { reference: string }) => {
           window.location.href = `/apartment/success?reference=${reference.reference}&bookingId=${data.bookingId}`;
         },
         onClose: () => {
@@ -93,7 +91,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
         },
       };
 
-      // @ts-ignore
+      // @ts-expect-error - PaystackPop is added via global script
       const handler = window.PaystackPop.setup(paystackConfig);
       handler.openIframe();
 

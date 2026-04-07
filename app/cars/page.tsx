@@ -32,7 +32,7 @@ export default async function CarsPage() {
             <p>Our premium fleet is currently being updated. Please check back later.</p>
           </div>
         ) : (
-          cars.map((car: any) => (
+          cars.map((car) => (
             <article key={car.id} style={{ display: "flex", flexDirection: "column" }}>
               
               {/* Image Box */}

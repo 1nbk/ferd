@@ -2,9 +2,22 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, bookingPendingTemplate } from "@/lib/email";
 
+interface BookingRequest {
+  roomId?: string;
+  carId?: string;
+  checkIn: string;
+  checkOut: string;
+  totalPrice: number;
+  guest: {
+    email: string;
+    name: string;
+    phone: string;
+  };
+}
+
 export async function POST(req: Request) {
   try {
-    const { roomId, carId, checkIn, checkOut, totalPrice, guest } = await req.json();
+    const { roomId, carId, checkIn, checkOut, totalPrice, guest }: BookingRequest = await req.json();
 
     if ((!roomId && !carId) || !checkIn || !checkOut || !guest.email) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
