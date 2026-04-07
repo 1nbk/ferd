@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { DayPicker, DateRange } from "react-day-picker";
 import { format, differenceInDays } from "date-fns";
+import { motion, AnimatePresence } from "framer-motion";
 import "react-day-picker/dist/style.css";
 
 interface CarBookingWidgetProps {
@@ -12,14 +13,32 @@ interface CarBookingWidgetProps {
 
 const cssOverrides = `
   .rdp {
-    --rdp-cell-size: 40px;
+    --rdp-cell-size: 38px;
     --rdp-accent-color: var(--color-gold);
-    --rdp-background-color: var(--color-obsidian);
+    --rdp-background-color: var(--color-linen);
     margin: 0;
+    font-family: var(--font-sans);
   }
   .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover {
-    background-color: var(--rdp-accent-color);
-    color: var(--color-obsidian);
+    background-color: var(--rdp-accent-color) !important;
+    color: var(--color-obsidian) !important;
+  }
+  .rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+    background-color: var(--color-champagne);
+  }
+  .booking-input {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: var(--color-linen);
+    border: 1px solid var(--color-champagne);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+  .booking-input:focus {
+    border-color: var(--color-gold);
+    background-color: #fff;
   }
 `;
 
@@ -97,18 +116,28 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
   };
 
   return (
-    <div className="thin-border" style={{ padding: "var(--spacing-md)", position: "sticky", top: "2rem", backgroundColor: "var(--color-ivory)" }}>
+    <motion.div 
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      style={{ 
+        padding: "var(--spacing-md)", 
+        backgroundColor: "#fff", 
+        border: "1px solid var(--color-champagne)",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.05)"
+      }}
+    >
       <style>{cssOverrides}</style>
       
       <div style={{ marginBottom: "var(--spacing-md)", display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
-        <span style={{ fontSize: "2rem", fontFamily: "var(--font-serif)" }}>GHS {pricePerDay}</span>
-        <span style={{ opacity: 0.6 }}>/ day</span>
+        <span style={{ fontSize: "2.2rem", fontFamily: "var(--font-serif)", color: "var(--color-obsidian)" }}>GHS {pricePerDay}</span>
+        <span style={{ opacity: 0.6, fontSize: "0.9rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>/ day</span>
       </div>
 
       {/* Date Selection */}
       <div style={{ marginBottom: "var(--spacing-md)" }}>
-        <p className="label-caps" style={{ marginBottom: "var(--spacing-xs)" }}>Select Rental Dates</p>
-        <div className="thin-border" style={{ padding: "var(--spacing-xs)", backgroundColor: "var(--color-linen)", width: "fit-content" }}>
+        <p className="label-caps" style={{ marginBottom: "var(--spacing-sm)", color: "var(--color-gold)", fontSize: "0.85rem" }}>Select Rental Dates</p>
+        <div style={{ padding: "10px", backgroundColor: "var(--color-linen)", width: "fit-content", border: "0.5px solid var(--color-champagne)" }}>
           <DayPicker 
             mode="range" 
             selected={range} 
@@ -120,8 +149,9 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
 
       {/* Guest Info */}
       <div style={{ marginBottom: "var(--spacing-md)", display: "flex", flexDirection: "column", gap: "var(--spacing-sm)" }}>
-        <p className="label-caps">Guest Information</p>
+        <p className="label-caps" style={{ color: "var(--color-gold)", fontSize: "0.85rem" }}>Guest Information</p>
         <input 
+          className="booking-input"
           name="name" 
           placeholder="Full Name" 
           value={guestInfo.name} 
@@ -129,6 +159,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
           required 
         />
         <input 
+          className="booking-input"
           name="email" 
           type="email" 
           placeholder="Email Address" 
@@ -137,6 +168,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
           required 
         />
         <input 
+          className="booking-input"
           name="phone" 
           placeholder="Phone Number" 
           value={guestInfo.phone} 
@@ -146,31 +178,38 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
       </div>
 
       {/* Price Summary */}
-      {numberOfDays > 0 && (
-        <div style={{ marginBottom: "var(--spacing-md)", padding: "var(--spacing-sm)", backgroundColor: "var(--color-linen)", borderRadius: "2px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                <span>GHS {pricePerDay} x {numberOfDays} days</span>
-                <span>GHS {totalPrice}</span>
-            </div>
-            <div style={{ borderTop: "0.5px solid var(--color-gold)", marginTop: "8px", paddingTop: "8px", display: "flex", justifyContent: "space-between", fontWeight: "bold" }}>
-                <span>Total</span>
-                <span>GHS {totalPrice}</span>
-            </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {numberOfDays > 0 && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            style={{ marginBottom: "var(--spacing-md)", padding: "var(--spacing-sm)", backgroundColor: "var(--color-linen)", border: "0.5px solid var(--color-champagne)" }}
+          >
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "0.95rem", opacity: 0.8 }}>
+                  <span>GHS {pricePerDay} x {numberOfDays} days</span>
+                  <span>GHS {totalPrice}</span>
+              </div>
+              <div style={{ borderTop: "1px solid var(--color-gold)", marginTop: "12px", paddingTop: "12px", display: "flex", justifyContent: "space-between", fontWeight: "600", fontSize: "1.1rem" }}>
+                  <span>Total</span>
+                  <span>GHS {totalPrice}</span>
+              </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <button 
         className="btn btn-primary" 
-        style={{ width: "100%", fontSize: "1rem" }} 
+        style={{ width: "100%", padding: "16px", fontSize: "1rem", letterSpacing: "0.1em", textTransform: "uppercase" }} 
         disabled={!range?.from || !range?.to || !guestInfo.email || loading}
         onClick={handleBooking}
       >
-        {loading ? "Initializing..." : numberOfDays > 0 ? `Reserve for ${numberOfDays} Days` : "Select Rental Dates"}
+        {loading ? "Processing..." : numberOfDays > 0 ? "Book Now" : "Select Dates"}
       </button>
       
-      <p style={{ textAlign: "center", fontSize: "0.8rem", opacity: 0.6, marginTop: "var(--spacing-sm)" }}>
-        Secure payment via Paystack.
+      <p style={{ textAlign: "center", fontSize: "0.75rem", opacity: 0.5, marginTop: "var(--spacing-md)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        Secure Checkout Powered by Paystack
       </p>
-    </div>
+    </motion.div>
   );
 }
