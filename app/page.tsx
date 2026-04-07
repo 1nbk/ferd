@@ -116,7 +116,7 @@ export default function Home() {
           transition={{ duration: 1, delay: 0.5 }}
           style={{ maxWidth: "600px", margin: "0 auto", fontSize: "1.2rem", opacity: 0.9, lineHeight: "1.8" }}
         >
-          Whether you are visiting Ho for business or leisure, Ferd's offers an unparalleled experience. 
+          Whether you are visiting Ho for business or leisure, Ferd&apos;s offers an unparalleled experience. 
           Discover our premium apartment and effortlessly rent luxury vehicles for your stay.
         </motion.p>
       </section>
@@ -175,7 +175,7 @@ export default function Home() {
         </div>
         <p className="label-caps">Ho, Volta Region, Ghana</p>
         <div style={{ marginTop: "var(--spacing-md)" }}>
-          <p style={{ fontSize: "0.9rem", color: "var(--color-obsidian)", opacity: 0.6 }}>&copy; {new Date().getFullYear()} Ferd's Luxury Rentals. All rights reserved.</p>
+          <p style={{ fontSize: "0.9rem", color: "var(--color-obsidian)", opacity: 0.6 }}>&copy; {new Date().getFullYear()} Ferd&apos;s Luxury Rentals. All rights reserved.</p>
         </div>
       </footer>
     </main>
