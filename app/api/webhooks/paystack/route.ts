@@ -1,54 +1,56 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendEmail, paymentConfirmedTemplate } from "@/lib/email";
 import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const rawBody = await req.text();
+    const signature = req.headers.get("x-paystack-signature");
+
+    if (!signature || !process.env.PAYSTACK_SECRET_KEY) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Verify signature
     const hash = crypto
-      .createHmac("sha512", process.env.PAYSTACK_SECRET_KEY!)
-      .update(JSON.stringify(body))
+      .createHmac("sha512", process.env.PAYSTACK_SECRET_KEY)
+      .update(rawBody)
       .digest("hex");
 
-    if (hash !== req.headers.get("x-paystack-signature")) {
-      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    if (hash !== signature) {
+      return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
     }
 
-    const event = body.event;
+    const event = JSON.parse(rawBody);
 
-    if (event === "charge.success") {
-      const { reference, metadata } = body.data;
+    if (event.event === "charge.success") {
+      const { reference, metadata } = event.data;
       const bookingId = metadata?.bookingId;
 
-      if (bookingId) {
-        // 1. Update Booking Status
-        const booking = await prisma.booking.update({
-          where: { id: bookingId },
-          data: { status: "CONFIRMED" },
-          include: { guest: true, room: true, car: true }
-        });
-
-        // 2. Update Payment Record
-        await prisma.payment.update({
-          where: { reference },
-          data: { status: "SUCCESS" }
-        });
-
-        // 3. Send Success Email
-        await sendEmail({
-          to: booking.guest.email,
-          subject: "Payment Confirmed - Ferd's Luxury Rentals",
-          html: paymentConfirmedTemplate(booking, booking.guest.name)
-        });
-
-        console.log(`Payment confirmed for Booking ${bookingId}`);
+      if (!bookingId) {
+        console.error("No bookingId found in metadata for reference:", reference);
+        return NextResponse.json({ error: "No booking ID" }, { status: 400 });
       }
+
+      // Update payment
+      await prisma.payment.updateMany({
+        where: { reference },
+        data: { status: "SUCCESS" },
+      });
+
+      // Update booking
+      await prisma.booking.update({
+        where: { id: bookingId },
+        data: { status: "CONFIRMED" },
+      });
+
+      console.log(`Successfully confirmed booking ${bookingId}`);
     }
 
-    return NextResponse.json({ status: "success" });
+    // Return 200 OK to acknowledge receipt
+    return NextResponse.json({ received: true });
   } catch (error) {
-    console.error("Webhook Error:", error);
-    return NextResponse.json({ error: "Webhook Error" }, { status: 500 });
+    console.error("Webhook processing failed:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { DayPicker, DateRange } from "react-day-picker";
 import { differenceInDays } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
@@ -50,6 +50,22 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
     email: "",
     phone: ""
   });
+  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
+
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      try {
+        const res = await fetch(`/api/availability?roomId=${roomId}`);
+        const data = await res.json();
+        if (data.unavailableDates) {
+          setUnavailableDates(data.unavailableDates.map((d: string) => new Date(d)));
+        }
+      } catch (err) {
+        console.error("Failed to fetch availability", err);
+      }
+    };
+    fetchAvailability();
+  }, [roomId]);
 
   const numberOfNights = useMemo(() => {
     if (range?.from && range?.to) {
@@ -102,7 +118,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
         ...config,
         reference: `FERD_${data.bookingId}`,
         onSuccess: (reference: { reference: string }) => {
-          window.location.href = `/apartment/success?reference=${reference.reference}&bookingId=${data.bookingId}`;
+          window.location.href = `/confirmation/${data.bookingId}?reference=${reference.reference}`;
         },
         onClose: () => {
           setLoading(false);
@@ -149,7 +165,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
             mode="range" 
             selected={range} 
             onSelect={setRange} 
-            disabled={[{ before: new Date() }]} 
+            disabled={[{ before: new Date() }, ...unavailableDates]} 
           />
         </div>
       </div>
