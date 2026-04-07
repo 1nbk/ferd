@@ -30,12 +30,15 @@ model Car {
 }
 
 model Guest {
-  id        String    @id @default(cuid())
-  name      String
-  email     String    @unique
-  phone     String
-  createdAt DateTime  @default(now())
-  bookings  Booking[]
+  id                  String    @id @default(cuid())
+  name                String
+  email               String    @unique
+  phone               String
+  idVerified          Boolean   @default(false)
+  verificationJobId   String?
+  idDocumentUrl       String?
+  createdAt           DateTime  @default(now())
+  bookings            Booking[]
 }
 
 model Booking {

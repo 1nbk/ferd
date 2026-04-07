@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { DayPicker, DateRange } from "react-day-picker";
 import { differenceInDays } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
+import IdentityVerification from "@/components/IdentityVerification";
 import "react-day-picker/dist/style.css";
 
 interface BookingWidgetProps {
@@ -48,8 +49,11 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
   const [guestInfo, setGuestInfo] = useState({
     name: "",
     email: "",
-    phone: ""
+    phone: "",
+    idDocumentUrl: "",
+    idVerified: false
   });
+  const [showVerification, setShowVerification] = useState(false);
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
 
   useEffect(() => {
@@ -225,14 +229,30 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
         className="btn btn-primary" 
         style={{ width: "100%", padding: "16px", fontSize: "1.1rem", letterSpacing: "0.1em", textTransform: "uppercase" }} 
         disabled={!range?.from || !range?.to || !guestInfo.email || loading}
-        onClick={handleBooking}
+        onClick={() => {
+          if (!guestInfo.idVerified) {
+            setShowVerification(true);
+          } else {
+            handleBooking();
+          }
+        }}
       >
-        {loading ? "Processing..." : numberOfNights > 0 ? "Book Stay" : "Select Dates"}
+        {loading ? "Processing..." : numberOfNights > 0 ? (guestInfo.idVerified ? "Complete Booking" : "Verify ID to Proceed") : "Select Dates"}
       </button>
       
       <p style={{ textAlign: "center", fontSize: "0.75rem", opacity: 0.5, marginTop: "var(--spacing-md)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         Secure Checkout via Paystack
       </p>
+
+      {showVerification && (
+        <IdentityVerification 
+          onVerificationComplete={(url) => {
+            setGuestInfo(prev => ({ ...prev, idDocumentUrl: url, idVerified: true }));
+            setShowVerification(false);
+          }}
+          onCancel={() => setShowVerification(false)}
+        />
+      )}
     </motion.div>
   );
 }

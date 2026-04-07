@@ -136,7 +136,7 @@ export default async function AdminDashboard() {
           }}>
             <thead>
               <tr style={{ backgroundColor: "rgba(139, 111, 71, 0.06)" }}>
-                {["Guest", "Resource", "Check-in", "Check-out", "Total", "Status"].map((h) => (
+                {["Guest", "Verification", "Resource", "Check-in", "Check-out", "Total", "Status"].map((h) => (
                   <th key={h} style={{
                     padding: "0.875rem 1.25rem",
                     textAlign: "left",
@@ -177,6 +177,29 @@ export default async function AdminDashboard() {
                       <p style={{ color: "rgba(201, 168, 122, 0.4)", fontSize: "0.75rem", marginTop: "2px" }}>
                         {booking.guest.email}
                       </p>
+                    </td>
+                    <td style={{ padding: "1rem 1.25rem" }}>
+                      {(booking.guest as any).idDocumentUrl ? (
+                         <a 
+                           href={(booking.guest as any).idDocumentUrl} 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           style={{
+                             color: "var(--color-ivory)",
+                             backgroundColor: "rgba(16, 185, 129, 0.15)",
+                             border: "0.5px solid rgba(16, 185, 129, 0.3)",
+                             padding: "4px 8px",
+                             borderRadius: "2px",
+                             fontSize: "0.75rem",
+                             textDecoration: "none",
+                             display: "inline-block"
+                           }}
+                         >
+                           View ID
+                         </a>
+                      ) : (
+                        <span style={{ fontSize: "0.75rem", opacity: 0.5, color: "var(--color-ivory)" }}>None</span>
+                      )}
                     </td>
                     <td style={{ padding: "1rem 1.25rem" }}>
                       {booking.room ? (

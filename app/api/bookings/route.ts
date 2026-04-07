@@ -12,6 +12,8 @@ interface BookingRequest {
     email: string;
     name: string;
     phone: string;
+    idDocumentUrl?: string;
+    idVerified?: boolean;
   };
 }
 
@@ -26,11 +28,18 @@ export async function POST(req: Request) {
     // 1. Create or Find Guest
     const guestRecord = await prisma.guest.upsert({
       where: { email: guest.email },
-      update: { name: guest.name, phone: guest.phone },
+      update: { 
+        name: guest.name, 
+        phone: guest.phone,
+        ...(guest.idDocumentUrl && { idDocumentUrl: guest.idDocumentUrl }),
+        ...(guest.idVerified && { idVerified: guest.idVerified })
+      },
       create: {
         email: guest.email,
         name: guest.name,
         phone: guest.phone,
+        idDocumentUrl: guest.idDocumentUrl,
+        idVerified: guest.idVerified || false,
       },
     });
 
