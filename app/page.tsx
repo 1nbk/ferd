@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import { MapPin, Mail, Phone } from "lucide-react";
-import { FaInstagram, FaFacebook, FaXTwitter } from "react-icons/fa6";
+import { FaInstagram, FaFacebook, FaTiktok } from "react-icons/fa6";
 import BrandLogo from "@/components/BrandLogo";
 
 const wordFocus: Variants = {
@@ -181,12 +181,12 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer style={{ backgroundColor: "var(--color-linen)", paddingTop: "var(--spacing-xl)", paddingBottom: "var(--spacing-md)", borderTop: "1px solid var(--color-champagne)", marginTop: "auto" }}>
+      <footer style={{ backgroundColor: "var(--color-linen)", paddingTop: "var(--spacing-lg)", paddingBottom: "var(--spacing-md)", borderTop: "1px solid var(--color-champagne)", marginTop: "auto" }}>
         <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "var(--spacing-lg)", marginBottom: "var(--spacing-lg)" }}>
           
           {/* Brand Info */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-            <div style={{ marginBottom: "var(--spacing-md)", marginLeft: "-16px" }}>
+            <div style={{ marginBottom: "var(--spacing-sm)", marginLeft: "-8px" }}>
               <BrandLogo variant="light" size="sm" />
             </div>
             <p style={{ opacity: 0.8, lineHeight: "1.8", maxWidth: "300px" }}>Exclusivity and comfort fused. Experience the ultimate luxury stay and premium rides in the heart of Volta Region.</p>
@@ -222,7 +222,7 @@ export default function Home() {
                 <FaFacebook />
               </a>
               <a href="#" style={{ color: "var(--color-obsidian)", opacity: 0.8, transition: "color 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>
-                <FaXTwitter />
+                <FaTiktok />
               </a>
             </div>
           </div>

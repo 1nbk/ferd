@@ -12,11 +12,11 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
   // Using the requested logo.png
   const logoSrc = "/images/logo.png";
   
-  // Sizing mapping based on size prop
+  // Sizing mapping based on size prop - refined for better balance
   const sizeMap = {
-    sm: { width: 250, height: 125, padding: "16px" },
-    md: { width: 320, height: 160, padding: "24px" },
-    lg: { width: 450, height: 225, padding: "32px" },
+    sm: { width: 150, height: 75, padding: "8px" },
+    md: { width: 240, height: 120, padding: "12px" },
+    lg: { width: 380, height: 190, padding: "24px" },
   };
 
   const currentSize = sizeMap[size];
@@ -32,8 +32,7 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
       style={{ 
         textDecoration: "none", 
         display: "inline-block",
-        padding: currentSize.padding, // Fitts's Law: large clickable area
-        margin: `-${currentSize.padding}`, // Offset the padding visually
+        padding: currentSize.padding, // Fitts's Law: moderate clickable area without breaking layout
         borderRadius: "8px",
       }}
       className="brand-logo-link"
@@ -45,7 +44,7 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
           justifyContent: "center",
           transition: "all 0.3s ease",
           mixBlendMode: isDarkTheme ? "screen" : "multiply", 
-          filter: isDarkTheme ? "invert(1) hue-rotate(180deg) brightness(1.5)" : "contrast(1.1)", // Brighten the gold
+          filter: isDarkTheme ? "invert(1) hue-rotate(180deg) brightness(1.5)" : "contrast(1.1)", 
         }}
         className="brand-logo-container"
       >
