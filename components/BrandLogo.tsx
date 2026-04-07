@@ -12,11 +12,11 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
   // Using the requested logo.png
   const logoSrc = "/images/logo.png";
   
-  // Sizing mapping based on size prop - refined for better balance
+  // Sizing mapping based on size prop - balanced for elegance without breaking layout
   const sizeMap = {
-    sm: { width: 150, height: 75, padding: "8px" },
-    md: { width: 240, height: 120, padding: "12px" },
-    lg: { width: 380, height: 190, padding: "24px" },
+    sm: { width: 160, height: 80, padding: "4px" },
+    md: { width: 240, height: 120, padding: "8px" },
+    lg: { width: 380, height: 190, padding: "16px" },
   };
 
   const currentSize = sizeMap[size];
