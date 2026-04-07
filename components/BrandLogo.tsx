@@ -21,6 +21,11 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
 
   const currentSize = sizeMap[size];
 
+  // If the component is placed on a dark background (variant="light" means we need a "light" colored logo),
+  // we might need a different blend mode or filter. But for dark variants (placed on light backgrounds),
+  // multiply works perfectly to remove the white background.
+  const isLightMode = variant === "light";
+
   return (
     <Link href="/" style={{ textDecoration: "none", display: "inline-block" }}>
       <div
@@ -29,6 +34,8 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
           alignItems: "center",
           justifyContent: "center",
           transition: "all 0.3s ease",
+          mixBlendMode: isLightMode ? "screen" : "multiply", 
+          filter: isLightMode ? "invert(1)" : "none", // If it's on a dark bg (light variant requested), invert the black/gold and screen the bg
         }}
         className="brand-logo-container"
       >
