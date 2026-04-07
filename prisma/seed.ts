@@ -3,6 +3,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
+import bcrypt from "bcryptjs";
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
@@ -50,7 +51,6 @@ async function main() {
       features: ["V8 Bi-Turbo Engine", "Massive Performance", "Hyper-Luxury Cabin", "Iconic Design"],
     }
   ];
-
   for (const car of cars) {
     await prisma.car.upsert({
       where: { id: car.id },
@@ -58,6 +58,19 @@ async function main() {
       create: car,
     });
   }
+
+  // Seed Admin User
+  const adminEmail = "gbknathaniel@gmail.com";
+  const hashedPassword = await bcrypt.hash("admin123", 12);
+  
+  await prisma.adminUser.upsert({
+    where: { email: adminEmail },
+    update: { passwordHash: hashedPassword },
+    create: {
+      email: adminEmail,
+      passwordHash: hashedPassword,
+    },
+  });
 
   console.log("Seeding completed successfully.");
 }
