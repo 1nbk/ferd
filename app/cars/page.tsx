@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+
+export const revalidate = 60; // Cache page for 60s (ISR)
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import VehicleGrid from "@/components/VehicleGrid";

@@ -1,4 +1,6 @@
 import Image from "next/image";
+
+export const revalidate = 60; // Cache page for 60s (ISR)
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import BookingWidget from "./BookingWidget";
