@@ -29,7 +29,7 @@ export default async function ApartmentPage() {
         
         {/* Header */}
         <div style={{ marginBottom: "var(--spacing-lg)", textAlign: "center" }}>
-          <h1 style={{ fontSize: "4.5rem", marginBottom: "var(--spacing-xs)" }}>{room.name}</h1>
+          <h1 style={{ fontSize: "3.5rem", marginBottom: "var(--spacing-xs)" }}>{room.name}</h1>
           <p className="label-caps" style={{ color: "var(--color-gold)", letterSpacing: "0.2em" }}>Ho, Volta Region, Ghana</p>
         </div>
 
