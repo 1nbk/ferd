@@ -33,7 +33,7 @@ export default function RootLayout({
       <body className={`${cormorant.variable} ${dmSans.variable}`}>
         <Script
           src="https://js.paystack.co/v1/inline.js"
-          strategy="beforeInteractive"
+          strategy="lazyOnload"
         />
         {children}
       </body>

@@ -3,7 +3,10 @@ import { PrismaNeon } from "@prisma/adapter-neon";
 import { neonConfig } from "@neondatabase/serverless";
 import ws from "ws";
 
+// Use WebSockets for the Neon adapter (required in Node.js environments)
 neonConfig.webSocketConstructor = ws;
+// Enable connection caching to reduce per-request latency
+neonConfig.poolQueryViaFetch = true;
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
