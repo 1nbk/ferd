@@ -6,9 +6,10 @@ import BrandLogo from "./BrandLogo";
 
 interface NavigationProps {
   theme?: "transparent" | "solid";
+  hideLogo?: boolean;
 }
 
-export default function Navigation({ theme = "solid" }: NavigationProps) {
+export default function Navigation({ theme = "solid", hideLogo = false }: NavigationProps) {
   const pathname = usePathname();
   
   const isTransparent = theme === "transparent";
@@ -36,9 +37,9 @@ export default function Navigation({ theme = "solid" }: NavigationProps) {
 
   return (
     <nav className="container" style={navStyle}>
-      <BrandLogo variant={isTransparent ? "dark" : "light"} size="sm" />
-      
-      <div style={{ display: "flex", gap: "var(--spacing-md)" }}>
+      {!hideLogo && <BrandLogo variant={isTransparent ? "dark" : "light"} size="sm" />}
+
+      <div style={{ display: "flex", gap: "var(--spacing-md)", marginLeft: hideLogo ? "auto" : undefined }}>
         <Link href="/apartment" className="label-caps" style={linkStyle("/apartment")}>
           Apartment
         </Link>

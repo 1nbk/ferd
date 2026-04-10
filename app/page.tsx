@@ -60,7 +60,7 @@ export default function Home() {
 
   return (
     <main>
-      <Navigation theme="transparent" />
+      <Navigation theme="transparent" hideLogo />
       <section style={{ position: "relative", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", backgroundColor: "var(--color-obsidian)" }}>
         {/* Background Image */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 1 }}>
