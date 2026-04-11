@@ -31,8 +31,8 @@ export default async function ApartmentPage() {
         
         {/* Header */}
         <div style={{ marginBottom: "var(--spacing-lg)", textAlign: "center" }}>
-          <h1 style={{ fontSize: "3.5rem", marginBottom: "var(--spacing-xs)" }}>{room.name}</h1>
-          <p className="label-caps" style={{ color: "var(--color-gold)", letterSpacing: "0.2em" }}>Ho, Volta Region, Ghana</p>
+          <h1 style={{ fontSize: "2.4rem", marginBottom: "var(--spacing-xs)", letterSpacing: "-0.01em", fontWeight: 500 }}>{room.name}</h1>
+          <p className="label-caps" style={{ color: "var(--color-gold)", letterSpacing: "0.2em", fontSize: "0.75rem" }}>Ho, Volta Region, Ghana</p>
         </div>
 
         {/* Gallery */}
@@ -56,8 +56,8 @@ export default async function ApartmentPage() {
           {/* Left Column: Details */}
           <div>
             <div style={{ paddingBottom: "var(--spacing-lg)", borderBottom: "0.5px solid var(--color-champagne)", marginBottom: "var(--spacing-lg)" }}>
-              <h2 style={{ fontSize: "2.5rem", marginBottom: "var(--spacing-md)" }}>About this Space</h2>
-              <p style={{ fontSize: "1.2rem", lineHeight: "1.8", color: "var(--color-obsidian)", opacity: 0.9 }}>{room.description}</p>
+              <h2 style={{ fontSize: "1.8rem", marginBottom: "var(--spacing-sm)", fontWeight: 500 }}>About this Space</h2>
+              <p style={{ fontSize: "1.05rem", lineHeight: "1.8", color: "var(--color-obsidian)", opacity: 0.8 }}>{room.description}</p>
             </div>
 
             <div style={{ paddingBottom: "var(--spacing-lg)", marginBottom: "var(--spacing-lg)" }}>
