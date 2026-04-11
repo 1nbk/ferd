@@ -154,39 +154,42 @@ export default function InteractiveGallery() {
             transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
             style={{ 
               maxWidth: "680px", 
-              color: "var(--color-ivory)",
-              background: "rgba(15, 15, 15, 0.4)",
-              backdropFilter: "blur(12px)",
-              padding: "40px",
+              color: "#FFFFFF",
+              background: "rgba(0, 0, 0, 0.75)",
+              backdropFilter: "blur(16px)",
+              padding: "50px",
               borderRadius: "4px",
-              borderLeft: "2px solid var(--color-gold)",
-              boxShadow: "0 20px 40px rgba(0,0,0,0.4)"
+              borderLeft: "3px solid var(--color-gold)",
+              boxShadow: "0 30px 60px rgba(0,0,0,0.5)"
             }}
           >
             <span className="label-caps" style={{ 
               color: "var(--color-gold)", 
-              fontSize: "0.8rem", 
+              fontSize: "0.85rem", 
               letterSpacing: "0.5em", 
               display: "block", 
-              marginBottom: "1rem" 
+              marginBottom: "1.2rem",
+              textShadow: "0 1px 3px rgba(0,0,0,0.5)"
             }}>
               {active.label}
             </span>
             <h2 style={{ 
-              fontSize: "clamp(2.5rem, 5vw, 4rem)", 
+              fontSize: "clamp(2.5rem, 5vw, 4.2rem)", 
               fontFamily: "var(--font-serif)", 
               lineHeight: 1.1, 
               marginBottom: "1.5rem",
-              fontWeight: 400
+              fontWeight: 400,
+              textShadow: "0 2px 10px rgba(0,0,0,0.4)"
             }}>
               {active.tagline}
             </h2>
             <p style={{ 
-              fontSize: "1.1rem", 
-              opacity: 0.9, 
+              fontSize: "1.15rem", 
               lineHeight: "1.8", 
               marginBottom: "2.5rem",
-              maxWidth: "550px" 
+              maxWidth: "550px",
+              color: "rgba(255, 255, 255, 0.95)",
+              textShadow: "0 1px 5px rgba(0,0,0,0.3)"
             }}>
               {active.sub}
             </p>
