@@ -58,7 +58,7 @@ const ITEMS: GalleryItem[] = [
   },
   {
     src: "/images/gle.png",
-    label: "Executive Logistics",
+    label: "Executive Class",
     tagline: "Commanding Presence",
     sub: "For the discerning traveler, transportation is a statement of intent. We facilitate prestige movement with absolute discretion.",
     cta: { text: "Rent Executive", href: "/cars" },
@@ -95,7 +95,7 @@ export default function InteractiveGallery() {
     if (!isHovering) {
       intervalRef.current = setInterval(() => {
         setActiveIndex((prev) => (prev + 1) % ITEMS.length);
-      }, 4500);
+      }, 5000);
     }
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -105,146 +105,191 @@ export default function InteractiveGallery() {
   const active = ITEMS[activeIndex];
 
   return (
-    <section style={{ backgroundColor: "#0f0f0f", padding: "var(--spacing-xl) 0", overflow: "hidden", position: "relative" }}>
-      {/* Background decoration */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, opacity: 0.03, pointerEvents: "none" }}>
-        <div style={{ position: "absolute", top: "10%", left: "5%", width: "40%", height: "40%", border: "1px solid var(--color-gold)", borderRadius: "50%" }} />
-        <div style={{ position: "absolute", bottom: "10%", right: "5%", width: "30%", height: "30%", border: "1px solid var(--color-gold)", borderRadius: "50%" }} />
-      </div>
-
-      <div className="container">
-        <div style={{ marginBottom: "var(--spacing-lg)", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <div>
-            <span className="label-caps" style={{ color: "var(--color-gold)", fontSize: "0.8rem", letterSpacing: "0.4em", display: "block", marginBottom: "0.5rem" }}>Gallery of Excellence</span>
-            <h2 style={{ color: "var(--color-ivory)", fontSize: "3rem", fontFamily: "var(--font-serif)", fontWeight: 400 }}>Experience Our Industry</h2>
-          </div>
-          <div style={{ textAlign: "right", paddingBottom: "0.5rem" }}>
-             <span style={{ color: "var(--color-gold)", fontSize: "1.5rem", fontFamily: "var(--font-serif)" }}>{String(activeIndex + 1).padStart(2, '0')}</span>
-             <span style={{ color: "rgba(255,255,255,0.3)", margin: "0 0.5rem" }}>/</span>
-             <span style={{ color: "rgba(255,255,255,0.5)" }}>{ITEMS.length}</span>
-          </div>
-        </div>
-
-        <div 
-          style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "var(--spacing-lg)", minHeight: "650px", position: "relative" }}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
+    <section 
+      style={{ 
+        backgroundColor: "#000", 
+        height: "90vh", 
+        maxHeight: "900px",
+        position: "relative", 
+        overflow: "hidden" 
+      }}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      {/* ── BACKGROUND LAYER ── */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeIndex}
+          initial={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, scale: 0.9, filter: "blur(20px)" }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          style={{ position: "absolute", inset: 0, zIndex: 1 }}
         >
-          {/* Main Display */}
-          <div style={{ position: "relative", borderRadius: "4px", overflow: "hidden", border: "1px solid rgba(212, 175, 55, 0.2)", backgroundColor: "#151515" }}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                style={{ position: "absolute", inset: 0 }}
-              >
-                <Image
-                  src={active.src}
-                  alt={active.tagline}
-                  fill
-                  style={{ objectFit: "cover" }}
-                  priority
-                />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)" }} />
-                
-                {/* Content Overlay */}
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "var(--spacing-lg)", color: "var(--color-ivory)" }}>
-                   <motion.div
-                     initial={{ opacity: 0, y: 30 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     transition={{ delay: 0.3, duration: 0.6 }}
-                   >
-                     <span className="label-caps" style={{ color: "var(--color-gold)", fontSize: "0.7rem", marginBottom: "0.5rem", display: "block" }}>{active.label}</span>
-                     <h3 style={{ fontSize: "2.8rem", marginBottom: "1rem" }}>{active.tagline}</h3>
-                     <p style={{ maxWidth: "600px", fontSize: "1.1rem", opacity: 0.8, lineHeight: "1.7", marginBottom: "1.5rem" }}>{active.sub}</p>
-                     <Link href={active.cta.href} className="btn-outline" style={{ display: "inline-block", color: "var(--color-ivory)", borderColor: "var(--color-gold)", padding: "10px 25px", fontSize: "0.8rem", letterSpacing: "0.2em", textTransform: "uppercase", textDecoration: "none" }}>{active.cta.text}</Link>
-                   </motion.div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-            
-            {/* Auto-play indicator */}
-            <div style={{ position: "absolute", bottom: 0, left: 0, height: "3px", backgroundColor: "var(--color-gold)", width: isHovering ? "0%" : "100%", transition: isHovering ? "none" : "width 4.5s linear", transformOrigin: "left" }} />
-          </div>
+          <Image
+            src={active.src}
+            alt={active.tagline}
+            fill
+            style={{ objectFit: "cover" }}
+            priority
+          />
+          {/* Complex cinematic gradient/overlay */}
+          <div style={{ 
+            position: "absolute", 
+            inset: 0, 
+            background: "radial-gradient(circle at 30% 50%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.85) 100%)",
+            zIndex: 2
+          }} />
+        </motion.div>
+      </AnimatePresence>
 
-          {/* Thumbnail Grid - "Small Small" Floating Gallery */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gridAutoRows: "1fr", gap: "10px", position: "relative" }}>
-             {ITEMS.map((item, idx) => {
-               const isActive = idx === activeIndex;
-               
-               // Complex floating movements
-               const float = {
-                 y: [0, Math.sin(idx) * 10, 0],
-                 x: [0, Math.cos(idx) * 5, 0],
-                 rotate: [0, Math.sin(idx) * 2, 0]
-               };
-
-               return (
-                 <motion.div
-                   key={idx}
-                   animate={isHovering ? { y: 0, x: 0, rotate: 0 } : float}
-                   transition={{ duration: 4 + (idx % 3), repeat: Infinity, ease: "easeInOut" }}
-                   style={{ position: "relative", cursor: "pointer", aspectRatio: "1/1" }}
-                   onMouseEnter={() => setActiveIndex(idx)}
-                 >
-                   <div style={{ 
-                     position: "absolute", 
-                     inset: 0, 
-                     borderRadius: "2px", 
-                     overflow: "hidden", 
-                     border: isActive ? "2px solid var(--color-gold)" : "1px solid rgba(255,255,255,0.1)",
-                     transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                     boxShadow: isActive ? "0 0 20px rgba(212,175,55,0.4)" : "none",
-                     zIndex: isActive ? 2 : 1,
-                     transform: isActive ? "scale(1.1)" : "scale(1)"
-                   }}>
-                     {/* Loading Shimmer Overlay */}
-                     <div style={{ 
-                       position: "absolute", 
-                       inset: 0, 
-                       zIndex: 3, 
-                       background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%)",
-                       backgroundSize: "200% 100%",
-                       animation: "shimmerThumb 2s infinite linear",
-                       pointerEvents: "none"
-                     }} />
-                     
-                     <Image 
-                       src={item.src} 
-                       alt="" 
-                       fill 
-                       style={{ objectFit: "cover", opacity: isActive ? 1 : 0.6, transition: "opacity 0.3s" }} 
-                     />
-                     
-                     {/* Hover highlight */}
-                     {!isActive && (
-                       <div style={{ position: "absolute", inset: 0, backgroundColor: "#000", opacity: 0.3, transition: "opacity 0.3s" }} />
-                     )}
-                   </div>
-                 </motion.div>
-               );
-             })}
-             
-             {/* Dynamic background particles/glows for the grid */}
-             <div style={{ position: "absolute", width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }}>
-                <div style={{ position: "absolute", top: "20%", left: "30%", width: "100px", height: "100px", background: "var(--color-gold)", filter: "blur(80px)", opacity: 0.15 }} />
-                <div style={{ position: "absolute", bottom: "10%", right: "10%", width: "150px", height: "150px", background: "var(--color-gold)", filter: "blur(100px)", opacity: 0.1 }} />
-             </div>
-          </div>
-        </div>
+      {/* ── CONTENT OVERLAY (Z-Index 3) ── */}
+      <div className="container" style={{ position: "relative", height: "100%", zIndex: 10, display: "flex", alignItems: "center" }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`content-${activeIndex}`}
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
+            style={{ maxWidth: "650px", color: "var(--color-ivory)" }}
+          >
+            <span className="label-caps" style={{ 
+              color: "var(--color-gold)", 
+              fontSize: "0.8rem", 
+              letterSpacing: "0.5em", 
+              display: "block", 
+              marginBottom: "1rem" 
+            }}>
+              {active.label}
+            </span>
+            <h2 style={{ 
+              fontSize: "clamp(3rem, 6vw, 4.5rem)", 
+              fontFamily: "var(--font-serif)", 
+              lineHeight: 1, 
+              marginBottom: "1.5rem",
+              textShadow: "0 2px 10px rgba(0,0,0,0.3)" 
+            }}>
+              {active.tagline}
+            </h2>
+            <p style={{ 
+              fontSize: "1.2rem", 
+              opacity: 0.85, 
+              lineHeight: "1.8", 
+              marginBottom: "2rem",
+              maxWidth: "500px" 
+            }}>
+              {active.sub}
+            </p>
+            <Link 
+              href={active.cta.href} 
+              className="btn btn-primary" 
+              style={{ 
+                backgroundColor: "var(--color-gold)", 
+                color: "#000", 
+                padding: "18px 40px",
+                display: "inline-block" 
+              }}
+            >
+              {active.cta.text}
+            </Link>
+          </motion.div>
+        </AnimatePresence>
       </div>
+
+      {/* ── THUMBNAIL CLOUD OVERLAY (Z-Index 4) ── */}
+      <div 
+        style={{ 
+          position: "absolute", 
+          right: "5%", 
+          top: "50%", 
+          transform: "translateY(-50%)",
+          zIndex: 20,
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 80px)",
+          gap: "12px",
+          pointerEvents: "auto"
+        }}
+      >
+        {ITEMS.map((item, idx) => {
+          const isActive = idx === activeIndex;
+          
+          return (
+            <motion.button
+              key={idx}
+              onClick={() => setActiveIndex(idx)}
+              onMouseEnter={() => setActiveIndex(idx)}
+              whileHover={{ scale: 1.15, zIndex: 30 }}
+              animate={{ 
+                y: [0, (idx % 2 === 0 ? -8 : 8), 0],
+                opacity: isActive ? 1 : 0.65,
+                border: isActive ? "2px solid var(--color-gold)" : "1px solid rgba(255,255,255,0.2)"
+              }}
+              transition={{ 
+                y: { duration: 4 + (idx % 4), repeat: Infinity, ease: "easeInOut", delay: idx * 0.2 },
+                opacity: { duration: 0.3 }
+              }}
+              style={{ 
+                position: "relative",
+                width: "80px",
+                height: "80px",
+                borderRadius: "2px",
+                overflow: "hidden",
+                cursor: "pointer",
+                background: "#000",
+                padding: 0,
+                outline: "none",
+                boxShadow: isActive ? "0 0 20px rgba(212,175,55,0.5)" : "none"
+              }}
+            >
+              {/* Shimmer effect for "Loading" feel */}
+              <div style={{ 
+                position: "absolute", 
+                inset: 0, 
+                zIndex: 2, 
+                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%)",
+                backgroundSize: "200% 100%",
+                animation: "shimmerThumb 3s infinite linear",
+                pointerEvents: "none"
+              }} />
+              
+              <Image 
+                src={item.src} 
+                alt="" 
+                fill 
+                style={{ 
+                  objectFit: "cover",
+                  transition: "transform 0.5s ease",
+                  transform: isActive ? "scale(1.1)" : "scale(1)"
+                }} 
+              />
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* Auto-play progress ring (bottom right) */}
+      {!isHovering && (
+        <div style={{ position: "absolute", bottom: "40px", right: "40px", zIndex: 30 }}>
+            <svg width="40" height="40" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" />
+              <motion.circle 
+                cx="20" cy="20" r="18" 
+                fill="none" 
+                stroke="var(--color-gold)" 
+                strokeWidth="2"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 5, ease: "linear", repeat: Infinity }}
+              />
+            </svg>
+        </div>
+      )}
 
       <style>{`
         @keyframes shimmerThumb {
           0% { background-position: -200% 0; }
           100% { background-position: 200% 0; }
-        }
-        .btn-outline:hover {
-          background-color: var(--color-gold) !important;
-          color: #000 !important;
         }
       `}</style>
     </section>
