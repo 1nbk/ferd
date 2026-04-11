@@ -148,11 +148,20 @@ export default function InteractiveGallery() {
         <AnimatePresence mode="wait">
           <motion.div
             key={`content-${activeIndex}`}
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: -40, scale: 0.98 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 20, scale: 1.02 }}
             transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
-            style={{ maxWidth: "650px", color: "var(--color-ivory)" }}
+            style={{ 
+              maxWidth: "680px", 
+              color: "var(--color-ivory)",
+              background: "rgba(15, 15, 15, 0.4)",
+              backdropFilter: "blur(12px)",
+              padding: "40px",
+              borderRadius: "4px",
+              borderLeft: "2px solid var(--color-gold)",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.4)"
+            }}
           >
             <span className="label-caps" style={{ 
               color: "var(--color-gold)", 
@@ -164,20 +173,20 @@ export default function InteractiveGallery() {
               {active.label}
             </span>
             <h2 style={{ 
-              fontSize: "clamp(3rem, 6vw, 4.5rem)", 
+              fontSize: "clamp(2.5rem, 5vw, 4rem)", 
               fontFamily: "var(--font-serif)", 
-              lineHeight: 1, 
+              lineHeight: 1.1, 
               marginBottom: "1.5rem",
-              textShadow: "0 2px 10px rgba(0,0,0,0.3)" 
+              fontWeight: 400
             }}>
               {active.tagline}
             </h2>
             <p style={{ 
-              fontSize: "1.2rem", 
-              opacity: 0.85, 
+              fontSize: "1.1rem", 
+              opacity: 0.9, 
               lineHeight: "1.8", 
-              marginBottom: "2rem",
-              maxWidth: "500px" 
+              marginBottom: "2.5rem",
+              maxWidth: "550px" 
             }}>
               {active.sub}
             </p>
@@ -187,8 +196,13 @@ export default function InteractiveGallery() {
               style={{ 
                 backgroundColor: "var(--color-gold)", 
                 color: "#000", 
-                padding: "18px 40px",
-                display: "inline-block" 
+                padding: "16px 36px",
+                display: "inline-block",
+                border: "none",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                fontSize: "0.85rem"
               }}
             >
               {active.cta.text}
