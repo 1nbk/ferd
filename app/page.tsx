@@ -3,11 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
-import { MapPin, Mail, Phone } from "lucide-react";
-import { FaInstagram, FaFacebook, FaTiktok } from "react-icons/fa6";
 import BrandLogo from "@/components/BrandLogo";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import InteractiveGallery from "@/components/InteractiveGallery";
 
 const wordFocus: Variants = {
   initial: { opacity: 0, filter: "blur(10px)", y: 10 },
@@ -43,20 +42,6 @@ const WordReveal = ({ text, style }: { text: string; style?: React.CSSProperties
 
 
 export default function Home() {
-  const springReveal: Variants = {
-    initial: { opacity: 0, scale: 0.95, filter: "blur(10px)" },
-    animate: { 
-      opacity: 1, 
-      scale: 1, 
-      filter: "blur(0px)",
-      transition: { 
-        type: "spring", 
-        mass: 0.5, 
-        stiffness: 100, 
-        damping: 10 
-      }
-    }
-  };
 
   return (
     <main>
@@ -138,52 +123,8 @@ export default function Home() {
         </motion.p>
       </section>
 
-      {/* Features Grid */}
-      <section style={{ backgroundColor: "var(--color-obsidian)", color: "var(--color-ivory)", padding: "var(--spacing-lg) 0" }}>
-        <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "var(--spacing-lg)" }}>
-          
-          <motion.div 
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={springReveal}
-            style={{ padding: "var(--spacing-md)" }}
-          >
-            <div style={{ height: "350px", width: "100%", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)", position: "relative", overflow: "hidden" }}>
-              <Image 
-                  src="/images/bedroom.png" 
-                  alt="Apartment Bedroom" 
-                  fill
-                  style={{ objectFit: 'cover' }}
-               />
-            </div>
-            <h3 style={{ color: "var(--color-ivory)", fontSize: "2rem" }}>The Apartment</h3>
-            <p style={{ marginBottom: "var(--spacing-sm)", fontSize: "1.1rem", opacity: 0.8 }}>Exquisitely furnished spaces designed for ultimate comfort and relaxation.</p>
-            <Link href="/apartment" className="label-caps" style={{ borderBottom: "1px solid var(--color-gold)", paddingBottom: "2px" }}>Discover your stay</Link>
-          </motion.div>
-
-          <motion.div 
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={springReveal}
-            style={{ padding: "var(--spacing-md)" }}
-          >
-             <div style={{ height: "350px", width: "100%", backgroundColor: "var(--color-linen)", marginBottom: "var(--spacing-md)", position: "relative", overflow: "hidden" }}>
-              <Image 
-                  src="/images/suv.png" 
-                  alt="Car Rental" 
-                  fill
-                  style={{ objectFit: 'cover' }}
-               />
-            </div>
-            <h3 style={{ color: "var(--color-ivory)", fontSize: "2rem" }}>The Fleet</h3>
-            <p style={{ marginBottom: "var(--spacing-sm)", fontSize: "1.1rem", opacity: 0.8 }}>Premium vehicles available exclusively for our guests and local clients.</p>
-            <Link href="/cars" className="label-caps" style={{ borderBottom: "1px solid var(--color-gold)", paddingBottom: "2px" }}>View vehicles</Link>
-          </motion.div>
-
-        </div>
-      </section>
+      {/* Interactive Gallery */}
+      <InteractiveGallery />
 
       <Footer />
     </main>
