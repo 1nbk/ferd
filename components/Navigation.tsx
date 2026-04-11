@@ -24,8 +24,8 @@ export default function Navigation({ theme = "solid", hideLogo = false }: Naviga
     left: 0,
     right: 0,
     zIndex: 10,
-    backgroundColor: isTransparent ? "transparent" : "var(--color-linen)", 
-    borderBottom: isTransparent ? "none" : "0.5px solid var(--color-champagne)",
+    backgroundColor: "transparent", 
+    borderBottom: "none",
   };
 
   const linkStyle = (path: string): React.CSSProperties => ({

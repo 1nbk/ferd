@@ -13,19 +13,20 @@ export default async function CarsPage() {
       <Navigation theme="solid" />
 
       {/* Page Header */}
-      <section className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)", textAlign: "center" }}>
+      <section className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm) var(--spacing-sm)", textAlign: "center" }}>
         <h1 style={{ 
-          fontSize: "1.5rem", 
-          marginBottom: "var(--spacing-sm)", 
+          fontSize: "0.9rem", 
+          marginBottom: "var(--spacing-xs)", 
           textTransform: "uppercase", 
-          letterSpacing: "0.25em", 
+          letterSpacing: "0.4em", 
           fontWeight: 400,
-          color: "var(--color-obsidian)" 
+          color: "var(--color-obsidian)",
+          opacity: 0.8
         }}>
           The Fleet
         </h1>
-        <p style={{ fontSize: "0.95rem", maxWidth: "500px", margin: "0 auto", opacity: 0.6, lineHeight: "1.6" }}>
-          Explore our exclusive collection of premium vehicles to enhance your stay in the Volta Region.
+        <p style={{ fontSize: "0.85rem", maxWidth: "400px", margin: "0 auto", opacity: 0.5, lineHeight: "1.6", letterSpacing: "0.02em" }}>
+          Premium mobility solutions for the discerning traveler.
         </p>
       </section>
 

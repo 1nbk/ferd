@@ -30,15 +30,16 @@ export default async function ApartmentPage() {
       <div className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)" }}>
         
         {/* Header */}
-        <div style={{ marginBottom: "var(--spacing-lg)", textAlign: "center" }}>
+        <div style={{ marginBottom: "var(--spacing-md)", textAlign: "center" }}>
           <h1 style={{ 
-            fontSize: "1.5rem", 
+            fontSize: "0.9rem", 
             marginBottom: "var(--spacing-xs)", 
             textTransform: "uppercase", 
-            letterSpacing: "0.25em", 
-            fontWeight: 400 
+            letterSpacing: "0.4em", 
+            fontWeight: 400,
+            opacity: 0.8
           }}>{room.name}</h1>
-          <p className="label-caps" style={{ color: "var(--color-gold)", letterSpacing: "0.25em", fontSize: "0.7rem", opacity: 0.8 }}>Ho, Volta Region, Ghana</p>
+          <p className="label-caps" style={{ color: "var(--color-gold)", letterSpacing: "0.3em", fontSize: "0.65rem", opacity: 0.6 }}>Ho, Volta Region, Ghana</p>
         </div>
 
         {/* Gallery */}
@@ -63,12 +64,13 @@ export default async function ApartmentPage() {
           <div>
             <div style={{ paddingBottom: "var(--spacing-lg)", borderBottom: "0.5px solid var(--color-champagne)", marginBottom: "var(--spacing-lg)" }}>
               <h2 style={{ 
-                fontSize: "1.1rem", 
+                fontSize: "0.85rem", 
                 marginBottom: "var(--spacing-sm)", 
                 textTransform: "uppercase", 
-                letterSpacing: "0.15em", 
+                letterSpacing: "0.2em", 
                 fontWeight: 600,
-                color: "var(--color-obsidian)"
+                color: "var(--color-obsidian)",
+                opacity: 0.7
               }}>
                 About this Space
               </h2>
