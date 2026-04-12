@@ -15,7 +15,7 @@ export default function Navigation({ theme = "solid", hideLogo = false }: Naviga
   const isTransparent = theme === "transparent";
   
   const navStyle: React.CSSProperties = {
-    padding: "0 var(--spacing-sm) 0.5rem",
+    padding: "0 var(--spacing-sm)",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
