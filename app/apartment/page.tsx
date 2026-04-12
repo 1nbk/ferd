@@ -27,7 +27,7 @@ export default async function ApartmentPage() {
     <main>
       <Navigation theme="solid" />
 
-      <div className="container" style={{ padding: "var(--spacing-lg) var(--spacing-sm)" }}>
+      <div className="container" style={{ padding: "var(--spacing-sm) var(--spacing-sm) var(--spacing-lg)" }}>
         
         {/* Header */}
         <div style={{ marginBottom: "var(--spacing-md)", textAlign: "center" }}>

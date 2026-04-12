@@ -13,7 +13,7 @@ export default async function CarsPage() {
       <Navigation theme="solid" />
 
       {/* Page Header */}
-      <section className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm) var(--spacing-sm)", textAlign: "center" }}>
+      <section className="container" style={{ padding: "var(--spacing-sm) var(--spacing-sm)", textAlign: "center" }}>
         <h1 style={{ 
           fontSize: "0.9rem", 
           marginBottom: "var(--spacing-xs)", 
