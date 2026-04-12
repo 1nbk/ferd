@@ -155,12 +155,7 @@ export default function InteractiveGallery() {
             style={{ 
               maxWidth: "680px", 
               color: "#FFFFFF",
-              background: "rgba(0, 0, 0, 0.75)",
-              backdropFilter: "blur(16px)",
-              padding: "50px",
-              borderRadius: "4px",
-              borderLeft: "3px solid var(--color-gold)",
-              boxShadow: "0 30px 60px rgba(0,0,0,0.5)"
+              padding: "0 20px"
             }}
           >
             <span className="label-caps" style={{ 
@@ -179,7 +174,8 @@ export default function InteractiveGallery() {
               lineHeight: 1.1, 
               marginBottom: "1.5rem",
               fontWeight: 400,
-              textShadow: "0 2px 10px rgba(0,0,0,0.4)"
+              color: "#FFFFFF",
+              textShadow: "0 2px 10px rgba(0,0,0,0.7)"
             }}>
               {active.tagline}
             </h2>
