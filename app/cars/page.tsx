@@ -15,7 +15,7 @@ export default async function CarsPage() {
       {/* Page Header */}
       <section className="container" style={{ padding: "0 var(--spacing-sm) var(--spacing-sm)", textAlign: "center" }}>
         <h1 style={{ 
-          fontSize: "0.9rem", 
+          fontSize: "1.6rem", 
           marginBottom: "var(--spacing-xs)", 
           textTransform: "uppercase", 
           letterSpacing: "0.4em", 
@@ -25,7 +25,7 @@ export default async function CarsPage() {
         }}>
           The Fleet
         </h1>
-        <p style={{ fontSize: "0.85rem", maxWidth: "400px", margin: "0 auto", opacity: 0.5, lineHeight: "1.6", letterSpacing: "0.02em" }}>
+        <p style={{ fontSize: "1rem", maxWidth: "400px", margin: "0 auto", opacity: 0.5, lineHeight: "1.6", letterSpacing: "0.02em" }}>
           Premium mobility solutions for the discerning traveler.
         </p>
       </section>

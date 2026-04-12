@@ -32,14 +32,14 @@ export default async function ApartmentPage() {
         {/* Header */}
         <div style={{ marginBottom: "var(--spacing-md)", textAlign: "center" }}>
           <h1 style={{ 
-            fontSize: "0.9rem", 
+            fontSize: "1.6rem", 
             marginBottom: "var(--spacing-xs)", 
             textTransform: "uppercase", 
             letterSpacing: "0.4em", 
             fontWeight: 400,
             opacity: 0.8
           }}>{room.name}</h1>
-          <p className="label-caps" style={{ color: "var(--color-gold)", letterSpacing: "0.3em", fontSize: "0.65rem", opacity: 0.6 }}>Ho, Volta Region, Ghana</p>
+          <p className="label-caps" style={{ color: "var(--color-gold)", letterSpacing: "0.3em", fontSize: "0.85rem", opacity: 0.6 }}>Ho, Volta Region, Ghana</p>
         </div>
 
         {/* Gallery */}
