@@ -14,8 +14,8 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
   
   // Sizing mapping based on size prop - balanced for elegance without breaking layout
   const sizeMap = {
-    sm: { width: 160, height: 80, padding: "0" },
-    md: { width: 240, height: 120, padding: "8px" },
+    sm: { width: 110, height: 50, padding: "0" },
+    md: { width: 200, height: 90, padding: "8px" },
     lg: { width: 380, height: 190, padding: "16px" },
   };
 
