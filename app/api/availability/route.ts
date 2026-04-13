@@ -12,11 +12,19 @@ export async function GET(req: Request) {
   }
 
   try {
+    const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+
     // 1. Get all active bookings for this resource
     const bookings = await prisma.booking.findMany({
       where: {
         ...(roomId ? { roomId } : { carId }),
-        status: { notIn: ["CANCELLED"] },
+        OR: [
+          { status: "CONFIRMED" },
+          { 
+            status: "PENDING",
+            createdAt: { gte: thirtyMinutesAgo }
+          }
+        ]
       },
       select: { checkIn: true, checkOut: true },
     });

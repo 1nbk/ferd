@@ -25,6 +25,31 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+
+    // 0. Prevent Double Booking
+    const overlapping = await prisma.booking.findFirst({
+      where: {
+        roomId: roomId || undefined,
+        carId: carId || undefined,
+        OR: [
+          { status: "CONFIRMED" },
+          { 
+            status: "PENDING",
+            createdAt: { gte: thirtyMinutesAgo }
+          }
+        ],
+        AND: [
+          { checkIn: { lt: new Date(checkOut) } },
+          { checkOut: { gt: new Date(checkIn) } }
+        ]
+      }
+    });
+
+    if (overlapping) {
+      return NextResponse.json({ error: "These dates are no longer available. Please select different dates." }, { status: 409 });
+    }
+
     // 1. Create or Find Guest
     const guestRecord = await prisma.guest.upsert({
       where: { email: guest.email },
