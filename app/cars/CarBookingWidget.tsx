@@ -115,6 +115,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
         amount: totalPrice * 100,
         publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
         reference: `FERD_${data.bookingId}`,
+        access_code: data.access_code,
         onSuccess: (reference: { reference: string }) => {
           window.location.href = `/confirmation/${data.bookingId}?reference=${reference.reference}`;
         },

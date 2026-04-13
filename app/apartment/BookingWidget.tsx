@@ -121,6 +121,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
       const paystackConfig = {
         ...config,
         reference: `FERD_${data.bookingId}`,
+        access_code: data.access_code,
         onSuccess: (reference: { reference: string }) => {
           window.location.href = `/confirmation/${data.bookingId}?reference=${reference.reference}`;
         },

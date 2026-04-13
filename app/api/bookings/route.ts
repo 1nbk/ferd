@@ -78,7 +78,7 @@ export async function POST(req: Request) {
         email: guest.email,
         amount: totalPrice * 100, // Paystack uses kobo/cents
         reference: `FERD_${booking.id}`,
-        callback_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/bookings/callback`,
+        callback_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/confirmation/${booking.id}`,
         metadata: {
           bookingId: booking.id,
         },

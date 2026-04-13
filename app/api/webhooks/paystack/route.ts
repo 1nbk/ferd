@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
+import { sendEmail, paymentConfirmedTemplate } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -39,12 +40,24 @@ export async function POST(req: Request) {
       });
 
       // Update booking
-      await prisma.booking.update({
+      const updatedBooking = await prisma.booking.update({
         where: { id: bookingId },
         data: { status: "CONFIRMED" },
+        include: {
+          guest: true,
+          room: true,
+          car: true,
+        }
       });
 
       console.log(`Successfully confirmed booking ${bookingId}`);
+
+      // Send confirmation email
+      sendEmail({
+        to: updatedBooking.guest.email,
+        subject: "Reservation Confirmed - Ferd's Luxury Rentals",
+        html: paymentConfirmedTemplate(updatedBooking, updatedBooking.guest.name)
+      }).catch(err => console.error("Async email error:", err));
     }
 
     // Return 200 OK to acknowledge receipt
