@@ -60,11 +60,11 @@ export default function Footer() {
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "1rem", opacity: 0.8, fontSize: "0.95rem" }}>
               <Phone size={16} color="var(--color-gold)" />
-              <span>+233 (0) 24 123 4567</span>
+              <span>0246899872</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "1rem", opacity: 0.8, fontSize: "0.95rem" }}>
               <Mail size={16} color="var(--color-gold)" />
-              <span>reservations@ferdsluxury.com</span>
+              <span>ferdsapartmentandluxury@gmail.com</span>
             </div>
           </div>
         </div>
