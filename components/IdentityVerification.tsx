@@ -30,9 +30,10 @@ export default function IdentityVerification({ onVerificationComplete, onCancel 
 
   const validateId = () => {
     if (idType === "ghana_card") {
-      const ghanaCardRegex = /^GHA-\d{9}-\d$/i;
-      if (!ghanaCardRegex.test(idNumber)) {
-        setIdError("Invalid Ghana Card format. Example: GHA-123456789-0");
+      // Ghana Card format: GHA-XXXXXXXXX-X (9 or 10 digits in body, 1 check digit)
+      const ghanaCardRegex = /^GHA-\d{9,10}-\d{1,2}$/i;
+      if (!ghanaCardRegex.test(idNumber.trim())) {
+        setIdError("Invalid Ghana Card format. Expected: GHA-123456789-0");
         return false;
       }
     } else {
