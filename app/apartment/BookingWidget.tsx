@@ -51,6 +51,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
     email: "",
     phone: "",
     idDocumentUrl: "",
+    idNumber: "",
     idVerified: false
   });
   const [showVerification, setShowVerification] = useState(false);
@@ -247,8 +248,8 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
 
       {showVerification && (
         <IdentityVerification 
-          onVerificationComplete={(url) => {
-            setGuestInfo(prev => ({ ...prev, idDocumentUrl: url, idVerified: true }));
+          onVerificationComplete={(url, idNum) => {
+            setGuestInfo(prev => ({ ...prev, idDocumentUrl: url, idNumber: idNum, idVerified: true }));
             setShowVerification(false);
           }}
           onCancel={() => setShowVerification(false)}

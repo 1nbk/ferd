@@ -13,6 +13,7 @@ interface BookingRequest {
     name: string;
     phone: string;
     idDocumentUrl?: string;
+    idNumber?: string;
     idVerified?: boolean;
   };
 }
@@ -57,6 +58,7 @@ export async function POST(req: Request) {
         name: guest.name, 
         phone: guest.phone,
         ...(guest.idDocumentUrl && { idDocumentUrl: guest.idDocumentUrl }),
+        ...(guest.idNumber && { idNumber: guest.idNumber }),
         ...(guest.idVerified && { idVerified: guest.idVerified })
       },
       create: {
@@ -64,6 +66,7 @@ export async function POST(req: Request) {
         name: guest.name,
         phone: guest.phone,
         idDocumentUrl: guest.idDocumentUrl,
+        idNumber: guest.idNumber,
         idVerified: guest.idVerified || false,
       },
     });

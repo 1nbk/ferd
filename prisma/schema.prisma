@@ -37,6 +37,7 @@ model Guest {
   idVerified          Boolean   @default(false)
   verificationJobId   String?
   idDocumentUrl       String?
+  idNumber            String?
   createdAt           DateTime  @default(now())
   bookings            Booking[]
 }

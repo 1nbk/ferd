@@ -5,24 +5,51 @@ import { CldUploadWidget } from "next-cloudinary";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface IdentityVerificationProps {
-  onVerificationComplete: (idUrl: string) => void;
+  onVerificationComplete: (idUrl: string, idNumber: string) => void;
   onCancel: () => void;
 }
 
 export default function IdentityVerification({ onVerificationComplete, onCancel }: IdentityVerificationProps) {
-  const [step, setStep] = useState<"intro" | "upload" | "processing" | "success">("intro");
+  const [step, setStep] = useState<"intro" | "details" | "upload" | "processing" | "success">("intro");
   const [documentUrl, setDocumentUrl] = useState<string | null>(null);
+  const [idType, setIdType] = useState<"ghana_card" | "passport">("ghana_card");
+  const [idNumber, setIdNumber] = useState("");
+  const [idError, setIdError] = useState("");
 
   const simulateProcessing = (url: string) => {
     setStep("processing");
-    // Simulate AI OCR and Liveness Check delay
+    // Simulate secure transmission delay
     setTimeout(() => {
       setDocumentUrl(url);
       setStep("success");
       setTimeout(() => {
-        onVerificationComplete(url);
+        onVerificationComplete(url, idNumber);
       }, 1500);
-    }, 3000);
+    }, 2500);
+  };
+
+  const validateId = () => {
+    if (idType === "ghana_card") {
+      const ghanaCardRegex = /^GHA-\d{9}-\d$/i;
+      if (!ghanaCardRegex.test(idNumber)) {
+        setIdError("Invalid Ghana Card format. Example: GHA-123456789-0");
+        return false;
+      }
+    } else {
+      const passportRegex = /^G\d{7}$/i;
+      if (!passportRegex.test(idNumber)) {
+        setIdError("Invalid Passport format. Example: G1234567");
+        return false;
+      }
+    }
+    setIdError("");
+    return true;
+  };
+
+  const handleDetailsProceed = () => {
+    if (validateId()) {
+      setStep("upload");
+    }
   };
 
   return (
@@ -86,8 +113,49 @@ export default function IdentityVerification({ onVerificationComplete, onCancel 
                 </ul>
               </div>
 
-              <button className="btn btn-primary" style={{ width: "100%", padding: "16px", fontSize: "1.1rem" }} onClick={() => setStep("upload")}>
+              <button className="btn btn-primary" style={{ width: "100%", padding: "16px", fontSize: "1.1rem" }} onClick={() => setStep("details")}>
                 Begin Verification
+              </button>
+            </motion.div>
+          )}
+
+          {step === "details" && (
+            <motion.div key="details" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <h2 style={{ fontSize: "1.8rem", marginBottom: "8px", textAlign: "center" }}>Identity Details</h2>
+              <p style={{ opacity: 0.8, marginBottom: "24px", textAlign: "center" }}>Please provide your primary identification number.</p>
+
+              <div style={{ marginBottom: "16px" }}>
+                <label className="label-caps" style={{ display: "block", marginBottom: "8px", fontSize: "0.75rem", color: "var(--color-obsidian)" }}>Document Type</label>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button 
+                    onClick={() => { setIdType("ghana_card"); setIdError(""); setIdNumber(""); }}
+                    style={{ flex: 1, padding: "10px", fontSize: "0.9rem", border: idType === "ghana_card" ? "2px solid var(--color-gold)" : "1px solid var(--color-champagne)", backgroundColor: idType === "ghana_card" ? "var(--color-linen)" : "transparent", cursor: "pointer", transition: "all 0.2s" }}
+                  >
+                    Ghana Card
+                  </button>
+                  <button 
+                    onClick={() => { setIdType("passport"); setIdError(""); setIdNumber(""); }}
+                    style={{ flex: 1, padding: "10px", fontSize: "0.9rem", border: idType === "passport" ? "2px solid var(--color-gold)" : "1px solid var(--color-champagne)", backgroundColor: idType === "passport" ? "var(--color-linen)" : "transparent", cursor: "pointer", transition: "all 0.2s" }}
+                  >
+                    Passport
+                  </button>
+                </div>
+              </div>
+
+              <div style={{ marginBottom: "24px" }}>
+                <label className="label-caps" style={{ display: "block", marginBottom: "8px", fontSize: "0.75rem", color: "var(--color-obsidian)" }}>{idType === "ghana_card" ? "Ghana Card Number" : "Passport Number"}</label>
+                <input 
+                  type="text" 
+                  value={idNumber}
+                  onChange={(e) => { setIdNumber(e.target.value.toUpperCase()); setIdError(""); }}
+                  placeholder={idType === "ghana_card" ? "GHA-123456789-0" : "G1234567"}
+                  style={{ width: "100%", padding: "12px 16px", border: idError ? "1px solid red" : "1px solid var(--color-champagne)", outline: "none", fontSize: "1rem", backgroundColor: "var(--color-ivory)", fontFamily: "var(--font-sans)" }}
+                />
+                {idError && <p style={{ color: "red", fontSize: "0.8rem", marginTop: "8px" }}>{idError}</p>}
+              </div>
+
+              <button className="btn btn-primary" style={{ width: "100%", padding: "16px", fontSize: "1.1rem" }} onClick={handleDetailsProceed}>
+                Continue
               </button>
             </motion.div>
           )}
@@ -128,8 +196,8 @@ export default function IdentityVerification({ onVerificationComplete, onCancel 
             <motion.div key="processing" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} style={{ textAlign: "center", padding: "40px 0" }}>
               <div style={{ display: "inline-block", width: "50px", height: "50px", border: "3px solid var(--color-champagne)", borderTopColor: "var(--color-gold)", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
               <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
-              <h3 style={{ marginTop: "24px", fontSize: "1.5rem" }}>Verifying Identity...</h3>
-              <p style={{ opacity: 0.7, marginTop: "8px" }}>Checking document authenticity against databases.</p>
+              <h3 style={{ marginTop: "24px", fontSize: "1.5rem" }}>Encrypting Credentials...</h3>
+              <p style={{ opacity: 0.7, marginTop: "8px" }}>Securely vaulting your identity document.</p>
             </motion.div>
           )}
 

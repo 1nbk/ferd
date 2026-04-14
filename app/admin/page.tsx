@@ -178,7 +178,12 @@ export default async function AdminDashboard() {
                         {booking.guest.email}
                       </p>
                     </td>
-                    <td style={{ padding: "1rem 1.25rem" }}>
+                    <td style={{ padding: "1rem 1.25rem", display: "flex", flexDirection: "column", gap: "6px" }}>
+                      {(booking.guest as any).idNumber && (
+                        <span style={{ fontSize: "0.8rem", color: "var(--color-gold)", fontFamily: "monospace", letterSpacing: "0.05em" }}>
+                          {(booking.guest as any).idNumber}
+                        </span>
+                      )}
                       {(booking.guest as any).idDocumentUrl ? (
                          <a 
                            href={(booking.guest as any).idDocumentUrl} 
@@ -192,13 +197,14 @@ export default async function AdminDashboard() {
                              borderRadius: "2px",
                              fontSize: "0.75rem",
                              textDecoration: "none",
-                             display: "inline-block"
+                             display: "inline-block",
+                             width: "max-content"
                            }}
                          >
-                           View ID
+                           View ID Image
                          </a>
                       ) : (
-                        <span style={{ fontSize: "0.75rem", opacity: 0.5, color: "var(--color-ivory)" }}>None</span>
+                        <span style={{ fontSize: "0.75rem", opacity: 0.5, color: "var(--color-ivory)" }}>No Image</span>
                       )}
                     </td>
                     <td style={{ padding: "1rem 1.25rem" }}>
