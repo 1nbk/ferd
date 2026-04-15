@@ -36,3 +36,17 @@ export async function blockDates(data: { roomId?: string; carId?: string; date: 
     return { success: false, error: "Failed to block dates" };
   }
 }
+
+export async function deleteBlockedDate(id: string) {
+  try {
+    await prisma.blockedDate.delete({
+      where: { id }
+    });
+    
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to delete blocked date:", error);
+    return { success: false, error: "Failed to delete blocked date" };
+  }
+}

@@ -3,7 +3,9 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import StatusBadge from "./StatusBadge";
-import { CalendarDays, TrendingUp, Car, Building2 } from "lucide-react";
+import BlockDatesWidget from "./BlockDatesWidget";
+import { deleteBlockedDate } from "./actions";
+import { CalendarDays, TrendingUp, Car, Building2, Trash2 } from "lucide-react";
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
@@ -18,6 +20,25 @@ export default async function AdminDashboard() {
       createdAt: "desc",
     },
   });
+
+  const rooms = await prisma.room.findMany({ select: { id: true, name: true } });
+  const cars = await prisma.car.findMany({ select: { id: true, name: true } });
+  
+  const blockedDates = await prisma.blockedDate.findMany({
+    include: {
+      room: true,
+      car: true,
+    },
+    orderBy: {
+      date: "asc"
+    },
+    where: {
+      date: { gte: new Date() } // Only show future blocks
+    }
+  });
+
+  // Group blocked dates by resource and range for cleaner display
+  // For now, let's keep it simple and just list them.
 
   const totalRevenue = bookings
     .filter((b) => b.status === "CONFIRMED" || b.status === "COMPLETED")
@@ -99,6 +120,47 @@ export default async function AdminDashboard() {
           </div>
         ))}
       </div>
+
+      {/* Block Dates Widget */}
+      <BlockDatesWidget rooms={rooms} cars={cars} />
+
+      {/* active blocks list */}
+      {blockedDates.length > 0 && (
+        <div style={{ marginBottom: "2.5rem" }}>
+          <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.25rem", color: "var(--color-gold)", marginBottom: "1rem" }}>
+            Current Maintenance Blocks
+          </h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "10px" }}>
+            {blockedDates.map(block => (
+              <div key={block.id} style={{
+                backgroundColor: "rgba(255,255,255,0.03)",
+                border: "0.5px solid rgba(139, 111, 71, 0.2)",
+                padding: "0.75rem 1rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}>
+                <div>
+                  <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--color-ivory)" }}>
+                    {block.room ? block.room.name : block.car?.name}
+                  </p>
+                  <p style={{ margin: 0, fontSize: "0.7rem", color: "rgba(201, 168, 122, 0.6)" }}>
+                    {new Date(block.date).toLocaleDateString("en-GB")} {block.reason ? `- ${block.reason}` : ""}
+                  </p>
+                </div>
+                <form action={async () => {
+                   "use server";
+                   await deleteBlockedDate(block.id);
+                }}>
+                  <button type="submit" style={{ background: "none", border: "none", cursor: "pointer", color: "#f87171", padding: "5px" }}>
+                    <Trash2 size={14} />
+                  </button>
+                </form>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Conflict Alert Banner */}
       {conflictBookings > 0 && (
