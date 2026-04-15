@@ -56,6 +56,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
   });
   const [showVerification, setShowVerification] = useState(false);
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
+  const [errorStatus, setErrorStatus] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAvailability = async () => {
@@ -132,13 +133,12 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
         },
       };
 
-      // @ts-expect-error - PaystackPop is added via global script
-      const handler = window.PaystackPop.setup(paystackConfig);
+      const handler = (window as any).PaystackPop.setup(paystackConfig);
       handler.openIframe();
 
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Something went wrong. Please try again.");
+      setErrorStatus(error.message || "Failed to initialize payment. Please try again.");
       setLoading(false);
     }
   };
@@ -208,6 +208,23 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
 
       {/* Price Summary */}
       <AnimatePresence>
+        {errorStatus && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            style={{ 
+              marginBottom: "var(--spacing-md)", 
+              padding: "12px", 
+              backgroundColor: "rgba(239, 68, 68, 0.05)", 
+              border: "0.5px solid #ef4444", 
+              color: "#ef4444",
+              fontSize: "0.85rem",
+              textAlign: "center"
+            }}
+          >
+            {errorStatus}
+          </motion.div>
+        )}
         {numberOfNights > 0 && (
           <motion.div 
             initial={{ opacity: 0, height: 0 }}

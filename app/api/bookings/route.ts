@@ -28,9 +28,31 @@ export async function POST(req: Request) {
 
     // 0. Recalculate Price on Server (Security Hardening)
     let serverCalculatedPrice = 0;
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Start of today
+
     const start = new Date(checkIn);
     const end = new Date(checkOut);
+
+    // Security: Prevents booking dates in the past
+    if (start < now) {
+      return NextResponse.json({ error: "Check-in date cannot be in the past" }, { status: 400 });
+    }
+    if (end <= start) {
+      return NextResponse.json({ error: "Check-out must be at least one day after check-in" }, { status: 400 });
+    }
+
     const diffDays = Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
+
+    // Sanitization: Clean up guest inputs
+    const cleanGuest = {
+      email: guest.email.trim().toLowerCase(),
+      name: guest.name.trim(),
+      phone: guest.phone.trim(),
+      idDocumentUrl: guest.idDocumentUrl,
+      idNumber: guest.idNumber,
+      idVerified: guest.idVerified,
+    };
 
     if (roomId) {
       const room = await prisma.room.findUnique({ where: { id: roomId } });
@@ -75,21 +97,21 @@ export async function POST(req: Request) {
 
     // 1. Create or Find Guest
     const guestRecord = await prisma.guest.upsert({
-      where: { email: guest.email },
+      where: { email: cleanGuest.email },
       update: { 
-        name: guest.name, 
-        phone: guest.phone,
-        ...(guest.idDocumentUrl && { idDocumentUrl: guest.idDocumentUrl }),
-        ...(guest.idNumber && { idNumber: guest.idNumber }),
-        ...(guest.idVerified && { idVerified: guest.idVerified })
+        name: cleanGuest.name, 
+        phone: cleanGuest.phone,
+        ...(cleanGuest.idDocumentUrl && { idDocumentUrl: cleanGuest.idDocumentUrl }),
+        ...(cleanGuest.idNumber && { idNumber: cleanGuest.idNumber }),
+        ...(cleanGuest.idVerified !== undefined && { idVerified: cleanGuest.idVerified })
       },
       create: {
-        email: guest.email,
-        name: guest.name,
-        phone: guest.phone,
-        idDocumentUrl: guest.idDocumentUrl,
-        idNumber: guest.idNumber,
-        idVerified: guest.idVerified || false,
+        email: cleanGuest.email,
+        name: cleanGuest.name,
+        phone: cleanGuest.phone,
+        idDocumentUrl: cleanGuest.idDocumentUrl,
+        idNumber: cleanGuest.idNumber,
+        idVerified: cleanGuest.idVerified || false,
       },
     });
 
@@ -112,12 +134,17 @@ export async function POST(req: Request) {
 
     // 3. Send Pending Email (Fire and forget)
     sendEmail({
-      to: guest.email,
-      subject: "Reservation Pending - Ferd's Luxury Rentals",
-      html: bookingPendingTemplate(booking, guest.name || guestRecord.name)
+      to: cleanGuest.email,
+      subject: "Reservation Received - Ferd's Luxury Rentals",
+      html: bookingPendingTemplate(booking, cleanGuest.name || guestRecord.name)
     }).catch(err => console.error("Async email error:", err));
 
     // 4. Initialize Paystack Transaction
+    if (!process.env.PAYSTACK_SECRET_KEY) {
+      console.error("PAYSTACK_SECRET_KEY is missing in env");
+      return NextResponse.json({ error: "Payment configuration error" }, { status: 500 });
+    }
+
     const paystackRes = await fetch("https://api.paystack.co/transaction/initialize", {
       method: "POST",
       headers: {
@@ -125,7 +152,7 @@ export async function POST(req: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: guest.email,
+        email: cleanGuest.email,
         amount: Math.round(serverCalculatedPrice * 100), // Paystack uses kobo/cents
         reference: `FERD_${booking.id}`,
         callback_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/confirmation/${booking.id}`,
