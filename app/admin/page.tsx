@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import StatusBadge from "./StatusBadge";
 import BlockDatesWidget from "./BlockDatesWidget";
+import VerifyIdButton from "./VerifyIdButton";
 import { deleteBlockedDate } from "./actions";
 import { CalendarDays, TrendingUp, Car, Building2, Trash2 } from "lucide-react";
 
@@ -274,24 +275,27 @@ export default async function AdminDashboard() {
                         </span>
                       )}
                       {(booking.guest as any).idDocumentUrl ? (
-                         <a 
-                           href={(booking.guest as any).idDocumentUrl} 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           style={{
-                             color: "var(--color-ivory)",
-                             backgroundColor: "rgba(16, 185, 129, 0.15)",
-                             border: "0.5px solid rgba(16, 185, 129, 0.3)",
-                             padding: "4px 8px",
-                             borderRadius: "2px",
-                             fontSize: "0.75rem",
-                             textDecoration: "none",
-                             display: "inline-block",
-                             width: "max-content"
-                           }}
-                         >
-                           View ID Image
-                         </a>
+                         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                           <a 
+                             href={(booking.guest as any).idDocumentUrl} 
+                             target="_blank" 
+                             rel="noopener noreferrer"
+                             style={{
+                               color: "var(--color-ivory)",
+                               backgroundColor: "rgba(16, 185, 129, 0.15)",
+                               border: "0.5px solid rgba(16, 185, 129, 0.3)",
+                               padding: "4px 8px",
+                               borderRadius: "2px",
+                               fontSize: "0.75rem",
+                               textDecoration: "none",
+                               display: "inline-block",
+                               width: "max-content"
+                             }}
+                           >
+                             View ID Image
+                           </a>
+                           <VerifyIdButton guestId={booking.guestId} isVerified={booking.guest.idVerified} />
+                         </div>
                       ) : (
                         <span style={{ fontSize: "0.75rem", opacity: 0.5, color: "var(--color-ivory)" }}>No Image</span>
                       )}

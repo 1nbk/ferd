@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import BrandLogo from "@/components/BrandLogo";
 import { notFound } from "next/navigation";
+import StatusPoller from "./StatusPoller";
 
 export default async function ConfirmationPage({ params, searchParams }: { params: { bookingId: string }, searchParams: { reference: string } }) {
   const booking = await prisma.booking.findUnique({
@@ -32,9 +33,14 @@ export default async function ConfirmationPage({ params, searchParams }: { param
           </div>
           <h1 style={{ fontSize: "2.5rem", marginBottom: "var(--spacing-sm)" }}>Payment Pending</h1>
           <p style={{ fontSize: "1rem", opacity: 0.7, marginBottom: "var(--spacing-lg)", lineHeight: 1.7 }}>
-            We have received your reservation but your payment is still being processed. Please check your email for updates. If you completed payment, it may take a few minutes to reflect.
+            We have received your reservation but your payment is still being processed. Once verified, this page will automatically unlock.
           </p>
-          <Link href="/" className="btn btn-outline" style={{ display: "inline-block" }}>Return Home</Link>
+          
+          <StatusPoller bookingId={params.bookingId} />
+
+          <div style={{ marginTop: "2rem" }}>
+            <Link href="/" className="btn btn-outline" style={{ display: "inline-block" }}>Return Home</Link>
+          </div>
         </div>
       </main>
     );

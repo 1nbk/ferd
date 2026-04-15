@@ -50,3 +50,18 @@ export async function deleteBlockedDate(id: string) {
     return { success: false, error: "Failed to delete blocked date" };
   }
 }
+
+export async function verifyGuestId(guestId: string) {
+  try {
+    await prisma.guest.update({
+      where: { id: guestId },
+      data: { idVerified: true }
+    });
+    
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to verify guest ID:", error);
+    return { success: false, error: "Failed to verify ID" };
+  }
+}

@@ -26,6 +26,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    // 0. Recalculate Price on Server (Security Hardening)
+    let serverCalculatedPrice = 0;
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    const diffDays = Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
+
+    if (roomId) {
+      const room = await prisma.room.findUnique({ where: { id: roomId } });
+      if (!room) return NextResponse.json({ error: "Room not found" }, { status: 404 });
+      serverCalculatedPrice = room.pricePerNight * diffDays;
+    } else if (carId) {
+      const car = await prisma.car.findUnique({ where: { id: carId } });
+      if (!car) return NextResponse.json({ error: "Car not found" }, { status: 404 });
+      serverCalculatedPrice = car.pricePerDay * diffDays;
+    }
+
+    // Verify if client sent a suspiciously different price
+    if (Math.abs(totalPrice - serverCalculatedPrice) > 1) {
+      console.warn(`Price mismatch detected for ${guest.email}: Client sent ${totalPrice}, Server calced ${serverCalculatedPrice}`);
+      // We'll enforce the server price for security
+    }
+
     const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
 
     // 0. Prevent Double Booking
@@ -41,8 +63,8 @@ export async function POST(req: Request) {
           }
         ],
         AND: [
-          { checkIn: { lt: new Date(checkOut) } },
-          { checkOut: { gt: new Date(checkIn) } }
+          { checkIn: { lt: end } },
+          { checkOut: { gt: start } }
         ]
       }
     });
@@ -77,9 +99,9 @@ export async function POST(req: Request) {
         roomId: roomId || null,
         carId: carId || null,
         guestId: guestRecord.id,
-        checkIn: new Date(checkIn),
-        checkOut: new Date(checkOut),
-        totalPrice,
+        checkIn: start,
+        checkOut: end,
+        totalPrice: serverCalculatedPrice,
         status: "PENDING",
       },
       include: {
@@ -104,7 +126,7 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         email: guest.email,
-        amount: totalPrice * 100, // Paystack uses kobo/cents
+        amount: Math.round(serverCalculatedPrice * 100), // Paystack uses kobo/cents
         reference: `FERD_${booking.id}`,
         callback_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/confirmation/${booking.id}`,
         metadata: {
@@ -123,7 +145,7 @@ export async function POST(req: Request) {
     await prisma.payment.create({
       data: {
         bookingId: booking.id,
-        amount: totalPrice,
+        amount: serverCalculatedPrice,
         reference: paystackData.data.reference,
         status: "PENDING",
       },
