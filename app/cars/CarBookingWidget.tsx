@@ -114,7 +114,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
       const paystackConfig = {
         email: guestInfo.email,
         amount: totalPrice * 100,
-        publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
+        key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
         reference: `FERD_${data.bookingId}`,
         access_code: data.access_code,
         onSuccess: (reference: { reference: string }) => {

@@ -89,7 +89,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
     reference: `FERD_${Math.floor(Math.random() * 1000000000 + 1)}`, // Temporary, will be overridden
     email: guestInfo.email,
     amount: totalPrice * 100,
-    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
+    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
   };
 
 
