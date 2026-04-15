@@ -17,6 +17,29 @@ export default async function ConfirmationPage({ params, searchParams }: { param
     return notFound();
   }
 
+  // If payment hasn't cleared yet, show a holding page
+  if (booking.status === "PENDING") {
+    return (
+      <main style={{ minHeight: "100vh", backgroundColor: "var(--color-ivory)", display: "flex", flexDirection: "column" }}>
+        <nav className="container" style={{ padding: "var(--spacing-md) var(--spacing-sm)", width: "100%", borderBottom: "0.5px solid var(--color-champagne)", marginBottom: "var(--spacing-xl)" }}>
+          <BrandLogo variant="light" size="sm" />
+        </nav>
+        <div className="container" style={{ flex: 1, padding: "0 var(--spacing-sm)", textAlign: "center", maxWidth: "600px" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "var(--spacing-md)" }}>
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--color-champagne)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <h1 style={{ fontSize: "2.5rem", marginBottom: "var(--spacing-sm)" }}>Payment Pending</h1>
+          <p style={{ fontSize: "1rem", opacity: 0.7, marginBottom: "var(--spacing-lg)", lineHeight: 1.7 }}>
+            We have received your reservation but your payment is still being processed. Please check your email for updates. If you completed payment, it may take a few minutes to reflect.
+          </p>
+          <Link href="/" className="btn btn-outline" style={{ display: "inline-block" }}>Return Home</Link>
+        </div>
+      </main>
+    );
+  }
+
   const resourceName = booking.room ? booking.room.name : (booking.car ? booking.car.name : "Unknown Resource");
   const referenceId = searchParams.reference || booking.id.toUpperCase().slice(0, 8);
   const isCar = !!booking.car;

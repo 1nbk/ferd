@@ -19,10 +19,13 @@ export default async function AdminDashboard() {
     },
   });
 
-  const totalRevenue = bookings.reduce((acc: number, b) => acc + b.totalPrice, 0);
+  const totalRevenue = bookings
+    .filter((b) => b.status === "CONFIRMED" || b.status === "COMPLETED")
+    .reduce((acc: number, b) => acc + b.totalPrice, 0);
   const apartmentBookings = bookings.filter((b) => b.room !== null).length;
   const carBookings = bookings.filter((b) => b.car !== null).length;
-  const confirmedBookings = bookings.filter((b) => b.status === "confirmed").length;
+  const confirmedBookings = bookings.filter((b) => b.status === "CONFIRMED").length;
+  const conflictBookings = bookings.filter((b) => b.status === "CONFLICT_NEEDS_REFUND").length;
 
   const stats = [
     { label: "Total Revenue", value: `GHS ${totalRevenue.toLocaleString()}`, icon: TrendingUp, color: "#C9A87A" },
@@ -96,6 +99,30 @@ export default async function AdminDashboard() {
           </div>
         ))}
       </div>
+
+      {/* Conflict Alert Banner */}
+      {conflictBookings > 0 && (
+        <div style={{
+          marginBottom: "2rem",
+          padding: "1rem 1.5rem",
+          backgroundColor: "rgba(239,68,68,0.08)",
+          border: "1px solid rgba(239,68,68,0.3)",
+          borderRadius: "4px",
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+        }}>
+          <span style={{ fontSize: "1.2rem" }}>🚨</span>
+          <div>
+            <p style={{ color: "#ef4444", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "0.875rem", margin: 0 }}>
+              {conflictBookings} booking{conflictBookings > 1 ? "s" : ""} require{conflictBookings === 1 ? "s" : ""} a refund
+            </p>
+            <p style={{ color: "rgba(239,68,68,0.7)", fontFamily: "var(--font-sans)", fontSize: "0.75rem", margin: 0 }}>
+              A payment was collected for dates already booked by someone else. Please issue a refund on Paystack and click "Mark Refunded" below.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Bookings Table */}
       <div style={{
