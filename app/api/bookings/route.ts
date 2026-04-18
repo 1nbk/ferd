@@ -153,7 +153,8 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         email: cleanGuest.email,
-        amount: Math.round(serverCalculatedPrice * 100), // Paystack uses kobo/cents
+        amount: Math.round(serverCalculatedPrice * 100), // Paystack uses pesewas
+        currency: "GHS",
         reference: `FERD_${booking.id}`,
         callback_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/confirmation/${booking.id}`,
         metadata: {
