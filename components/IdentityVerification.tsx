@@ -174,19 +174,36 @@ export default function IdentityVerification({ onVerificationComplete, onCancel 
                   }
                 }}
               >
-                {({ open }) => (
-                  <button 
-                    type="button"
-                    className="btn btn-primary" 
-                    style={{ width: "100%", padding: "20px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", fontSize: "1.1rem", border: "2px dashed var(--color-gold)", background: "transparent", color: "var(--color-obsidian)" }}
-                    onClick={() => open()}
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-                    </svg>
-                    Tap to Capture or Upload ID
-                  </button>
-                )}
+                {(widget) => {
+                  const isReady = !!widget?.open;
+                  return (
+                    <button 
+                      type="button"
+                      className="btn btn-primary" 
+                      style={{ 
+                        width: "100%", 
+                        padding: "20px", 
+                        display: "flex", 
+                        alignItems: "center", 
+                        justifyContent: "center", 
+                        gap: "10px", 
+                        fontSize: "1.1rem", 
+                        border: isReady ? "2px dashed var(--color-gold)" : "2px dashed var(--color-champagne)", 
+                        background: "transparent", 
+                        color: "var(--color-obsidian)",
+                        opacity: isReady ? 1 : 0.7,
+                        cursor: isReady ? "pointer" : "wait"
+                      }}
+                      onClick={() => widget?.open?.()}
+                      disabled={!isReady}
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                      </svg>
+                      {isReady ? "Tap to Capture or Upload ID" : "Loading Secure Uploader..."}
+                    </button>
+                  );
+                }}
               </CldUploadWidget>
 
               <p style={{ marginTop: "24px", fontSize: "0.8rem", opacity: 0.5 }}>Your data is securely processed and encrypted.</p>
