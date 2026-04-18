@@ -53,7 +53,7 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
           alt="Ferd's Logo" 
           width={currentSize.width} 
           height={currentSize.height}
-          style={{ objectFit: 'contain' }}
+          style={{ objectFit: 'contain', height: 'auto' }}
           priority
         />
       </div>

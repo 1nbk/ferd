@@ -130,6 +130,7 @@ export default function InteractiveGallery() {
             src={active.src}
             alt={active.tagline}
             fill
+            sizes="100vw"
             style={{ objectFit: "cover" }}
             priority
           />
@@ -270,6 +271,7 @@ export default function InteractiveGallery() {
                 src={item.src} 
                 alt="" 
                 fill 
+                sizes="80px"
                 style={{ 
                   objectFit: "cover",
                   transition: "transform 0.5s ease",

@@ -199,8 +199,8 @@ export default function IdentityVerification({ onVerificationComplete, onCancel 
                         cursor: isReady ? "pointer" : "wait"
                       }}
                       onClick={() => {
-                        if (typeof openFn === 'function') {
-                          openFn();
+                        if (isReady) {
+                          results.open();
                         }
                       }}
                       disabled={!isReady}
