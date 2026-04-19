@@ -58,6 +58,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ unavailableDates });
   } catch (error: any) {
+    console.log("DB URL at runtime length:", process.env.DATABASE_URL?.length, "type:", typeof process.env.DATABASE_URL);
     console.error("Availability error:", error?.message || error);
     console.error("Full error:", JSON.stringify(error, null, 2));
     return NextResponse.json({ error: "Failed to fetch availability", details: error?.message }, { status: 500 });
