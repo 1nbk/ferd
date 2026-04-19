@@ -38,8 +38,11 @@ export default function Navigation({ theme = "solid", hideLogo = false }: Naviga
   return (
     <nav className="container" style={navStyle}>
       {!hideLogo && <BrandLogo variant={isTransparent ? "dark" : "light"} size="sm" />}
-
-
+      <div style={{ display: "flex", gap: "2rem" }}>
+        <Link href="/apartment" style={linkStyle("/apartment")}>Apartments</Link>
+        <Link href="/cars" style={linkStyle("/cars")}>Fleet</Link>
+        <Link href="/book" style={linkStyle("/book")}>Bookings</Link>
+      </div>
     </nav>
   );
 }
