@@ -5,6 +5,7 @@ import { DayPicker, DateRange } from "react-day-picker";
 import { differenceInDays } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import IdentityVerification from "@/components/IdentityVerification";
+import { loadPaystackScript } from "@/lib/paystack";
 import "react-day-picker/dist/style.css";
 
 interface BookingWidgetProps {
@@ -133,6 +134,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
         },
       };
 
+      await loadPaystackScript();
       const handler = (window as any).PaystackPop.setup(paystackConfig);
       handler.openIframe();
 

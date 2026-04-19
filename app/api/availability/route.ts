@@ -57,8 +57,9 @@ export async function GET(req: Request) {
     const unavailableDates = Array.from(new Set(bookedDays));
 
     return NextResponse.json({ unavailableDates });
-  } catch (error) {
-    console.error("Availability error:", error);
-    return NextResponse.json({ error: "Failed to fetch availability" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Availability error:", error?.message || error);
+    console.error("Full error:", JSON.stringify(error, null, 2));
+    return NextResponse.json({ error: "Failed to fetch availability", details: error?.message }, { status: 500 });
   }
 }

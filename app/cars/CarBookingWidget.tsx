@@ -5,6 +5,7 @@ import { DayPicker, DateRange } from "react-day-picker";
 import { format, differenceInDays } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import IdentityVerification from "@/components/IdentityVerification";
+import { loadPaystackScript } from "@/lib/paystack";
 import "react-day-picker/dist/style.css";
 
 interface CarBookingWidgetProps {
@@ -127,6 +128,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
         },
       };
 
+      await loadPaystackScript();
       const handler = (window as any).PaystackPop.setup(paystackConfig);
       handler.openIframe();
 
