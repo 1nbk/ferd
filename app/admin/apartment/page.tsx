@@ -3,6 +3,7 @@ import StatusBadge from "../StatusBadge";
 import BlockDateForm from "./BlockDateForm";
 import { Building2, CalendarX, TrendingUp, Users } from "lucide-react";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Apartment Management | Ferd's Admin" };
 
 export default async function ApartmentAdminPage() {

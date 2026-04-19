@@ -3,6 +3,7 @@ import StatusBadge from "../StatusBadge";
 import FleetBlockForm from "./FleetBlockForm";
 import { Car, TrendingUp, Users, CalendarX } from "lucide-react";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Fleet Management | Ferd's Admin" };
 
 export default async function FleetAdminPage() {
