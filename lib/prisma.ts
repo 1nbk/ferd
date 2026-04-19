@@ -11,7 +11,7 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 // Clear dev cache manually to ensure our fixes are actually picked up
 if (globalForPrisma.prisma) {
-  // @ts-ignore
+  // @ts-expect-error
   delete globalForPrisma.prisma;
 }
 
@@ -21,7 +21,7 @@ const createPrismaClient = () => {
   const connectionString = rawUrl.trim().replace(/^["']|["']$/g, '');
   
   const pool = new Pool({ connectionString });
-  const adapter = new PrismaNeon(pool);
+  const adapter = new PrismaNeon(pool as any);
   
   return new PrismaClient({ adapter });
 };
