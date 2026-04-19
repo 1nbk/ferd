@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 export const revalidate = 60; // Cache page for 60s (ISR)
+export const dynamic = "force-dynamic"; // Disable static prerendering for this page
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import BookingWidget from "./BookingWidget";
