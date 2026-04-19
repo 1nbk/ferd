@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import CarBookingWidget from "../CarBookingWidget";
-import BrandLogo from "@/components/BrandLogo";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 

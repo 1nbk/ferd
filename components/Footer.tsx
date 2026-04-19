@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { MapPin, Mail, Phone } from "lucide-react";
 import { FaInstagram, FaFacebook, FaTiktok } from "react-icons/fa6";
-import BrandLogo from "./BrandLogo";
 
 const FooterAnimatedLogo = () => {
   const letters = "Ferd's".split("");

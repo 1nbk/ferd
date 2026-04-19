@@ -4,7 +4,6 @@ export const revalidate = 60; // Cache page for 60s (ISR)
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import BookingWidget from "./BookingWidget";
-import BrandLogo from "@/components/BrandLogo";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 

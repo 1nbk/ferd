@@ -1,8 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import StatusBadge from "./StatusBadge";
 import BlockDatesWidget from "./BlockDatesWidget";
 import AdminBookingsTable from "./AdminBookingsTable";
 import { deleteBlockedDate } from "./actions";
