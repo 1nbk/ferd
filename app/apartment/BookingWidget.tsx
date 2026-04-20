@@ -87,13 +87,6 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
     setGuestInfo({ ...guestInfo, [e.target.name]: e.target.value });
   };
 
-  const config = {
-    reference: `FERD_${Math.floor(Math.random() * 1000000000 + 1)}`, // Temporary, will be overridden
-    email: guestInfo.email,
-    amount: totalPrice * 100,
-    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
-  };
-
 
   const handleBooking = async () => {
     if (!range?.from || !range?.to || !guestInfo.email) return;
@@ -120,23 +113,18 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
         return;
       }
 
-      // Step 2: Initialize Paystack Pop-up
-      const paystackConfig = {
-        ...config,
-        reference: `FERD_${data.bookingId}`,
-        access_code: data.access_code,
+      // Step 2: Open Paystack popup using access_code from server-initialized transaction
+      await loadPaystackScript();
+      const PaystackPop = (window as any).PaystackPop;
+      PaystackPop.resumeTransaction(data.access_code, {
         onSuccess: (reference: { reference: string }) => {
           window.location.href = `/confirmation/${data.bookingId}?reference=${reference.reference}`;
         },
-        onClose: () => {
+        onCancel: () => {
           setLoading(false);
           alert("Payment canceled.");
         },
-      };
-
-      await loadPaystackScript();
-      const handler = (window as any).PaystackPop.setup(paystackConfig);
-      handler.openIframe();
+      });
 
     } catch (error: any) {
       console.error(error);
