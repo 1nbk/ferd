@@ -1,28 +1,25 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
-import { Pool, neonConfig } from "@neondatabase/serverless";
+import { neonConfig } from "@neondatabase/serverless";
 import ws from "ws";
 
+// Required for WebSocket support in Node.js (not needed in Edge runtime)
 neonConfig.webSocketConstructor = ws;
-neonConfig.poolQueryViaFetch = false;
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 function createPrismaClient() {
   const connectionString = (process.env.DATABASE_URL ?? "")
     .trim()
-    .replace(/^["']|["']$/g, "")
-    // Remove unsupported channel_binding param that breaks some drivers
-    .replace(/[&?]channel_binding=require/gi, "");
+    .replace(/^["']|["']$/g, "");
 
   if (!connectionString) {
-    throw new Error(
-      "DATABASE_URL is not set. Check your .env.local file."
-    );
+    throw new Error("DATABASE_URL is not set. Check your .env.local file.");
   }
 
-  const pool = new Pool({ connectionString });
-  const adapter = new PrismaNeon(pool as any);
+  // @prisma/adapter-neon v7 API: pass config object, not a pre-built Pool
+  const adapter = new PrismaNeon({ connectionString });
+
   return new PrismaClient({ adapter });
 }
 
