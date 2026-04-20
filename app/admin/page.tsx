@@ -9,32 +9,20 @@ import { CalendarDays, TrendingUp, Car, Building2, Trash2 } from "lucide-react";
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
 
-  const bookings = await prisma.booking.findMany({
-    include: {
-      guest: true,
-      room: true,
-      car: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  const rooms = await prisma.room.findMany({ select: { id: true, name: true } });
-  const cars = await prisma.car.findMany({ select: { id: true, name: true } });
-  
-  const blockedDates = await prisma.blockedDate.findMany({
-    include: {
-      room: true,
-      car: true,
-    },
-    orderBy: {
-      date: "asc"
-    },
-    where: {
-      date: { gte: new Date() } // Only show future blocks
-    }
-  });
+  // Run all DB queries in parallel — no inter-dependencies
+  const [bookings, rooms, cars, blockedDates] = await Promise.all([
+    prisma.booking.findMany({
+      include: { guest: true, room: true, car: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.room.findMany({ select: { id: true, name: true } }),
+    prisma.car.findMany({ select: { id: true, name: true } }),
+    prisma.blockedDate.findMany({
+      include: { room: true, car: true },
+      orderBy: { date: "asc" },
+      where: { date: { gte: new Date() } },
+    }),
+  ]);
 
   // Group blocked dates by resource and range for cleaner display
   // For now, let's keep it simple and just list them.

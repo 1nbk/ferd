@@ -54,42 +54,36 @@ export async function POST(req: Request) {
       idVerified: guest.idVerified,
     };
 
-    if (roomId) {
-      const room = await prisma.room.findUnique({ where: { id: roomId } });
-      if (!room) return NextResponse.json({ error: "Room not found" }, { status: 404 });
-      serverCalculatedPrice = room.pricePerNight * diffDays;
-    } else if (carId) {
-      const car = await prisma.car.findUnique({ where: { id: carId } });
-      if (!car) return NextResponse.json({ error: "Car not found" }, { status: 404 });
-      serverCalculatedPrice = car.pricePerDay * diffDays;
-    }
-
-    // Verify if client sent a suspiciously different price
-    if (Math.abs(totalPrice - serverCalculatedPrice) > 1) {
-      console.warn(`Price mismatch detected for ${guest.email}: Client sent ${totalPrice}, Server calced ${serverCalculatedPrice}`);
-      // We'll enforce the server price for security
-    }
-
     const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
 
-    // 0. Prevent Double Booking
-    const overlapping = await prisma.booking.findFirst({
-      where: {
-        roomId: roomId || undefined,
-        carId: carId || undefined,
-        OR: [
-          { status: "CONFIRMED" },
-          { 
-            status: "PENDING",
-            createdAt: { gte: thirtyMinutesAgo }
-          }
-        ],
-        AND: [
-          { checkIn: { lt: end } },
-          { checkOut: { gt: start } }
-        ]
-      }
-    });
+    // Run price lookup + overlap check in parallel — fully independent
+    const [resource, overlapping] = await Promise.all([
+      roomId
+        ? prisma.room.findUnique({ where: { id: roomId } })
+        : prisma.car.findUnique({ where: { id: carId! } }),
+      prisma.booking.findFirst({
+        where: {
+          roomId: roomId || undefined,
+          carId: carId || undefined,
+          OR: [
+            { status: "CONFIRMED" },
+            { status: "PENDING", createdAt: { gte: thirtyMinutesAgo } },
+          ],
+          AND: [{ checkIn: { lt: end } }, { checkOut: { gt: start } }],
+        },
+      }),
+    ]);
+
+    if (!resource) {
+      return NextResponse.json({ error: roomId ? "Room not found" : "Car not found" }, { status: 404 });
+    }
+    serverCalculatedPrice = roomId
+      ? (resource as any).pricePerNight * diffDays
+      : (resource as any).pricePerDay * diffDays;
+
+    if (Math.abs(totalPrice - serverCalculatedPrice) > 1) {
+      console.warn(`Price mismatch for ${guest.email}: client=${totalPrice}, server=${serverCalculatedPrice}`);
+    }
 
     if (overlapping) {
       return NextResponse.json({ error: "These dates are no longer available. Please select different dates." }, { status: 409 });
@@ -139,37 +133,42 @@ export async function POST(req: Request) {
       html: bookingPendingTemplate(booking, cleanGuest.name || guestRecord.name)
     }).catch(err => console.error("Async email error:", err));
 
-    // 4. Initialize Paystack Transaction
     if (!process.env.PAYSTACK_SECRET_KEY) {
       console.error("PAYSTACK_SECRET_KEY is missing in env");
       return NextResponse.json({ error: "Payment configuration error" }, { status: 500 });
     }
 
-    const paystackRes = await fetch("https://api.paystack.co/transaction/initialize", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: cleanGuest.email,
-        amount: Math.round(serverCalculatedPrice * 100), // Paystack uses pesewas
-        currency: "GHS",
-        reference: `FERD_${booking.id}`,
-        callback_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/confirmation/${booking.id}`,
-        metadata: {
-          bookingId: booking.id,
+    // Email + Paystack init run concurrently — they're fully independent
+    const [, paystackRes] = await Promise.all([
+      sendEmail({
+        to: cleanGuest.email,
+        subject: "Reservation Received - Ferd's Luxury Rentals",
+        html: bookingPendingTemplate(booking, cleanGuest.name || guestRecord.name),
+      }).catch(err => console.error("Async email error:", err)),
+      fetch("https://api.paystack.co/transaction/initialize", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          email: cleanGuest.email,
+          amount: Math.round(serverCalculatedPrice * 100),
+          currency: "GHS",
+          reference: `FERD_${booking.id}`,
+          callback_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/confirmation/${booking.id}`,
+          metadata: { bookingId: booking.id },
+        }),
       }),
-    });
+    ]);
 
-    const paystackData = await paystackRes.json();
+    const paystackData = await (paystackRes as Response).json();
 
     if (!paystackData.status) {
       return NextResponse.json({ error: "Paystack initialization failed" }, { status: 500 });
     }
 
-    // 4. Create Payment Record
+    // Create payment record (needs Paystack reference — must come after)
     await prisma.payment.create({
       data: {
         bookingId: booking.id,
@@ -179,11 +178,12 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ 
-      bookingId: booking.id, 
+    return NextResponse.json({
+      bookingId: booking.id,
       authorization_url: paystackData.data.authorization_url,
-      access_code: paystackData.data.access_code 
+      access_code: paystackData.data.access_code,
     });
+
 
   } catch (error) {
     console.error("Booking Error:", error);
