@@ -7,16 +7,19 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Apartment Management | Ferd's Admin" };
 
 export default async function ApartmentAdminPage() {
-  const room = await prisma.room.findFirst();
-  const bookings = await prisma.booking.findMany({
-    where: { roomId: { not: null } },
-    include: { guest: true, room: true },
-    orderBy: { createdAt: "desc" },
-  });
-  const blockedDates = await prisma.blockedDate.findMany({
-    where: { roomId: { not: null } },
-    orderBy: { date: "asc" },
-  });
+  // All 3 queries are independent — run in parallel
+  const [room, bookings, blockedDates] = await Promise.all([
+    prisma.room.findFirst(),
+    prisma.booking.findMany({
+      where: { roomId: { not: null } },
+      include: { guest: true, room: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.blockedDate.findMany({
+      where: { roomId: { not: null } },
+      orderBy: { date: "asc" },
+    }),
+  ]);
 
   const totalRevenue = bookings.reduce((acc, b) => acc + b.totalPrice, 0);
   const confirmed = bookings.filter((b) => b.status === "CONFIRMED").length;

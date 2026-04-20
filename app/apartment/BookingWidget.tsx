@@ -108,7 +108,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
       const data = await response.json();
       
       if (data.error) {
-        alert(data.error);
+        setErrorStatus(data.error);
         setLoading(false);
         return;
       }

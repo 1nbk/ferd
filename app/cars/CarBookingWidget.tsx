@@ -107,7 +107,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
       const data = await response.json();
       
       if (data.error) {
-        alert(data.error);
+        setErrorStatus(data.error);
         setLoading(false);
         return;
       }

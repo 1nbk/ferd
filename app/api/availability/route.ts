@@ -14,28 +14,23 @@ export async function GET(req: Request) {
   try {
     const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
 
-    // 1. Get all active bookings for this resource
-    const bookings = await prisma.booking.findMany({
-      where: {
-        ...(roomId ? { roomId } : { carId }),
-        OR: [
-          { status: "CONFIRMED" },
-          { 
-            status: "PENDING",
-            createdAt: { gte: thirtyMinutesAgo }
-          }
-        ]
-      },
-      select: { checkIn: true, checkOut: true },
-    });
-
-    // 2. Get admin-blocked dates
-    const blockedDates = await prisma.blockedDate.findMany({
-      where: {
-        ...(roomId ? { roomId } : { carId }),
-      },
-      select: { date: true },
-    });
+    // Bookings + blocked dates are independent — run in parallel
+    const [bookings, blockedDates] = await Promise.all([
+      prisma.booking.findMany({
+        where: {
+          ...(roomId ? { roomId } : { carId }),
+          OR: [
+            { status: "CONFIRMED" },
+            { status: "PENDING", createdAt: { gte: thirtyMinutesAgo } },
+          ],
+        },
+        select: { checkIn: true, checkOut: true },
+      }),
+      prisma.blockedDate.findMany({
+        where: { ...(roomId ? { roomId } : { carId }) },
+        select: { date: true },
+      }),
+    ]);
 
     // 3. Expand booking ranges into individual dates
     const bookedDays: string[] = [];
@@ -58,9 +53,6 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ unavailableDates });
   } catch (error: any) {
-    console.log("DB URL at runtime length:", process.env.DATABASE_URL?.length, "type:", typeof process.env.DATABASE_URL);
-    console.error("Availability error:", error?.message || error);
-    console.error("Full error:", JSON.stringify(error, null, 2));
-    return NextResponse.json({ error: "Failed to fetch availability", details: error?.message }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch availability" }, { status: 500 });
   }
 }

@@ -11,14 +11,16 @@ interface StatusBadgeProps {
 export default function StatusBadge({ bookingId, initialStatus }: StatusBadgeProps) {
   const [status, setStatus] = useState(initialStatus);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleUpdate = async (newStatus: string) => {
     setLoading(true);
+    setError(false);
     const result = await updateBookingStatus(bookingId, newStatus);
     if (result.success) {
       setStatus(newStatus);
     } else {
-      alert("Failed to update status");
+      setError(true);
     }
     setLoading(false);
   };
@@ -92,6 +94,7 @@ export default function StatusBadge({ bookingId, initialStatus }: StatusBadgePro
           </button>
         )}
       </div>
+      {error && <span style={{ fontSize: "0.6rem", color: "#f87171", fontFamily: "var(--font-sans)" }}>Update failed</span>}
     </div>
   );
 }
