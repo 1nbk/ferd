@@ -46,7 +46,7 @@ const cssOverrides = `
 
 export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetProps) {
   const [range, setRange] = useState<DateRange | undefined>();
-  const [loading, setLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState<"idle" | "securing" | "initializing">("idle");
   const [guestInfo, setGuestInfo] = useState({
     name: "",
     email: "",
@@ -90,7 +90,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
 
   const handleBooking = async () => {
     if (!range?.from || !range?.to || !guestInfo.email) return;
-    setLoading(true);
+    setLoadingState("securing");
     
     try {
       const response = await fetch("/api/bookings", {
@@ -109,11 +109,12 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
       
       if (data.error) {
         setErrorStatus(data.error);
-        setLoading(false);
+        setLoadingState("idle");
         return;
       }
 
       // Step 2: Open Paystack popup
+      setLoadingState("initializing");
       // When using access_code, only pass key + access_code — do NOT pass email/amount/reference
       // (those are already embedded in the access_code from the server-side initialization)
       await loadPaystackScript();
@@ -127,7 +128,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
           window.location.href = `/confirmation/${data.bookingId}?reference=${transaction.reference}`;
         },
         onClose: () => {
-          setLoading(false);
+          setLoadingState("idle");
         },
       });
 
@@ -140,7 +141,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
     } catch (error: any) {
       console.error(error);
       setErrorStatus(error.message || "Failed to initialize payment. Please try again.");
-      setLoading(false);
+      setLoadingState("idle");
     }
   };
 
@@ -248,7 +249,7 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
       <button 
         className="btn btn-primary" 
         style={{ width: "100%", padding: "16px", fontSize: "1.1rem", letterSpacing: "0.1em", textTransform: "uppercase" }} 
-        disabled={!range?.from || !range?.to || !guestInfo.email || loading}
+        disabled={!range?.from || !range?.to || !guestInfo.email || loadingState !== "idle"}
         onClick={() => {
           if (!guestInfo.idVerified) {
             setShowVerification(true);
@@ -257,7 +258,9 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
           }
         }}
       >
-        {loading ? "Processing..." : numberOfNights > 0 ? (guestInfo.idVerified ? "Complete Booking" : "Verify ID to Proceed") : "Select Dates"}
+        {loadingState === "securing" ? "Reserving Dates..." : 
+         loadingState === "initializing" ? "Connecting to Security Checkout..." : 
+         numberOfNights > 0 ? (guestInfo.idVerified ? "Complete Booking" : "Verify ID to Proceed") : "Select Dates"}
       </button>
       
       <p style={{ textAlign: "center", fontSize: "0.75rem", opacity: 0.5, marginTop: "var(--spacing-md)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
