@@ -117,7 +117,10 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
       // When using access_code, only pass key + access_code — do NOT pass email/amount/reference
       // (those are already embedded in the access_code from the server-side initialization)
       await loadPaystackScript();
-      const handler = (window as any).PaystackPop.setup({
+      const PaystackPop = (window as any).PaystackPop;
+      if (!PaystackPop) throw new Error("Paystack failed to load. Please refresh and try again.");
+
+      const handler = PaystackPop.setup({
         key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
         access_code: data.access_code,
         onSuccess: (transaction: { reference: string }) => {
@@ -127,7 +130,12 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
           setLoading(false);
         },
       });
-      handler.openIframe();
+
+      try {
+        handler.openIframe();
+      } catch {
+        throw new Error("Could not open payment window. Your session may have expired — please try again.");
+      }
 
     } catch (error: any) {
       console.error(error);
