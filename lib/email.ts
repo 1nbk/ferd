@@ -7,17 +7,19 @@ interface EmailPayload {
 }
 
 export async function sendEmail({ to, subject, html }: EmailPayload) {
-  // 1. Create a transporter
-  // For production, the user should provide real SMTP credentials in .env.local
-  // If not provided, we can use a mock/ethereal account for testing (optional step)
-  
+  // Skip silently if SMTP credentials are not configured
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log(`[Email skipped – no SMTP credentials] To: ${to} | Subject: ${subject}`);
+    return { success: false, error: "SMTP not configured" };
+  }
+
   const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || "smtp.ethereal.email",
+    host: process.env.EMAIL_HOST || "smtp.gmail.com",
     port: Number(process.env.EMAIL_PORT) || 587,
-    secure: process.env.EMAIL_SECURE === "true", // true for 465, false for other ports
+    secure: process.env.EMAIL_SECURE === "true",
     auth: {
-      user: process.env.EMAIL_USER || "mock_user", // user
-      pass: process.env.EMAIL_PASS || "mock_pass", // password
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 

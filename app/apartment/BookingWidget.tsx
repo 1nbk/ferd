@@ -113,18 +113,21 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
         return;
       }
 
-      // Step 2: Open Paystack popup using access_code from server-initialized transaction
+      // Step 2: Open Paystack popup
+      // When using access_code, only pass key + access_code — do NOT pass email/amount/reference
+      // (those are already embedded in the access_code from the server-side initialization)
       await loadPaystackScript();
-      const PaystackPop = (window as any).PaystackPop;
-      PaystackPop.resumeTransaction(data.access_code, {
-        onSuccess: (reference: { reference: string }) => {
-          window.location.href = `/confirmation/${data.bookingId}?reference=${reference.reference}`;
+      const handler = (window as any).PaystackPop.setup({
+        key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
+        access_code: data.access_code,
+        onSuccess: (transaction: { reference: string }) => {
+          window.location.href = `/confirmation/${data.bookingId}?reference=${transaction.reference}`;
         },
-        onCancel: () => {
+        onClose: () => {
           setLoading(false);
-          alert("Payment canceled.");
         },
       });
+      handler.openIframe();
 
     } catch (error: any) {
       console.error(error);
