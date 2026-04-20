@@ -28,7 +28,14 @@ export default async function CarDetailsPage({ params }: { params: { id: string 
         
         {/* Header */}
         <div style={{ marginBottom: "var(--spacing-lg)", textAlign: "center" }}>
-          <h1 style={{ fontSize: "4.5rem", marginBottom: "var(--spacing-xs)" }}>{car.name}</h1>
+          <h1 style={{ 
+            fontSize: "1.6rem", 
+            marginBottom: "var(--spacing-xs)",
+            textTransform: "uppercase",
+            letterSpacing: "0.4em",
+            fontWeight: 400,
+            opacity: 0.8
+          }}>{car.name}</h1>
           <p className="label-caps" style={{ color: "var(--color-gold)", letterSpacing: "0.2em" }}>{car.model}</p>
         </div>
 
@@ -44,7 +51,7 @@ export default async function CarDetailsPage({ params }: { params: { id: string 
         </div>
 
         {/* Main Content Split */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: "var(--spacing-xl)", alignItems: "start" }}>
+        <div className="two-col-grid" style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: "var(--spacing-xl)", alignItems: "start" }}>
           
           {/* Left Column: Details */}
           <div>

@@ -11,10 +11,13 @@ const nextConfig = {
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // Prevent webpack from bundling native optional deps of `ws`
-      // used by @neondatabase/serverless — fixes "bufferUtil.mask is not a function"
       config.externals.push('bufferutil', 'utf-8-validate');
     }
+    // Suppress source map warnings from framer-motion that cause Fast Refresh reloads
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      /Failed to parse source map/,
+    ];
     return config;
   },
 };

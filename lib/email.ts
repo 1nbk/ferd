@@ -123,7 +123,7 @@ export const paymentConfirmedTemplate = (booking: any, guestName: string) => `
 
     <div style="${footerStyle}">
       <p style="margin-bottom: 10px;">FERD'S LUXURY RENTALS</p>
-      <p>ACCRA — VOLTA — KUMASI</p>
+      <p>Ho, Volta Region, Ghana</p>
     </div>
   </div>
 `;

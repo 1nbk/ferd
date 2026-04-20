@@ -10,7 +10,7 @@ interface VehicleGridProps {
 
 export default function VehicleGrid({ cars }: VehicleGridProps) {
   return (
-    <section className="container" style={{ padding: "0 var(--spacing-sm)", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(450px, 1fr))", gap: "var(--spacing-xl)", marginBottom: "var(--spacing-xl)" }}>
+    <section className="container" style={{ padding: "0 var(--spacing-sm)", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(450px, 1fr))", gap: "var(--spacing-lg)", marginBottom: "var(--spacing-xl)" }}>
       {cars.length === 0 ? (
         <div style={{ textAlign: "center", gridColumn: "1 / -1", padding: "var(--spacing-xl) 0" }}>
           <p>Our premium fleet is currently being updated. Please check back later.</p>

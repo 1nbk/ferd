@@ -43,7 +43,7 @@ export default async function ApartmentPage() {
         </div>
 
         {/* Gallery */}
-        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "var(--spacing-sm)", height: "600px", marginBottom: "var(--spacing-xl)", borderRadius: "2px", overflow: "hidden" }}>
+        <div className="gallery-grid" style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "var(--spacing-sm)", height: "600px", marginBottom: "var(--spacing-xl)", borderRadius: "2px", overflow: "hidden" }}>
           <div style={{ position: "relative", backgroundColor: "var(--color-linen)" }}>
              <Image src={room.images[0] || "/images/living.png"} alt="Penthouse Living Room" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{ objectFit: 'cover' }} priority />
           </div>
@@ -58,7 +58,7 @@ export default async function ApartmentPage() {
         </div>
 
         {/* Main Content Split */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: "var(--spacing-xl)", alignItems: "start" }}>
+        <div className="two-col-grid" style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: "var(--spacing-xl)", alignItems: "start" }}>
           
           {/* Left Column: Details */}
           <div>
