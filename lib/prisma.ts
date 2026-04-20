@@ -7,13 +7,7 @@ import ws from "ws";
 neonConfig.webSocketConstructor = ws;
 neonConfig.poolQueryViaFetch = false;
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
-
-// Clear dev cache manually to ensure our fixes are actually picked up
-if (globalForPrisma.prisma) {
-  // @ts-expect-error
-  delete globalForPrisma.prisma;
-}
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 const createPrismaClient = () => {
   // Trim hidden whitespace and surrounding quotes that can corrupt the DSN format
@@ -26,6 +20,6 @@ const createPrismaClient = () => {
   return new PrismaClient({ adapter });
 };
 
-export const prisma = createPrismaClient();
+export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
