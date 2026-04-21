@@ -122,6 +122,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
 
       const handler = PaystackPop.setup({
         key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
+        email: guestInfo.email,
         access_code: data.access_code,
         onSuccess: (transaction: { reference: string }) => {
           window.location.href = `/confirmation/${data.bookingId}?reference=${transaction.reference}`;
