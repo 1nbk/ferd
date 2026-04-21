@@ -125,6 +125,8 @@ export default function BookingWidget({ pricePerNight, roomId }: BookingWidgetPr
         key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
         email: guestInfo.email,
         amount: totalPrice * 100,
+        currency: "GHS",
+        ref: "FERD_" + data.bookingId,
         access_code: data.access_code,
         onSuccess: (transaction: { reference: string }) => {
           window.location.href = `/confirmation/${data.bookingId}?reference=${transaction.reference}`;
