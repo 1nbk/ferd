@@ -175,8 +175,7 @@ export default function IdentityVerification({ onVerificationComplete, onCancel 
                 }}
               >
                 {(results: any) => {
-                  const openFn = results?.open;
-                  const isReady = typeof openFn === "function";
+                  const isReady = typeof results?.open === "function";
 
                   return (
                     <button 
@@ -196,7 +195,10 @@ export default function IdentityVerification({ onVerificationComplete, onCancel 
                         opacity: isReady ? 1 : 0.7,
                         cursor: isReady ? "pointer" : "wait"
                       }}
-                      onClick={() => { if (isReady) openFn(); }}
+                      onClick={(e) => { 
+                        e.preventDefault();
+                        if (isReady) results.open(); 
+                      }}
                     >
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
