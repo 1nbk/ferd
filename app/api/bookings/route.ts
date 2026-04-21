@@ -138,29 +138,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Payment configuration error" }, { status: 500 });
     }
 
-    // Email + Paystack init run concurrently — they're fully independent
-    const [, paystackRes] = await Promise.all([
-      sendEmail({
-        to: cleanGuest.email,
-        subject: "Reservation Received - Ferd's Luxury Rentals",
-        html: bookingPendingTemplate(booking, cleanGuest.name || guestRecord.name),
-      }).catch(err => console.error("Async email error:", err)),
-      fetch("https://api.paystack.co/transaction/initialize", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: cleanGuest.email,
-          amount: Math.round(serverCalculatedPrice * 100),
-          currency: "GHS",
-          reference: `FERD_${booking.id}`,
-          callback_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/confirmation/${booking.id}`,
-          metadata: { bookingId: booking.id },
-        }),
+    // Paystack init
+    const paystackRes = await fetch("https://api.paystack.co/transaction/initialize", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: cleanGuest.email,
+        amount: Math.round(serverCalculatedPrice * 100),
+        currency: "GHS",
+        reference: `FERD_${booking.id}`,
+        callback_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/confirmation/${booking.id}`,
+        metadata: { bookingId: booking.id },
       }),
-    ]);
+    });
 
     const paystackData = await (paystackRes as Response).json();
 
