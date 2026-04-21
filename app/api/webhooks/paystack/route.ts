@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
-import { sendEmail, paymentConfirmedTemplate } from "@/lib/email";
+import { sendEmail, paymentConfirmedTemplate, adminBookingAlertTemplate } from "@/lib/email";
+import { sendAdminSMS } from "@/lib/sms";
 
 export async function POST(req: Request) {
   try {
@@ -92,12 +93,24 @@ export async function POST(req: Request) {
 
         console.log(`Successfully confirmed booking ${bookingId}`);
 
-        // Send confirmation email
+        // Send confirmation email to Guest
         sendEmail({
           to: updatedBooking.guest.email,
           subject: "Reservation Confirmed - Ferd's Luxury Rentals",
           html: paymentConfirmedTemplate(updatedBooking, updatedBooking.guest.name)
         }).catch(err => console.error("Async email error:", err));
+
+        // Send alert email to Admin
+        sendEmail({
+          to: process.env.EMAIL_FROM || "reservations@ferd.com",
+          subject: `New Booking Paid: GHS ${updatedBooking.totalPrice}`,
+          html: adminBookingAlertTemplate(updatedBooking, updatedBooking.guest)
+        }).catch(err => console.error("Async admin email error:", err));
+
+        // Send SMS alert to Admin
+        const resourceName = updatedBooking.room ? updatedBooking.room.name : (updatedBooking.car ? updatedBooking.car.name : 'Resource');
+        const smsMessage = `FERD ALERT: New booking! ${updatedBooking.guest.name} booked ${resourceName}. Total paid: GHS ${updatedBooking.totalPrice}. Ref: ${bookingId.slice(0, 8).toUpperCase()}`;
+        sendAdminSMS(smsMessage).catch(err => console.error("Async admin SMS error:", err));
       }
     }
 

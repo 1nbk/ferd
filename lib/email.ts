@@ -127,3 +127,35 @@ export const paymentConfirmedTemplate = (booking: any, guestName: string) => `
     </div>
   </div>
 `;
+
+export const adminBookingAlertTemplate = (booking: any, guest: any) => `
+  <div style="${commonStyles}">
+    <div style="${headerStyle}">
+      <h1 style="color: #B91C1C; font-weight: 300; letter-spacing: 0.1em; margin: 0; font-size: 24px; text-transform: uppercase;">New Booking Alert</h1>
+    </div>
+    
+    <p style="font-size: 1.1rem; line-height: 1.6;">Hello Admin,</p>
+    <p style="line-height: 1.6; opacity: 0.9;">A new booking has just been confirmed and paid for on Ferd's Luxury Rentals.</p>
+    
+    <div style="background-color: #FAF9F6; border: 0.5px solid #E5D5C0; padding: 25px; margin: 30px 0;">
+      <h3 style="margin: 0 0 20px 0; font-weight: 400; color: #1A1A1A; font-size: 1.2rem;">Guest Details</h3>
+      <div style="display: grid; gap: 10px; font-size: 0.95rem;">
+        <p style="margin: 5px 0;"><strong>Name:</strong> ${guest.name}</p>
+        <p style="margin: 5px 0;"><strong>Email:</strong> ${guest.email}</p>
+        <p style="margin: 5px 0;"><strong>Phone:</strong> ${guest.phone}</p>
+      </div>
+    </div>
+
+    <div style="background-color: #FAF9F6; border: 0.5px solid #E5D5C0; padding: 25px; margin: 30px 0;">
+      <h3 style="margin: 0 0 20px 0; font-weight: 400; color: #1A1A1A; font-size: 1.2rem;">Booking Details</h3>
+      <div style="display: grid; gap: 10px; font-size: 0.95rem;">
+        <p style="margin: 5px 0;"><strong>Resource:</strong> ${booking.room ? booking.room.name : (booking.car ? booking.car.name : 'Unknown')}</p>
+        <p style="margin: 5px 0;"><strong>Reference ID:</strong> ${booking.id}</p>
+        <p style="margin: 5px 0;"><strong>Dates:</strong> ${new Date(booking.checkIn).toLocaleDateString("en-GB", { day: 'numeric', month: 'short' })} — ${new Date(booking.checkOut).toLocaleDateString("en-GB", { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+        <p style="margin: 5px 0;"><strong>Amount Paid:</strong> GHS ${booking.totalPrice.toLocaleString()}</p>
+      </div>
+    </div>
+    
+    <p style="line-height: 1.6;">Please review the dashboard or prepare the resource for the guest's arrival.</p>
+  </div>
+`;
