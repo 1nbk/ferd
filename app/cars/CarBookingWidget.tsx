@@ -127,7 +127,7 @@ export default function CarBookingWidget({ pricePerDay, carId }: CarBookingWidge
         currency: "GHS",
         ref: "FERD_" + data.bookingId,
         access_code: data.access_code,
-        onSuccess: (transaction: { reference: string }) => {
+        callback: (transaction: { reference: string }) => {
           window.location.href = `/confirmation/${data.bookingId}?reference=${transaction.reference}`;
         },
         onClose: () => {
